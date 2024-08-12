@@ -1,0 +1,33 @@
+{
+  "app": "pnpm lint && pnpm dlx tsx bin/cdk.ts",
+  "watch": {
+    "include": [
+      "**"
+    ],
+    "exclude": [
+      "README.md",
+      "cdk*.json",
+      "**/*.d.ts",
+      "**/*.js",
+      "tsconfig.json",
+      "package*.json",
+      "yarn.lock",
+      "node_modules",
+      "test"
+    ]
+  },
+  "requireApproval": "never",
+  "context": {
+    "config": {
+      "appName": "github-sbom-viewer",
+      "stackName": "github-sbom-viewer",
+      "bucketName": "github-sbom-viewer",
+      "cloudfront": {
+        "comment": "GitHub SBOM viewer",
+        "originAccessControl": {
+          "name": "github-sbom-viewer-oac"
+        }
+      }
+    }
+  }
+}
