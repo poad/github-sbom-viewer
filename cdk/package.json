@@ -22,7 +22,7 @@
     "@stylistic/eslint-plugin-ts": "^2.6.4",
     "@types/aws-lambda": "^8.10.143",
     "@types/node": "^22.5.0",
-    "aws-cdk": "^2.153.0",
+    "aws-cdk": "^2.154.0",
     "eslint": "^9.9.0",
     "eslint-plugin-import": "^2.29.1",
     "ts-node": "^10.9.2",
@@ -38,10 +38,10 @@
     "@octokit/core": "^6.1.2",
     "@octokit/plugin-paginate-graphql": "^5.2.2",
     "@octokit/plugin-paginate-rest": "^11.3.3",
-    "aws-cdk-lib": "^2.153.0",
+    "aws-cdk-lib": "^2.154.0",
     "constructs": "^10.3.0",
     "esbuild": "^0.23.1",
-    "hono": "^4.5.7",
+    "hono": "^4.5.8",
     "loaders.css": "^0.1.2",
     "source-map-support": "^0.5.21"
   }
