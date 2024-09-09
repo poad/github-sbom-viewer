@@ -12,8 +12,8 @@ export default function OrganizationRepos() {
         owner: string;
       }[];
     }>(() =>
-      fetch(`/api/github/owners/${login}`).then((resp) => resp.json()),
-    );
+    fetch(`/api/github/owners/${login}`).then((resp) => resp.json()),
+  );
   return (
     <>
       <h1>Repositories</h1>

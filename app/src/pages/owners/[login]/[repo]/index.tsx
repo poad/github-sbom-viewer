@@ -5,13 +5,13 @@ import { FadeLoader } from '../../../../features/ui/components';
 export default function OrganizationRepos() {
   const { login, repo } = useParams();
   const [data] = createResource<Sbom[]>(() =>
-      fetch(`/api/github/sbom/${login}/${repo}`).then((resp) => resp.json()),
-    );
+    fetch(`/api/github/sbom/${login}/${repo}`).then((resp) => resp.json()),
+  );
   return (
     <>
       <h1>SBOM</h1>
       <p>
-      <Show when={!data.loading} fallback={(<FadeLoader />)}>
+        <Show when={!data.loading} fallback={(<FadeLoader />)}>
           <For each={data()}>
             {(sbom) => (
               <>

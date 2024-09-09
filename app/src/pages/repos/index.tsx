@@ -11,8 +11,8 @@ export default function UserRepos() {
         owner: string;
       }[];
     }>(() =>
-      fetch('/api/github/repos').then((resp) => resp.json()),
-    );
+    fetch('/api/github/repos').then((resp) => resp.json()),
+  );
   return (
     <>
       <h1>Repositories</h1>

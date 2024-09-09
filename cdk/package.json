@@ -8,10 +8,8 @@
     "watch": "tsc -w",
     "test": "vitest --run --passWithNoTests",
     "cdk": "cdk",
-    "eslint-check": "eslint './{bin,lib}/**/*.ts'",
-    "eslint-fix": "eslint --fix './{bin,lib}/**/*.ts'",
-    "lint-fix": "pnpm --parallel /^.*-fix$/",
-    "lint": "pnpm /^.*-check$/"
+    "lint": "eslint './{bin,lib}/**/*.ts'",
+    "lint-fix": "eslint --fix './{bin,lib}/**/*.ts'"
   },
   "devDependencies": {
     "@aws-lambda-powertools/logger": "^2.7.0",
@@ -24,7 +22,9 @@
     "@types/node": "^22.5.4",
     "aws-cdk": "^2.156.0",
     "eslint": "^9.10.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-promise": "^7.1.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.0",
     "typescript": "^5.5.4",

@@ -30,7 +30,7 @@ export default function (): JSX.Element {
             <For each={data()?.owners}>
               {(owner) => {
                 if (user?.trim() === owner.trim()) {
-                  return <li><A href={`./repos/`}>{owner}</A></li>;
+                  return <li><A href={'./repos/'}>{owner}</A></li>;
                 }
                 return <li><A href={`./owners/${owner}`}>{owner}</A></li>;
               }}
