@@ -12,7 +12,7 @@
     "lint-fix": "eslint --fix './{bin,lib}/**/*.ts'"
   },
   "devDependencies": {
-    "@aws-lambda-powertools/logger": "^2.7.0",
+    "@aws-lambda-powertools/logger": "^2.8.0",
     "@octokit/types": "^13.5.0",
     "@stylistic/eslint-plugin": "^2.8.0",
     "@stylistic/eslint-plugin-js": "^2.8.0",
