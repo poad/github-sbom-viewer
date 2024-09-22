@@ -191,7 +191,7 @@ export class CloudfrontCdnTemplateStack extends cdk.Stack {
 
     // Add permission Lambda Function URLs
     fn.addPermission("AllowCloudFrontServicePrincipal", {
-      principal: new cdk.aws_iam.ServicePrincipal("cloudfront.amazonaws.com"),
+      principal: new iam.ServicePrincipal("cloudfront.amazonaws.com"),
       action: "lambda:InvokeFunctionUrl",
       sourceArn: `arn:aws:cloudfront::${cdk.Stack.of(this).account}:distribution/${cf.distributionId}`,
     });
