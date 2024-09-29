@@ -37,7 +37,7 @@
     "@hono/oauth-providers": "^0.6.1",
     "@octokit/core": "^6.1.2",
     "@octokit/plugin-paginate-graphql": "^5.2.3",
-    "@octokit/plugin-paginate-rest": "^11.3.4",
+    "@octokit/plugin-paginate-rest": "^11.3.5",
     "aws-cdk-lib": "^2.160.0",
     "constructs": "^10.3.0",
     "esbuild": "^0.24.0",
