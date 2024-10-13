@@ -20,7 +20,7 @@
     "@stylistic/eslint-plugin-ts": "^2.9.0",
     "@types/aws-lambda": "^8.10.145",
     "@types/node": "^22.7.5",
-    "aws-cdk": "^2.161.1",
+    "aws-cdk": "^2.162.1",
     "eslint": "^9.12.0",
     "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-import": "^2.31.0",
@@ -34,14 +34,14 @@
     "vitest": "^2.1.2"
   },
   "dependencies": {
-    "@hono/oauth-providers": "^0.6.1",
+    "@hono/oauth-providers": "^0.6.2",
     "@octokit/core": "^6.1.2",
-    "@octokit/plugin-paginate-graphql": "^5.2.3",
+    "@octokit/plugin-paginate-graphql": "^5.2.4",
     "@octokit/plugin-paginate-rest": "^11.3.5",
-    "aws-cdk-lib": "^2.161.1",
-    "constructs": "^10.3.1",
+    "aws-cdk-lib": "^2.162.1",
+    "constructs": "^10.4.1",
     "esbuild": "^0.24.0",
-    "hono": "^4.6.3",
+    "hono": "^4.6.4",
     "loaders.css": "^0.1.2",
     "source-map-support": "^0.5.21"
   }
