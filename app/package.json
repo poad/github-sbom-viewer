@@ -14,12 +14,12 @@
   },
   "devDependencies": {
     "@solidjs/testing-library": "^0.8.10",
-    "@stylistic/eslint-plugin": "^2.9.0",
-    "@stylistic/eslint-plugin-js": "^2.9.0",
-    "@stylistic/eslint-plugin-jsx": "^2.9.0",
-    "@stylistic/eslint-plugin-plus": "^2.9.0",
-    "@stylistic/eslint-plugin-ts": "^2.9.0",
-    "@testing-library/jest-dom": "^6.6.2",
+    "@stylistic/eslint-plugin": "^2.10.0",
+    "@stylistic/eslint-plugin-js": "^2.10.0",
+    "@stylistic/eslint-plugin-jsx": "^2.10.0",
+    "@stylistic/eslint-plugin-plus": "^2.10.0",
+    "@stylistic/eslint-plugin-ts": "^2.10.0",
+    "@testing-library/jest-dom": "^6.6.3",
     "eslint": "^9.13.0",
     "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-import": "^2.31.0",
@@ -35,7 +35,7 @@
     "vitest": "^2.1.4"
   },
   "dependencies": {
-    "@solidjs/router": "^0.14.10",
+    "@solidjs/router": "^0.15.0",
     "solid-js": "^1.9.3"
   }
 }
