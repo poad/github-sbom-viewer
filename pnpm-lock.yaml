@@ -39,7 +39,7 @@ importers:
         specifier: ^6.6.3
         version: 6.6.3
       eslint:
-        specifier: ~9.15.0
+        specifier: ^9.15.0
         version: 9.15.0
       eslint-import-resolver-typescript:
         specifier: ^3.6.3
@@ -139,7 +139,7 @@ importers:
         specifier: ^2.167.1
         version: 2.167.1
       eslint:
-        specifier: ~9.15.0
+        specifier: ^9.15.0
         version: 9.15.0
       eslint-import-resolver-typescript:
         specifier: ^3.6.3
