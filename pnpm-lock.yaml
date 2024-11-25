@@ -82,7 +82,7 @@ importers:
     dependencies:
       '@hono/oauth-providers':
         specifier: ^0.6.2
-        version: 0.6.2(hono@4.6.11)
+        version: 0.6.2(hono@4.6.12)
       '@octokit/core':
         specifier: ^6.1.2
         version: 6.1.2
@@ -102,8 +102,8 @@ importers:
         specifier: ^0.24.0
         version: 0.24.0
       hono:
-        specifier: ^4.6.11
-        version: 4.6.11
+        specifier: ^4.6.12
+        version: 4.6.12
       loaders.css:
         specifier: ^0.1.2
         version: 0.1.2
@@ -1837,8 +1837,8 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
-  hono@4.6.11:
-    resolution: {integrity: sha512-f0LwJQFKdUUrCUAVowxSvNCjyzI7ZLt8XWYU/EApyeq5FfOvHFarBaE5rjU9HTNFk4RI0FkdB2edb3p/7xZjzQ==}
+  hono@4.6.12:
+    resolution: {integrity: sha512-eHtf4kSDNw6VVrdbd5IQi16r22m3s7mWPLd7xOMhg1a/Yyb1A0qpUFq8xYMX4FMuDe1nTKeMX5rTx7Nmw+a+Ag==}
     engines: {node: '>=16.9.0'}
 
   html-encoding-sniffer@4.0.0:
@@ -3149,9 +3149,9 @@ snapshots:
     dependencies:
       levn: 0.4.1
 
-  '@hono/oauth-providers@0.6.2(hono@4.6.11)':
+  '@hono/oauth-providers@0.6.2(hono@4.6.12)':
     dependencies:
-      hono: 4.6.11
+      hono: 4.6.12
 
   '@humanfs/core@0.19.1': {}
 
@@ -4471,7 +4471,7 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hono@4.6.11: {}
+  hono@4.6.12: {}
 
   html-encoding-sniffer@4.0.0:
     dependencies:
