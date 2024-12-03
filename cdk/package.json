@@ -22,7 +22,7 @@
     "@types/node": "^22.10.1",
     "aws-cdk": "^2.171.1",
     "eslint": "^9.16.0",
-    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-promise": "^7.2.1",
     "ts-node": "^10.9.2",
