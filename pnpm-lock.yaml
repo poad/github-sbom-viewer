@@ -57,8 +57,8 @@ importers:
         specifier: ^25.0.1
         version: 25.0.1
       solid-devtools:
-        specifier: ^0.31.3
-        version: 0.31.3(solid-js@1.9.3)(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1))
+        specifier: ^0.31.4
+        version: 0.31.4(solid-js@1.9.3)(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1))
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
@@ -112,8 +112,8 @@ importers:
         version: 0.5.21
     devDependencies:
       '@aws-lambda-powertools/logger':
-        specifier: ^2.11.0
-        version: 2.11.0
+        specifier: ^2.12.0
+        version: 2.12.0
       '@octokit/types':
         specifier: ^13.6.2
         version: 13.6.2
@@ -196,13 +196,13 @@ packages:
       - jsonschema
       - semver
 
-  '@aws-lambda-powertools/commons@2.11.0':
-    resolution: {integrity: sha512-gtiBeUSyg4VcL4qra5G4AwuOl7CNF6g0oDasAS5KxkEi8IhTku6S7vJTpQ82+12oviwKBD+w27yEcGQmSw5xdg==}
+  '@aws-lambda-powertools/commons@2.12.0':
+    resolution: {integrity: sha512-DCrnMzI6oilGO9qY47DraS2SL5QOeofiB/U0PT4ygko2mgyF7Zxxg62nIYi6uqLxlVt9fRrBth1MPtOFO1wqzg==}
 
-  '@aws-lambda-powertools/logger@2.11.0':
-    resolution: {integrity: sha512-40wST/S644ngwadp7Kk70Rgvh35yQ0R3HqFKxAtlBxQNAGsqxQtjJeBUg/KQDKUhE1IZH0ahXyEN3B7rSxPn0Q==}
+  '@aws-lambda-powertools/logger@2.12.0':
+    resolution: {integrity: sha512-dmIwkF8GeS45A/KR6bHrODJnfFwwoi1o5P22DaoyRy5Ty/wzEDHR0LJQJnFkc7iuzxCn8Mb0bpuZbwOaHuvo7w==}
     peerDependencies:
-      '@middy/core': 4.x || 5.x
+      '@middy/core': 4.x || 5.x || 6.x
     peerDependenciesMeta:
       '@middy/core':
         optional: true
@@ -2364,8 +2364,8 @@ packages:
   siginfo@2.0.0:
     resolution: {integrity: sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g==}
 
-  solid-devtools@0.31.3:
-    resolution: {integrity: sha512-lNuPlmq7kQ/c1enJvAFq0ywAkZ5O0vBnEs+tAo5kyA4eCInZ4PE1b2gxcjHq/reHAfne0nLrL3DQMaYUhjlcEA==}
+  solid-devtools@0.31.4:
+    resolution: {integrity: sha512-uRX8Pv3C7fwdrbI8YoNmNtXelpdA2rZwBG77o8D3iC0XnpSov2s9Ck3BG+LCDKwpn7+QDciRXkBksflhJGhFTA==}
     peerDependencies:
       solid-js: ^1.9.0
       vite: ^2.2.3 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
@@ -2825,11 +2825,11 @@ snapshots:
 
   '@aws-cdk/cloud-assembly-schema@38.0.1': {}
 
-  '@aws-lambda-powertools/commons@2.11.0': {}
+  '@aws-lambda-powertools/commons@2.12.0': {}
 
-  '@aws-lambda-powertools/logger@2.11.0':
+  '@aws-lambda-powertools/logger@2.12.0':
     dependencies:
-      '@aws-lambda-powertools/commons': 2.11.0
+      '@aws-lambda-powertools/commons': 2.12.0
       lodash.merge: 4.6.2
 
   '@babel/code-frame@7.26.2':
@@ -5034,7 +5034,7 @@ snapshots:
 
   siginfo@2.0.0: {}
 
-  solid-devtools@0.31.3(solid-js@1.9.3)(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)):
+  solid-devtools@0.31.4(solid-js@1.9.3)(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)):
     dependencies:
       '@babel/core': 7.26.0
       '@babel/plugin-syntax-typescript': 7.25.9(@babel/core@7.26.0)
