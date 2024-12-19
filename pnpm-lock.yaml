@@ -58,7 +58,7 @@ importers:
         version: 25.0.1
       solid-devtools:
         specifier: ^0.31.5
-        version: 0.31.5(solid-js@1.9.3)(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1))
+        version: 0.31.5(solid-js@1.9.3)(vite@6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1))
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
@@ -66,14 +66,14 @@ importers:
         specifier: ^8.18.1
         version: 8.18.1(eslint@9.17.0)(typescript@5.7.2)
       vite:
-        specifier: ^6.0.3
-        version: 6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
+        specifier: ^6.0.4
+        version: 6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
       vite-plugin-pages:
         specifier: ^0.32.4
-        version: 0.32.4(@solidjs/router@0.15.2(solid-js@1.9.3))(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1))
+        version: 0.32.4(@solidjs/router@0.15.2(solid-js@1.9.3))(vite@6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1))
       vite-plugin-solid:
         specifier: ^2.11.0
-        version: 2.11.0(@testing-library/jest-dom@6.6.3)(solid-js@1.9.3)(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1))
+        version: 2.11.0(@testing-library/jest-dom@6.6.3)(solid-js@1.9.3)(vite@6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.2)(jsdom@25.0.1)
@@ -163,11 +163,11 @@ importers:
         specifier: ^8.18.1
         version: 8.18.1(eslint@9.17.0)(typescript@5.7.2)
       vite:
-        specifier: ^6.0.3
-        version: 6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
+        specifier: ^6.0.4
+        version: 6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
       vite-tsconfig-paths:
         specifier: ^5.1.4
-        version: 5.1.4(typescript@5.7.2)(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1))
+        version: 5.1.4(typescript@5.7.2)(vite@6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.2)(jsdom@25.0.1)
@@ -2650,8 +2650,8 @@ packages:
       terser:
         optional: true
 
-  vite@6.0.3:
-    resolution: {integrity: sha512-Cmuo5P0ENTN6HxLSo6IHsjCLn/81Vgrp81oaiFFMRa8gGDj5xEjIcEpf2ZymZtZR8oU0P2JX5WuUp/rlXcHkAw==}
+  vite@6.0.4:
+    resolution: {integrity: sha512-zwlH6ar+6o6b4Wp+ydhtIKLrGM/LoqZzcdVmkGAFun0KHTzIzjh+h0kungEx7KJg/PYnC80I4TII9WkjciSR6Q==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
     peerDependencies:
@@ -5034,7 +5034,7 @@ snapshots:
 
   siginfo@2.0.0: {}
 
-  solid-devtools@0.31.5(solid-js@1.9.3)(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)):
+  solid-devtools@0.31.5(solid-js@1.9.3)(vite@6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)):
     dependencies:
       '@babel/core': 7.26.0
       '@babel/plugin-syntax-typescript': 7.25.9(@babel/core@7.26.0)
@@ -5043,7 +5043,7 @@ snapshots:
       '@solid-devtools/shared': 0.16.1(solid-js@1.9.3)
       solid-js: 1.9.3
     optionalDependencies:
-      vite: 6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
+      vite: 6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -5284,7 +5284,7 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-pages@0.32.4(@solidjs/router@0.15.2(solid-js@1.9.3))(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)):
+  vite-plugin-pages@0.32.4(@solidjs/router@0.15.2(solid-js@1.9.3))(vite@6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)):
     dependencies:
       '@types/debug': 4.1.12
       debug: 4.4.0
@@ -5294,14 +5294,14 @@ snapshots:
       json5: 2.2.3
       local-pkg: 0.5.1
       picocolors: 1.1.1
-      vite: 6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
+      vite: 6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
       yaml: 2.6.1
     optionalDependencies:
       '@solidjs/router': 0.15.2(solid-js@1.9.3)
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-solid@2.11.0(@testing-library/jest-dom@6.6.3)(solid-js@1.9.3)(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)):
+  vite-plugin-solid@2.11.0(@testing-library/jest-dom@6.6.3)(solid-js@1.9.3)(vite@6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)):
     dependencies:
       '@babel/core': 7.26.0
       '@types/babel__core': 7.20.5
@@ -5309,20 +5309,20 @@ snapshots:
       merge-anything: 5.1.7
       solid-js: 1.9.3
       solid-refresh: 0.6.3(solid-js@1.9.3)
-      vite: 6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
-      vitefu: 1.0.4(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1))
+      vite: 6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
+      vitefu: 1.0.4(vite@6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1))
     optionalDependencies:
       '@testing-library/jest-dom': 6.6.3
     transitivePeerDependencies:
       - supports-color
 
-  vite-tsconfig-paths@5.1.4(typescript@5.7.2)(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)):
+  vite-tsconfig-paths@5.1.4(typescript@5.7.2)(vite@6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)):
     dependencies:
       debug: 4.4.0
       globrex: 0.1.2
       tsconfck: 3.1.4(typescript@5.7.2)
     optionalDependencies:
-      vite: 6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
+      vite: 6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -5336,7 +5336,7 @@ snapshots:
       '@types/node': 22.10.2
       fsevents: 2.3.3
 
-  vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1):
+  vite@6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1):
     dependencies:
       esbuild: 0.24.0
       postcss: 8.4.49
@@ -5347,9 +5347,9 @@ snapshots:
       tsx: 4.19.2
       yaml: 2.6.1
 
-  vitefu@1.0.4(vite@6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)):
+  vitefu@1.0.4(vite@6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)):
     optionalDependencies:
-      vite: 6.0.3(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
+      vite: 6.0.4(@types/node@22.10.2)(tsx@4.19.2)(yaml@2.6.1)
 
   vitest@2.1.8(@types/node@22.10.2)(jsdom@25.0.1):
     dependencies:
