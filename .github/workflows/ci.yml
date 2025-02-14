@@ -1,4 +1,4 @@
-name: Deploy Astro site
+name: CI
 
 on:
   pull_request:
