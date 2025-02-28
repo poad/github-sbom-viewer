@@ -106,13 +106,13 @@ importers:
         specifier: ^11.4.3
         version: 11.4.3(@octokit/core@6.1.4)
       aws-cdk-lib:
-        specifier: ^2.181.0
-        version: 2.181.0(constructs@10.4.2)
+        specifier: ^2.181.1
+        version: 2.181.1(constructs@10.4.2)
       constructs:
         specifier: ^10.4.2
         version: 10.4.2
       esbuild:
-        specifier: '>=0.25.0'
+        specifier: ^0.25.0
         version: 0.25.0
       hono:
         specifier: ^4.7.2
@@ -1079,8 +1079,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  aws-cdk-lib@2.181.0:
-    resolution: {integrity: sha512-W95HRgahebHQdXwGTIvJydc33JG4NBIKpzoNFS17pmfX3nauxa7o4YPTJHHjQwv7A5LNQotuF7QilpN5PlQFzg==}
+  aws-cdk-lib@2.181.1:
+    resolution: {integrity: sha512-PDxYiqzet17tigJ8icjzoZIzmcdusQfKNnwpRzcGu5//n3YqlKf/vGEkQuU0xcgt4lBMX4Yjuqfsl8wYidCESw==}
     engines: {node: '>= 14.15.0'}
     peerDependencies:
       constructs: ^10.0.0
@@ -1292,8 +1292,8 @@ packages:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
 
-  electron-to-chromium@1.5.107:
-    resolution: {integrity: sha512-dJr1o6yCntRkXElnhsHh1bAV19bo/hKyFf7tCcWgpXbuFIF0Lakjgqv5LRfSDaNzAII8Fnxg2tqgHkgCvxdbxw==}
+  electron-to-chromium@1.5.109:
+    resolution: {integrity: sha512-AidaH9JETVRr9DIPGfp1kAarm/W6hRJTPuCnkF+2MqhF4KaAgRIcBc8nvjk+YMXZhwfISof/7WG29eS4iGxQLQ==}
 
   enhanced-resolve@5.18.1:
     resolution: {integrity: sha512-ZSW3ma5GkcQBIpwZTSRAI8N71Uuwgs93IezB7mf7R60tC8ZbJideoDNKjHn2O9KIlx6rkGTTEk1xUCK2E1Y2Yg==}
@@ -1843,8 +1843,8 @@ packages:
   loaders.css@0.1.2:
     resolution: {integrity: sha512-Rhowlq24ey1VOeor+3wYOt9+MjaxBOJm1u4KlQgNC3+0xJ0LS4wq4iG57D/BPzvuD/7HHDGQOWJ+81oR2EI9bQ==}
 
-  local-pkg@1.0.0:
-    resolution: {integrity: sha512-bbgPw/wmroJsil/GgL4qjDzs5YLTBMQ99weRsok1XCDccQeehbHA/I1oRvk2NPtr7KGZgT/Y5tPRnAtMqeG2Kg==}
+  local-pkg@1.1.0:
+    resolution: {integrity: sha512-xbZBuX6gYIWrlLmZG43aAVer4ocntYO09vPy9lxd6Ns8DnR4U7N+IIeDkubinqFOHHzoMlPxTxwo0jhE7oYjAw==}
     engines: {node: '>=14'}
 
   locate-path@6.0.0:
@@ -2041,6 +2041,9 @@ packages:
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+
+  quansync@0.2.6:
+    resolution: {integrity: sha512-u3TuxVTuJtkTxKGk5oZ7K2/o+l0/cC6J8SOyaaSnrnroqvcVy7xBxtvBUyd+Xa8cGoCr87XmQj4NR6W+zbqH8w==}
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -2268,11 +2271,11 @@ packages:
     resolution: {integrity: sha512-n1cw8k1k0x4pgA2+9XrOkFydTerNcJ1zWCO5Nn9scWHTD+5tp8dghT2x1uduQePZTZgd3Tupf+x9BxJjeJi77Q==}
     engines: {node: '>=14.0.0'}
 
-  tldts-core@6.1.78:
-    resolution: {integrity: sha512-jS0svNsB99jR6AJBmfmEWuKIgz91Haya91Z43PATaeHJ24BkMoNRb/jlaD37VYjb0mYf6gRL/HOnvS1zEnYBiw==}
+  tldts-core@6.1.79:
+    resolution: {integrity: sha512-HM+Ud/2oQuHt4I43Nvjc213Zji/z25NSH5OkJskJwHXNtYh9DTRlHMDFhms9dFMP7qyve/yVaXFIxmcJ7TdOjw==}
 
-  tldts@6.1.78:
-    resolution: {integrity: sha512-fSgYrW0ITH0SR/CqKMXIruYIPpNu5aDgUp22UhYoSrnUQwc7SBqifEBFNce7AAcygUPBo6a/gbtcguWdmko4RQ==}
+  tldts@6.1.79:
+    resolution: {integrity: sha512-wjlYwK8lC/WcywLWf3A7qbK07SexezXjTRVwuPWXHvcjD7MnpPS2RXY5rLO3g12a8CNc7Y7jQRQsV7XyuBZjig==}
     hasBin: true
 
   to-regex-range@5.0.1:
@@ -3481,7 +3484,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  aws-cdk-lib@2.181.0(constructs@10.4.2):
+  aws-cdk-lib@2.181.1(constructs@10.4.2):
     dependencies:
       '@aws-cdk/asset-awscli-v1': 2.2.225
       '@aws-cdk/asset-node-proxy-agent-v6': 2.1.0
@@ -3527,7 +3530,7 @@ snapshots:
   browserslist@4.24.4:
     dependencies:
       caniuse-lite: 1.0.30001701
-      electron-to-chromium: 1.5.107
+      electron-to-chromium: 1.5.109
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.24.4)
 
@@ -3680,7 +3683,7 @@ snapshots:
       es-errors: 1.3.0
       gopd: 1.2.0
 
-  electron-to-chromium@1.5.107: {}
+  electron-to-chromium@1.5.109: {}
 
   enhanced-resolve@5.18.1:
     dependencies:
@@ -4348,10 +4351,11 @@ snapshots:
 
   loaders.css@0.1.2: {}
 
-  local-pkg@1.0.0:
+  local-pkg@1.1.0:
     dependencies:
       mlly: 1.7.4
       pkg-types: 1.3.1
+      quansync: 0.2.6
 
   locate-path@6.0.0:
     dependencies:
@@ -4532,6 +4536,8 @@ snapshots:
       react-is: 17.0.2
 
   punycode@2.3.1: {}
+
+  quansync@0.2.6: {}
 
   queue-microtask@1.2.3: {}
 
@@ -4803,11 +4809,11 @@ snapshots:
 
   tinyspy@3.0.2: {}
 
-  tldts-core@6.1.78: {}
+  tldts-core@6.1.79: {}
 
-  tldts@6.1.78:
+  tldts@6.1.79:
     dependencies:
-      tldts-core: 6.1.78
+      tldts-core: 6.1.79
 
   to-regex-range@5.0.1:
     dependencies:
@@ -4815,7 +4821,7 @@ snapshots:
 
   tough-cookie@5.1.1:
     dependencies:
-      tldts: 6.1.78
+      tldts: 6.1.79
 
   tr46@5.0.0:
     dependencies:
@@ -4966,7 +4972,7 @@ snapshots:
       extract-comments: 1.1.0
       fast-glob: 3.3.3
       json5: 2.2.3
-      local-pkg: 1.0.0
+      local-pkg: 1.1.0
       picocolors: 1.1.1
       vite: 6.2.0(@types/node@22.13.5)(tsx@4.19.3)(yaml@2.7.0)
       yaml: 2.7.0
