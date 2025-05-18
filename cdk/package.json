@@ -37,7 +37,7 @@
     "vitest": "^3.1.2"
   },
   "dependencies": {
-    "@hono/oauth-providers": "^0.7.1",
+    "@hono/oauth-providers": "^0.8.0",
     "@octokit/core": "^6.1.5",
     "@octokit/plugin-paginate-graphql": "^5.2.4",
     "@octokit/plugin-paginate-rest": "^12.0.0",
