@@ -34,13 +34,13 @@
     "typescript-eslint": "^8.34.1",
     "vite": "^6.3.5",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.2.3"
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@hono/oauth-providers": "^0.8.1",
     "@octokit/core": "^7.0.2",
     "@octokit/plugin-paginate-graphql": "^6.0.0",
-    "@octokit/plugin-paginate-rest": "^13.0.1",
+    "@octokit/plugin-paginate-rest": "^13.1.0",
     "aws-cdk-lib": "^2.201.0",
     "constructs": "^10.4.2",
     "esbuild": "^0.25.5",
