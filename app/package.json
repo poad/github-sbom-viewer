@@ -28,13 +28,13 @@
     "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-solid": "^0.14.5",
     "jsdom": "^26.1.0",
-    "solid-devtools": "^0.34.1",
+    "solid-devtools": "^0.34.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^6.3.5",
     "vite-plugin-pages": "^0.33.0",
     "vite-plugin-solid": "^2.11.6",
-    "vitest": "^3.2.3"
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@solidjs/router": "^0.15.3",
