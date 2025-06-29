@@ -2,9 +2,7 @@
 
 import eslint from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
-import stylisticTs from '@stylistic/eslint-plugin-ts';
 import tseslint from 'typescript-eslint';
-// @ts-expect-error ignore type errors
 import importPlugin from 'eslint-plugin-import';
 
 import pluginPromise from 'eslint-plugin-promise'
@@ -12,10 +10,6 @@ import pluginPromise from 'eslint-plugin-promise'
 import solid from 'eslint-plugin-solid';
 
 export default tseslint.config(
-  eslint.configs.recommended,
-  pluginPromise.configs['flat/recommended'],
-  ...tseslint.configs.strict,
-  ...tseslint.configs.stylistic,
   {
     ignores: [
       '**/*.d.ts',
@@ -27,6 +21,10 @@ export default tseslint.config(
       'dist',
     ],
   },
+  eslint.configs.recommended,
+  pluginPromise.configs['flat/recommended'],
+  ...tseslint.configs.strict,
+  ...tseslint.configs.stylistic,
   {
     files: ['src/**/*.{ts,tsx}'],
     ...importPlugin.flatConfigs.recommended,
@@ -38,7 +36,7 @@ export default tseslint.config(
     },
     plugins: {
       '@stylistic': stylistic,
-      '@stylistic/ts': stylisticTs,
+      '@stylistic/ts': stylistic,
       solid,
     },
     settings: {
