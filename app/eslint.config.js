@@ -68,7 +68,6 @@ export default tseslint.config(
     rules: {
       '@stylistic/semi': ['error', 'always'],
       // '@stylistic/indent': ['error', 2],
-      '@stylistic/jsx/jsx-indent': ['error', 2],
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
       '@stylistic/quotes': ['error', 'single'],
     }
