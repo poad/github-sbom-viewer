@@ -20,7 +20,7 @@ permissions:
 
 # 同時実行すると CREATE_IN_PROGRESS や UPDATE_IN_PROGRESS 状態で cdk deploy を行う可能性があるため抑止する
 concurrency:
-  group: "cloudformation"
+  group: ${{ github.workflow }}-cloudformation
   cancel-in-progress: false
 
 jobs:
