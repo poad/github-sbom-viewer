@@ -1,5 +1,6 @@
 import { getCsrfToken, refreshCsrfToken } from './csrf';
 import { hasGivenConsent } from './cookie-consent';
+import { validateAndSanitizeURL, getDevConfig, getProdConfig } from './url-sanitizer';
 
 const RETRY_CONFIG = {
   maxRetries: 3,
@@ -121,17 +122,23 @@ const isRetryableError = (error: Error | Response): boolean => {
 };
 
 const sanitizeUrl = (url: string): string => {
-  try {
-    const urlObj = new URL(url, window.location.origin);
-    // 同一オリジンまたは許可されたドメインのみ
-    const allowedHosts = ['api.github.com', 'github.com', window.location.hostname];
-    if (!allowedHosts.includes(urlObj.hostname)) {
-      throw new SecurityError('Unauthorized domain');
-    }
-    return urlObj.toString();
-  } catch {
-    throw new SecurityError('Invalid URL');
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  const config = isDevelopment ? getDevConfig() : getProdConfig();
+  
+  const validation = validateAndSanitizeURL(url, config);
+  
+  if (!validation.isValid) {
+    const securityError: SecurityError = new Error(`URL validation failed: ${validation.error}`) as SecurityError;
+    securityError.code = 'SECURITY_ERROR';
+    securityError.reason = 'INVALID_URL';
+    throw securityError;
   }
+
+  if (validation.warnings && validation.warnings.length > 0) {
+    console.warn('URL validation warnings:', validation.warnings);
+  }
+
+  return validation.sanitizedUrl || url;
 };
 
 // センシティブ情報をログから除外
