@@ -35,11 +35,20 @@ export default function CookieConsent() {
   });
 
   return (
-    <Show when={showBanner()}>
       <div 
         role="dialog"
         aria-modal="true"
         aria-labelledby="cookie-consent-title"
+        aria-describedby="cookie-consent-description"
+        aria-live="polite"
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') {
+            handleAccept();
+            return;
+          }
+          handleKeyDown(event);
+        }}
+        style={{
         aria-describedby="cookie-consent-description"
         onKeyDown={handleKeyDown}
         style={{
