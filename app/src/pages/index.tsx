@@ -4,17 +4,20 @@ import { createResource, For, Show } from 'solid-js';
 import { A } from '@solidjs/router';
 import { FadeLoader } from '../features/ui/components';
 import { fetchWithAuth } from '../utils/api';
+import { getCurrentUser, isAuthenticated } from '../utils/auth';
+import { hasGivenConsent } from '../utils/cookie-consent';
+import CookieConsent from '../components/CookieConsent';
 
 export default function (): JSX.Element {
   const clientID = (import.meta.env.VITE_GITHUB_APPS_CLIENT_ID as string) ?? '';
   const [data] = createResource<{ owners: string[] } | undefined>(async () => {
-    if (localStorage.getItem('user')) {
+    if (hasGivenConsent() && isAuthenticated()) {
       const response = await fetchWithAuth('/api/github');
       return response.json();
     }
     return undefined;
   });
-  const user = localStorage.getItem('user');
+  const user = getCurrentUser();
 
   return (
     <div class={styles.App}>
@@ -40,6 +43,7 @@ export default function (): JSX.Element {
           </ul>
         </Show>
       </Show>
+      <CookieConsent />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { Context } from 'hono';
 import { Logger } from '@aws-lambda-powertools/logger';
-import { GitHub } from './github';
+import { getOwners, getUserRepos, getOwnerRepos, getSbom } from './github';
 
 const logger = new Logger();
 
@@ -20,72 +20,69 @@ async function rootHandler(
   try {
     const user = c.get('user-github');
 
+    // httpOnlyクッキーでトークンを設定
+    c.header('Set-Cookie', `token=${token.token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${token.expires_in || 3600}`);
+    if (user?.login) {
+      c.header('Set-Cookie', `user=${user.login}; Secure; SameSite=Strict; Path=/; Max-Age=${token.expires_in || 3600}`);
+    }
+
     // Accept ヘッダーをチェックしてJSONリクエストかどうか判定
     const acceptHeader = c.req.header('Accept');
     if (acceptHeader?.includes('application/json')) {
-      // JSONレスポンスでトークン情報を返す
+      // JSONレスポンスで成功を返す
       return c.json({
         success: true,
-        token: token.token,
         user: user?.login || null,
-        expiresIn: token.expires_in || 3600,
       });
     }
 
     // ブラウザからの直接アクセスの場合はコールバックページにリダイレクト
-    const redirectUrl = new URL('/callback', c.req.url);
-    redirectUrl.searchParams.set('token', token.token);
-    if (user?.login) {
-      redirectUrl.searchParams.set('user', user.login);
-    }
-    
-    return c.redirect(redirectUrl.toString(), 303);
+    return c.redirect('/callback', 303);
   } catch (e) {
     return c.json(JSON.parse(JSON.stringify(e)), 500);
   }
 }
 
 async function githubHandler(c: Context) {
-  const authHeader = c.req.header('Authorization');
-  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
-  
+  const token = c.req.header('Cookie')?.match(/token=([^;]+)/)?.[1];
   if (!token) {
-    return c.redirect('/', 303);
+    return c.json({ error: 'Unauthorized' }, 401);
   }
 
-  const github = GitHub(token);
-  const owners = await github.listOwners();
-  return c.json({
-    owners,
-  });
+  try {
+    const owners = await getOwners(token);
+    return c.json({ owners });
+  } catch (e) {
+    return c.json(JSON.parse(JSON.stringify(e)), 500);
+  }
 }
 
 async function githubOwnerHandler(c: Context, owner: string) {
-  const authHeader = c.req.header('Authorization');
-  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
-  
+  const token = c.req.header('Cookie')?.match(/token=([^;]+)/)?.[1];
   if (!token) {
-    return c.redirect('/', 303);
+    return c.json({ error: 'Unauthorized' }, 401);
   }
 
-  const github = GitHub(token);
-  const repos = await github.listOrganizationRepositories(owner);
-  return c.json({
-    repos,
-  });
+  try {
+    const repos = await getOwnerRepos(token, owner);
+    return c.json({ repos });
+  } catch (e) {
+    return c.json(JSON.parse(JSON.stringify(e)), 500);
+  }
 }
 
 async function githubSbomHandler(c: Context, owner: string, repo: string) {
-  const authHeader = c.req.header('Authorization');
-  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
-  
+  const token = c.req.header('Cookie')?.match(/token=([^;]+)/)?.[1];
   if (!token) {
-    return c.redirect('/', 303);
+    return c.json({ error: 'Unauthorized' }, 401);
   }
 
-  const github = GitHub(token);
-  const sbom = await github.getSbom({owner, repo});
-  return c.json(sbom);
+  try {
+    const sbom = await getSbom(token, owner, repo);
+    return c.json(sbom);
+  } catch (e) {
+    return c.json(JSON.parse(JSON.stringify(e)), 500);
+  }
 }
 
 async function csrfTokenHandler(c: Context) {
@@ -94,18 +91,17 @@ async function csrfTokenHandler(c: Context) {
 }
 
 async function githubUserHandler(c: Context) {
-  const authHeader = c.req.header('Authorization');
-  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
-  
+  const token = c.req.header('Cookie')?.match(/token=([^;]+)/)?.[1];
   if (!token) {
-    return c.redirect('/', 303);
+    return c.json({ error: 'Unauthorized' }, 401);
   }
 
-  const github = GitHub(token);
-  const repos = await github.listCurrentUserRepositories();
-  return c.json({
-    repos,
-  });
+  try {
+    const repos = await getUserRepos(token);
+    return c.json({ repos });
+  } catch (e) {
+    return c.json(JSON.parse(JSON.stringify(e)), 500);
+  }
 }
 
 export {

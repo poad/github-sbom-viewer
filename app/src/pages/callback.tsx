@@ -1,28 +1,26 @@
 import { onMount } from 'solid-js';
-import { useNavigate, useSearchParams } from '@solidjs/router';
+import { useNavigate } from '@solidjs/router';
+import { getCookieValue, hasGivenConsent } from '../utils/cookie-consent';
 
 export default function Callback() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
 
   onMount(() => {
     try {
-      const token = searchParams.token;
-      const user = searchParams.user;
+      // クッキー同意がない場合はホーム画面にリダイレクト
+      if (!hasGivenConsent()) {
+        navigate('/', { replace: true });
+        return;
+      }
+
+      const token = getCookieValue('token');
+      const user = getCookieValue('user');
 
       if (token && user) {
-        // トークンと有効期限を保存
-        const expiryTime = Date.now() + 3600000; // 1時間後
-        localStorage.setItem('token', token);
-        localStorage.setItem('tokenExpiry', expiryTime.toString());
-        localStorage.setItem('user', user);
-        
-        // ホーム画面にリダイレクト
-        navigate('/', { replace: true });
-        // ホーム画面にリダイレクト
+        // 認証成功、ホーム画面にリダイレクト
         navigate('/', { replace: true });
       } else {
-        throw new Error('認証パラメータが不足しています');
+        throw new Error('認証クッキーが見つかりません');
       }
     } catch (error) {
       console.error('認証エラー:', error);

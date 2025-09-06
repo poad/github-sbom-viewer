@@ -1,12 +1,17 @@
 import { clearCsrfToken } from './csrf';
+import { getCookieValue, revokeConsent } from './cookie-consent';
 
 export function logout(): void {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
+  // クッキー同意を取り消し（クッキーも削除される）
+  revokeConsent();
   clearCsrfToken();
   window.location.href = '/';
 }
 
 export function isAuthenticated(): boolean {
-  return !!localStorage.getItem('token') && !!localStorage.getItem('user');
+  return !!getCookieValue('token') && !!getCookieValue('user');
+}
+
+export function getCurrentUser(): string | null {
+  return getCookieValue('user');
 }

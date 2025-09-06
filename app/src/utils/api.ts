@@ -1,9 +1,13 @@
 import { getCsrfToken, refreshCsrfToken } from './csrf';
 import { logout } from './auth';
+import { hasGivenConsent } from './cookie-consent';
 
 export async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
-  const token = localStorage.getItem('token');
-  
+  // クッキー同意がない場合はエラー
+  if (!hasGivenConsent()) {
+    throw new Error('Cookie consent required');
+  }
+
   let csrfToken: string;
   try {
     csrfToken = await getCsrfToken();
@@ -15,13 +19,13 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
   const makeRequest = async (csrf: string) => {
     const headers = {
       ...options.headers,
-      ...(token && { Authorization: `Bearer ${token}` }),
       ...(csrf && { 'X-CSRF-Token': csrf }),
     };
 
     return fetch(url, {
       ...options,
       headers,
+      credentials: 'include', // クッキーを含める
     });
   };
 
