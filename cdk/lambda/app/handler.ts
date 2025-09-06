@@ -1,6 +1,6 @@
 import { Context } from 'hono';
 import { Logger } from '@aws-lambda-powertools/logger';
-import { getOwners, getUserRepos, getOwnerRepos, getSbom } from './github';
+import { getOwners, getUserRepos, getOwnerRepos, getSbomData } from './github';
 
 const logger = new Logger();
 
@@ -78,7 +78,7 @@ async function githubSbomHandler(c: Context, owner: string, repo: string) {
   }
 
   try {
-    const sbom = await getSbom(token, owner, repo);
+    const sbom = await getSbomData(token, owner, repo);
     return c.json(sbom);
   } catch (e) {
     return c.json(JSON.parse(JSON.stringify(e)), 500);
