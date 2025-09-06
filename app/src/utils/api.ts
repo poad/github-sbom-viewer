@@ -35,11 +35,11 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
   if (response.status === 403 && csrfToken) {
     try {
       const newCsrfToken = await refreshCsrfToken();
-      if (newCsrfToken) {
-        response = await makeRequest(newCsrfToken);
-      }
+      response = await makeRequest(newCsrfToken);
     } catch (error) {
       console.warn('CSRF token refresh failed:', error);
+      // リフレッシュ失敗時は元のレスポンスを返す
+      // これにより上位層で適切なエラーハンドリングが可能
     }
   }
 

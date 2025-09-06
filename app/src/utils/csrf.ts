@@ -64,7 +64,20 @@ export function clearCsrfToken(): void {
   csrfTokenCache = null;
 }
 
-export function refreshCsrfToken(): Promise<string> {
-  clearCsrfToken();
-  return getCsrfToken();
+export async function refreshCsrfToken(): Promise<string> {
+  try {
+    clearCsrfToken();
+    const newToken = await getCsrfToken();
+    
+    if (!newToken) {
+      throw new Error('Failed to obtain new CSRF token');
+    }
+    
+    return newToken;
+  } catch (error) {
+    console.error('CSRF token refresh failed:', error);
+    // リフレッシュ失敗時はキャッシュをクリアして空文字列を返す
+    clearCsrfToken();
+    throw new Error('CSRF token refresh failed');
+  }
 }
