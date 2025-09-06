@@ -79,10 +79,10 @@ export function initSessionCleanup(): void {
     }
   });
 
-  // 定期的なセッション検証（1時間ごと）
+  // 定期的なセッション検証（15分ごと）
   setInterval(() => {
     if (document.visibilityState === 'visible') {
       revalidateSession();
     }
-  }, 60 * 60 * 1000);
+  }, 15 * 60 * 1000);
 }
