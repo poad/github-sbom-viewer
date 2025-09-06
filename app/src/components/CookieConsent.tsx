@@ -9,11 +9,21 @@ export default function CookieConsent() {
     setShowBanner(false);
   };
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      // Escapeキーでフォーカスを移動（バナーは残る）
+      (event.target as HTMLElement)?.blur();
+    }
+  };
+
   return (
     <Show when={showBanner()}>
       <div 
-        role="alert"
-        aria-live="polite"
+        role="dialog"
+        aria-modal="false"
+        aria-labelledby="cookie-consent-title"
+        aria-describedby="cookie-consent-description"
+        onKeyDown={handleKeyDown}
         style={{
           position: 'fixed',
           bottom: '0',
@@ -21,28 +31,73 @@ export default function CookieConsent() {
           right: '0',
           'background-color': '#333',
           color: 'white',
-          padding: '1rem',
+          padding: '1.5rem',
           'z-index': '1000',
-          'text-align': 'center',
+          'box-shadow': '0 -2px 10px rgba(0,0,0,0.3)',
         }}
       >
-        <p style={{ margin: '0 0 1rem 0' }}>
-          このサイトでは、認証とセキュリティのためにクッキーを使用します。
-          継続してご利用いただくには、クッキーの使用に同意してください。
-        </p>
-        <button 
-          onClick={handleAccept}
-          style={{
-            'background-color': '#007bff',
-            color: 'white',
-            border: 'none',
-            padding: '0.5rem 1rem',
-            'border-radius': '4px',
-            cursor: 'pointer',
-          }}
-        >
-          同意する
-        </button>
+        <div style={{ 'max-width': '800px', margin: '0 auto' }}>
+          <h2 
+            id="cookie-consent-title"
+            style={{ 
+              margin: '0 0 1rem 0', 
+              'font-size': '1.2rem',
+              'font-weight': 'bold',
+            }}
+          >
+            クッキーの使用について
+          </h2>
+          <div 
+            id="cookie-consent-description"
+            style={{ margin: '0 0 1.5rem 0', 'line-height': '1.5' }}
+          >
+            <p style={{ margin: '0 0 0.5rem 0' }}>
+              このサイトでは、以下の目的でクッキーを使用します：
+            </p>
+            <ul style={{ margin: '0 0 0.5rem 1.5rem', 'text-align': 'left' }}>
+              <li>GitHub OAuth認証の維持</li>
+              <li>CSRFトークンによるセキュリティ保護</li>
+              <li>ユーザーセッションの管理</li>
+            </ul>
+            <p style={{ margin: '0', 'font-size': '0.9rem' }}>
+              継続してご利用いただくには、クッキーの使用に同意してください。
+            </p>
+          </div>
+          <button 
+            onClick={handleAccept}
+            aria-label="クッキーの使用に同意してバナーを閉じる"
+            style={{
+              'background-color': '#007bff',
+              color: 'white',
+              border: '2px solid transparent',
+              padding: '0.75rem 1.5rem',
+              'border-radius': '4px',
+              cursor: 'pointer',
+              'font-size': '1rem',
+              'font-weight': 'bold',
+              transition: 'all 0.2s ease',
+            }}
+            onFocus={(e) => {
+              const target = e.target as HTMLButtonElement;
+              target.style.outline = '2px solid #fff';
+              target.style.outlineOffset = '2px';
+            }}
+            onBlur={(e) => {
+              const target = e.target as HTMLButtonElement;
+              target.style.outline = 'none';
+            }}
+            onMouseEnter={(e) => {
+              const target = e.target as HTMLButtonElement;
+              target.style.backgroundColor = '#0056b3';
+            }}
+            onMouseLeave={(e) => {
+              const target = e.target as HTMLButtonElement;
+              target.style.backgroundColor = '#007bff';
+            }}
+          >
+            同意する
+          </button>
+        </div>
       </div>
     </Show>
   );
