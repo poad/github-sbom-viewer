@@ -1,5 +1,6 @@
 import { createSignal, Show, onMount, onCleanup } from 'solid-js';
 import { hasGivenConsent, giveConsent } from '../utils/cookie-consent';
+import { disableBackgroundFocus, restoreBackgroundFocus, saveFocus, restoreFocus } from '../utils/focus-management';
 
 export default function CookieConsent() {
   const [showBanner, setShowBanner] = createSignal(!hasGivenConsent());
@@ -10,10 +11,7 @@ export default function CookieConsent() {
   const handleAccept = () => {
     giveConsent();
     setShowBanner(false);
-    // フォーカスを元の要素に戻す
-    if (previousActiveElement && 'focus' in previousActiveElement) {
-      (previousActiveElement as HTMLElement).focus();
-    }
+    restoreFocus(previousActiveElement);
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -22,51 +20,28 @@ export default function CookieConsent() {
       return;
     }
 
-    // キーボードトラップの実装
     if (event.key === 'Tab') {
       event.preventDefault();
       buttonRef?.focus();
     }
   };
 
-  // モーダルが表示されたときのフォーカス管理
   onMount(() => {
     if (showBanner()) {
-      // 現在のフォーカス要素を保存
-      previousActiveElement = document.activeElement;
+      previousActiveElement = saveFocus();
       
-      // 背景要素のフォーカスを無効化
-      const focusableElements = document.querySelectorAll(
-        'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
-      );
-      
-      focusableElements.forEach((element) => {
-        if (!dialogRef?.contains(element)) {
-          element.setAttribute('tabindex', '-1');
-          element.setAttribute('data-original-tabindex', element.getAttribute('tabindex') || '0');
-        }
-      });
+      if (dialogRef) {
+        disableBackgroundFocus(dialogRef);
+      }
 
-      // ダイアログにフォーカスを設定
       setTimeout(() => {
         buttonRef?.focus();
       }, 100);
     }
   });
 
-  // クリーンアップ時にフォーカスを復元
   onCleanup(() => {
-    // 背景要素のフォーカスを復元
-    const disabledElements = document.querySelectorAll('[data-original-tabindex]');
-    disabledElements.forEach((element) => {
-      const originalTabindex = element.getAttribute('data-original-tabindex');
-      element.removeAttribute('data-original-tabindex');
-      if (originalTabindex === '0') {
-        element.removeAttribute('tabindex');
-      } else {
-        element.setAttribute('tabindex', originalTabindex || '0');
-      }
-    });
+    restoreBackgroundFocus();
   });
 
   return (

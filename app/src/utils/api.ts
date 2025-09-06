@@ -18,7 +18,7 @@ interface HttpError extends Error {
 const RETRY_CONFIG = {
   maxRetries: 3,
   baseDelay: 1000, // 1秒
-  maxDelay: 10000, // 10秒
+  maxDelay: 5000, // 5秒
 };
 
 // バックオフ戦略（指数バックオフ + ジッター）
@@ -108,7 +108,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
         if (isRetryableError(response) && attempt < RETRY_CONFIG.maxRetries) {
           // 改善された通知機能を使用
           const { showHttpErrorNotification } = await import('./notification');
-           
+
           showHttpErrorNotification(response.status, attempt, RETRY_CONFIG.maxRetries);
 
           const delay = calculateDelay(attempt);
@@ -131,7 +131,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
         if (attempt < RETRY_CONFIG.maxRetries) {
           // 改善された通知機能を使用
           const { showNetworkErrorNotification } = await import('./notification');
-           
+
           showNetworkErrorNotification(attempt, RETRY_CONFIG.maxRetries);
 
           const delay = calculateDelay(attempt);
@@ -158,13 +158,13 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
       console.warn('CSRF token refresh failed:', error);
       // CSRFトークンリフレッシュ失敗時の処理
       const { showCsrfErrorNotification } = await import('./notification');
-       
+
       showCsrfErrorNotification();
 
       // セッション切れの可能性が高い場合は再認証を促す
       if (response.status === 403) {
         const { showSessionExpiredNotification } = await import('./notification');
-         
+
         showSessionExpiredNotification();
         logout();
         throw new Error('Session expired - please login again');
@@ -175,7 +175,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
   // 401エラーの場合はログアウト
   if (response.status === 401) {
     const { showSessionExpiredNotification } = await import('./notification');
-     
+
     showSessionExpiredNotification();
     logout();
     throw new Error('Unauthorized');
