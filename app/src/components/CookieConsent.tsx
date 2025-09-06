@@ -1,28 +1,96 @@
 import { createSignal, Show, onMount, onCleanup } from 'solid-js';
 import { hasGivenConsent, giveConsent } from '../utils/cookie-consent';
 import { disableBackgroundFocus, restoreBackgroundFocus, saveFocus, restoreFocus } from '../utils/focus-management';
+import styles from './CookieConsent.module.css';
 
 export default function CookieConsent() {
   const [showBanner, setShowBanner] = createSignal(!hasGivenConsent());
-  let buttonRef: HTMLButtonElement | undefined;
+  let acceptButtonRef: HTMLButtonElement | undefined;
+  let rejectButtonRef: HTMLButtonElement | undefined;
   let dialogRef: HTMLDivElement | undefined;
   let previousActiveElement: Element | null = null;
+  let focusableElements: HTMLElement[] = [];
 
   const handleAccept = () => {
     giveConsent();
     setShowBanner(false);
     restoreFocus(previousActiveElement);
+    announceToScreenReader('クッキーの使用に同意しました');
+  };
+
+  const handleReject = () => {
+    setShowBanner(false);
+    restoreFocus(previousActiveElement);
+    announceToScreenReader('クッキーの使用を拒否しました');
+  };
+
+  const announceToScreenReader = (message: string) => {
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = styles['sr-only'];
+    announcement.textContent = message;
+    document.body.appendChild(announcement);
+    
+    setTimeout(() => {
+      document.body.removeChild(announcement);
+    }, 1000);
+  };
+
+  const updateFocusableElements = () => {
+    if (!dialogRef) return;
+    focusableElements = Array.from(
+      dialogRef.querySelectorAll('button:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+    ) as HTMLElement[];
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
-      handleAccept();
-      return;
-    }
-
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      buttonRef?.focus();
+    switch (event.key) {
+      case 'Escape':
+        event.preventDefault();
+        handleReject();
+        break;
+      
+      case 'Tab': {
+        event.preventDefault();
+        if (focusableElements.length === 0) return;
+        
+        const currentIndex = focusableElements.findIndex(el => el === document.activeElement);
+        let nextIndex: number;
+        
+        if (event.shiftKey) {
+          // Shift+Tab: 前の要素へ
+          nextIndex = currentIndex <= 0 ? focusableElements.length - 1 : currentIndex - 1;
+        } else {
+          // Tab: 次の要素へ
+          nextIndex = currentIndex >= focusableElements.length - 1 ? 0 : currentIndex + 1;
+        }
+        
+        focusableElements[nextIndex]?.focus();
+        break;
+      }
+      
+      case 'Enter':
+      case ' ':
+        // ボタンがフォーカスされている場合のみ処理
+        if (document.activeElement === acceptButtonRef) {
+          event.preventDefault();
+          handleAccept();
+        } else if (document.activeElement === rejectButtonRef) {
+          event.preventDefault();
+          handleReject();
+        }
+        break;
+      
+      case 'Home':
+        event.preventDefault();
+        focusableElements[0]?.focus();
+        break;
+      
+      case 'End':
+        event.preventDefault();
+        focusableElements[focusableElements.length - 1]?.focus();
+        break;
     }
   };
 
@@ -32,10 +100,14 @@ export default function CookieConsent() {
       
       if (dialogRef) {
         disableBackgroundFocus(dialogRef);
+        updateFocusableElements();
       }
 
+      // スクリーンリーダーに通知
+      announceToScreenReader('クッキー使用に関する重要な通知が表示されました');
+
       setTimeout(() => {
-        buttonRef?.focus();
+        acceptButtonRef?.focus();
       }, 100);
     }
   });
@@ -48,11 +120,10 @@ export default function CookieConsent() {
     <Show when={showBanner()}>
       <div
         ref={dialogRef}
-        role="dialog"
+        role="alertdialog"
         aria-modal="true"
         aria-labelledby="cookie-consent-title"
         aria-describedby="cookie-consent-description"
-        aria-live="polite"
         onKeyDown={handleKeyDown}
         style={{
           position: 'fixed',
@@ -64,6 +135,7 @@ export default function CookieConsent() {
           padding: '1.5rem',
           'z-index': '1000',
           'box-shadow': '0 -2px 10px rgba(0,0,0,0.3)',
+          border: '2px solid #555',
         }}
       >
         <div style={{ 'max-width': '800px', margin: '0 auto' }}>
@@ -93,41 +165,82 @@ export default function CookieConsent() {
               継続してご利用いただくには、クッキーの使用に同意してください。
             </p>
           </div>
-          <button
-            ref={buttonRef}
-            onClick={handleAccept}
-            aria-label="クッキーの使用に同意してバナーを閉じる"
-            style={{
-              'background-color': '#007bff',
-              color: 'white',
-              border: '2px solid transparent',
-              padding: '0.75rem 1.5rem',
-              'border-radius': '4px',
-              cursor: 'pointer',
-              'font-size': '1rem',
-              'font-weight': 'bold',
-              transition: 'all 0.2s ease',
-            }}
-            onFocus={(e) => {
-              const target = e.target as HTMLButtonElement;
-              target.style.outline = '2px solid #fff';
-              target.style.outlineOffset = '2px';
-            }}
-            onBlur={(e) => {
-              const target = e.target as HTMLButtonElement;
-              target.style.outline = 'none';
-            }}
-            onMouseEnter={(e) => {
-              const target = e.target as HTMLButtonElement;
-              target.style.backgroundColor = '#0056b3';
-            }}
-            onMouseLeave={(e) => {
-              const target = e.target as HTMLButtonElement;
-              target.style.backgroundColor = '#007bff';
-            }}
-          >
-            同意する
-          </button>
+          <div style={{ display: 'flex', gap: '1rem', 'flex-wrap': 'wrap' }}>
+            <button
+              ref={acceptButtonRef}
+              onClick={handleAccept}
+              aria-label="クッキーの使用に同意してバナーを閉じる"
+              style={{
+                'background-color': '#007bff',
+                color: 'white',
+                border: '2px solid transparent',
+                padding: '0.75rem 1.5rem',
+                'border-radius': '4px',
+                cursor: 'pointer',
+                'font-size': '1rem',
+                'font-weight': 'bold',
+                transition: 'all 0.2s ease',
+                'min-width': '120px',
+              }}
+              onFocus={(e) => {
+                const target = e.target as HTMLButtonElement;
+                target.style.outline = '3px solid #fff';
+                target.style.outlineOffset = '2px';
+              }}
+              onBlur={(e) => {
+                const target = e.target as HTMLButtonElement;
+                target.style.outline = 'none';
+              }}
+              onMouseEnter={(e) => {
+                const target = e.target as HTMLButtonElement;
+                target.style.backgroundColor = '#0056b3';
+              }}
+              onMouseLeave={(e) => {
+                const target = e.target as HTMLButtonElement;
+                target.style.backgroundColor = '#007bff';
+              }}
+            >
+              同意する
+            </button>
+            <button
+              ref={rejectButtonRef}
+              onClick={handleReject}
+              aria-label="クッキーの使用を拒否してバナーを閉じる"
+              style={{
+                'background-color': 'transparent',
+                color: 'white',
+                border: '2px solid #ccc',
+                padding: '0.75rem 1.5rem',
+                'border-radius': '4px',
+                cursor: 'pointer',
+                'font-size': '1rem',
+                'font-weight': 'bold',
+                transition: 'all 0.2s ease',
+                'min-width': '120px',
+              }}
+              onFocus={(e) => {
+                const target = e.target as HTMLButtonElement;
+                target.style.outline = '3px solid #fff';
+                target.style.outlineOffset = '2px';
+              }}
+              onBlur={(e) => {
+                const target = e.target as HTMLButtonElement;
+                target.style.outline = 'none';
+              }}
+              onMouseEnter={(e) => {
+                const target = e.target as HTMLButtonElement;
+                target.style.backgroundColor = '#555';
+                target.style.borderColor = '#fff';
+              }}
+              onMouseLeave={(e) => {
+                const target = e.target as HTMLButtonElement;
+                target.style.backgroundColor = 'transparent';
+                target.style.borderColor = '#ccc';
+              }}
+            >
+              拒否する
+            </button>
+          </div>
         </div>
       </div>
     </Show>
