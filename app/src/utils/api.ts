@@ -3,7 +3,14 @@ import { logout } from './auth';
 
 export async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
   const token = localStorage.getItem('token');
-  let csrfToken = await getCsrfToken();
+  
+  let csrfToken: string;
+  try {
+    csrfToken = await getCsrfToken();
+  } catch (error) {
+    console.warn('CSRF token retrieval failed, proceeding without CSRF token:', error);
+    csrfToken = '';
+  }
   
   const makeRequest = async (csrf: string) => {
     const headers = {
@@ -12,33 +19,31 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
       ...(csrf && { 'X-CSRF-Token': csrf }),
     };
 
-    try {
-      const response = await fetch(url, {
-        ...options,
-        headers,
-        timeout: 5000, // 5秒タイムアウト
-      });
-
-      if (!response.ok) {
-        if (response.status === 403) {
-          csrfToken = await refreshCsrfToken();
-          return makeRequest(csrfToken);
-        }
-        if (response.status === 401) {
-          logout();
-          throw new Error('認証エラー');
-        }
-        throw new Error(`APIエラー: ${response.status}`);
-      }
-
-      return response;
-    } catch (error) {
-      if (error instanceof TypeError) {
-        throw new Error('ネットワークエラー');
-      }
-      throw error;
-    }
+    return fetch(url, {
+      ...options,
+      headers,
+    });
   };
 
-  return makeRequest(csrfToken);
+  let response = await makeRequest(csrfToken);
+
+  // CSRFトークンエラー（403）の場合は一度だけリトライ
+  if (response.status === 403 && csrfToken) {
+    try {
+      const newCsrfToken = await refreshCsrfToken();
+      if (newCsrfToken) {
+        response = await makeRequest(newCsrfToken);
+      }
+    } catch (error) {
+      console.warn('CSRF token refresh failed:', error);
+    }
+  }
+
+  // 401エラーの場合はログアウト
+  if (response.status === 401) {
+    logout();
+    throw new Error('Unauthorized');
+  }
+
+  return response;
 }

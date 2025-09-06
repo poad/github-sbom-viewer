@@ -1,3 +1,5 @@
+import { showCsrfWarning } from './notification';
+
 interface CsrfResponse {
   csrfToken: string;
 }
@@ -9,6 +11,7 @@ interface CsrfTokenCache {
 
 let csrfTokenCache: CsrfTokenCache | null = null;
 const TOKEN_LIFETIME = 30 * 60 * 1000; // 30分
+const MAX_RETRY_COUNT = 3;
 
 export async function getCsrfToken(): Promise<string> {
   const now = Date.now();
@@ -18,16 +21,43 @@ export async function getCsrfToken(): Promise<string> {
     return csrfTokenCache.token;
   }
   
-  // 新しいトークンを取得
-  const response = await fetch('/api/csrf-token');
-  const data = await response.json() as CsrfResponse;
+  // 新しいトークンを取得（リトライ機能付き）
+  for (let attempt = 1; attempt <= MAX_RETRY_COUNT; attempt++) {
+    try {
+      const response = await fetch('/api/csrf-token');
+      
+      if (!response.ok) {
+        throw new Error(`CSRF token request failed: ${response.status}`);
+      }
+      
+      const data = await response.json() as CsrfResponse;
+      
+      if (!data.csrfToken) {
+        throw new Error('CSRF token not found in response');
+      }
+      
+      csrfTokenCache = {
+        token: data.csrfToken,
+        expiry: now + TOKEN_LIFETIME,
+      };
+      
+      return csrfTokenCache.token;
+    } catch (error) {
+      console.warn(`CSRF token retrieval attempt ${attempt} failed:`, error);
+      
+      if (attempt === MAX_RETRY_COUNT) {
+        console.error('All CSRF token retrieval attempts failed');
+        showCsrfWarning();
+        // 最後の試行でも失敗した場合は空文字列を返す（フォールバック）
+        return '';
+      }
+      
+      // 次の試行前に少し待機
+      await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+    }
+  }
   
-  csrfTokenCache = {
-    token: data.csrfToken,
-    expiry: now + TOKEN_LIFETIME,
-  };
-  
-  return csrfTokenCache.token;
+  return '';
 }
 
 export function clearCsrfToken(): void {
