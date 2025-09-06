@@ -20,23 +20,26 @@ async function rootHandler(
   try {
     const user = c.get('user-github');
 
-    // localStorageに保存するためのスクリプトを含むHTMLを返す
-    const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Authentication Success</title>
-</head>
-<body>
-  <script>
-    localStorage.setItem('token', '${token.token}');
-    ${user?.login ? `localStorage.setItem('user', '${user.login}');` : ''}
-    window.location.href = '/';
-  </script>
-</body>
-</html>`;
+    // Accept ヘッダーをチェックしてJSONリクエストかどうか判定
+    const acceptHeader = c.req.header('Accept');
+    if (acceptHeader?.includes('application/json')) {
+      // JSONレスポンスでトークン情報を返す
+      return c.json({
+        success: true,
+        token: token.token,
+        user: user?.login || null,
+        expiresIn: token.expires_in || 3600,
+      });
+    }
 
-    return c.html(html);
+    // ブラウザからの直接アクセスの場合はコールバックページにリダイレクト
+    const redirectUrl = new URL('/callback', c.req.url);
+    redirectUrl.searchParams.set('token', token.token);
+    if (user?.login) {
+      redirectUrl.searchParams.set('user', user.login);
+    }
+    
+    return c.redirect(redirectUrl.toString(), 303);
   } catch (e) {
     return c.json(JSON.parse(JSON.stringify(e)), 500);
   }
