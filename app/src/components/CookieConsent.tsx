@@ -1,8 +1,9 @@
-import { createSignal, Show } from 'solid-js';
+import { createSignal, Show, onMount } from 'solid-js';
 import { hasGivenConsent, giveConsent } from '../utils/cookie-consent';
 
 export default function CookieConsent() {
   const [showBanner, setShowBanner] = createSignal(!hasGivenConsent());
+  let buttonRef: HTMLButtonElement | undefined;
 
   const handleAccept = () => {
     giveConsent();
@@ -12,15 +13,32 @@ export default function CookieConsent() {
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       // Escapeキーでフォーカスを移動（バナーは残る）
-      (event.target as HTMLElement)?.blur();
+      buttonRef?.blur();
+      return;
+    }
+
+    // キーボードトラップの実装
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      // フォーカスをボタンに固定（モーダル内の唯一のフォーカス可能要素）
+      buttonRef?.focus();
     }
   };
+
+  // モーダルが表示されたときにフォーカスを設定
+  onMount(() => {
+    if (showBanner()) {
+      setTimeout(() => {
+        buttonRef?.focus();
+      }, 100);
+    }
+  });
 
   return (
     <Show when={showBanner()}>
       <div 
         role="dialog"
-        aria-modal="false"
+        aria-modal="true"
         aria-labelledby="cookie-consent-title"
         aria-describedby="cookie-consent-description"
         onKeyDown={handleKeyDown}
@@ -64,6 +82,7 @@ export default function CookieConsent() {
             </p>
           </div>
           <button 
+            ref={buttonRef}
             onClick={handleAccept}
             aria-label="クッキーの使用に同意してバナーを閉じる"
             style={{
