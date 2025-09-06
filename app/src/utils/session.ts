@@ -9,6 +9,18 @@ export function initSessionCleanup(): void {
   const MAX_SESSION_DURATION = 8 * 60 * 60 * 1000; // 8時間の最大セッション時間
   const TIMING_ATTACK_DELAY = 100; // タイミング攻撃対策の遅延
 
+  // セキュアなストレージ設定（タイミング攻撃対策）
+  const secureStorageSet = (key: string, value: string): void => {
+    try {
+      // 一定の遅延を追加してタイミング攻撃を防ぐ
+      setTimeout(() => {
+        localStorage.setItem(key, value);
+      }, Math.random() * TIMING_ATTACK_DELAY);
+    } catch (error) {
+      console.error(`Failed to set secure storage ${key}:`, error);
+    }
+  };
+
   // セッション開始時刻を記録（タイミング攻撃対策付き）
   const sessionStartTime = Date.now() + Math.random() * TIMING_ATTACK_DELAY;
   secureStorageSet('session-start-time', sessionStartTime.toString());
@@ -36,18 +48,6 @@ export function initSessionCleanup(): void {
       } catch (fallbackError) {
         console.error(`Failed to erase ${key}:`, fallbackError);
       }
-    }
-  };
-
-  // セキュアなストレージ設定（タイミング攻撃対策）
-  const secureStorageSet = (key: string, value: string): void => {
-    try {
-      // 一定の遅延を追加してタイミング攻撃を防ぐ
-      setTimeout(() => {
-        localStorage.setItem(key, value);
-      }, Math.random() * TIMING_ATTACK_DELAY);
-    } catch (error) {
-      console.error(`Failed to set secure storage ${key}:`, error);
     }
   };
 

@@ -10,6 +10,17 @@ export default defineConfig({
     extensions: ['tsx', 'jsx'],
     importMode: 'async',
   }), solidPlugin()],
+  server: {
+    headers: {
+      'Content-Security-Policy': [
+        'default-src \'self\'',
+        'frame-ancestors \'self\'',
+        'img-src \'self\' data: https:',
+        'script-src \'self\' \'unsafe-inline\' \'unsafe-eval\'',
+        'style-src \'self\' \'unsafe-inline\'',
+      ].join('; '),
+    },
+  },
   test: {
     environment: 'jsdom',
     globals: true,

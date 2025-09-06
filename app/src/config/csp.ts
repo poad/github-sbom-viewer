@@ -22,7 +22,6 @@ export const CSP_CONFIG = {
   MANIFEST_SRC: '\'self\'', // 同一オリジンのマニフェストのみ
   
   // フレーム関連（より具体的な制限）
-  FRAME_ANCESTORS: '\'none\'', // フレーム埋め込みを完全禁止
   FRAME_SRC: '\'none\'', // iframe読み込みを完全禁止
   
   // オブジェクト関連
@@ -76,9 +75,8 @@ export function generateCSPString(options: {
   nonce?: string;
   scriptHashes?: string[];
   styleHashes?: string[];
-  reportUri?: string;
 } = {}): string {
-  const { isDevelopment = false, nonce, scriptHashes = [], styleHashes = [], reportUri } = options;
+  const { isDevelopment = false, nonce, scriptHashes = [], styleHashes = [] } = options;
   
   // script-srcの構築
   let scriptSrc = isDevelopment ? CSP_CONFIG.DEVELOPMENT_OVERRIDES.SCRIPT_SRC_DEV : CSP_CONFIG.SCRIPT_SRC;
@@ -110,7 +108,6 @@ export function generateCSPString(options: {
     `connect-src ${CSP_CONFIG.CONNECT_SRC}`,
     `font-src ${CSP_CONFIG.FONT_SRC}`,
     `manifest-src ${CSP_CONFIG.MANIFEST_SRC}`,
-    `frame-ancestors ${CSP_CONFIG.FRAME_ANCESTORS}`,
     `frame-src ${CSP_CONFIG.FRAME_SRC}`,
     `object-src ${CSP_CONFIG.OBJECT_SRC}`,
     `base-uri ${CSP_CONFIG.BASE_URI}`,
@@ -130,10 +127,8 @@ export function generateCSPString(options: {
     directives.push(`require-trusted-types-for ${CSP_CONFIG.REQUIRE_TRUSTED_TYPES}`);
   }
 
-  // report-uri ディレクティブを追加
-  if (reportUri) {
-    directives.push(`report-uri ${reportUri}`);
-  }
+  // 注意: report-uri と frame-ancestors はHTMLのmetaタグでは無効
+  // これらはHTTPヘッダーでのみ有効です
 
   return directives.join('; ') + ';';
 }
