@@ -35,7 +35,8 @@ export default function CookieConsent() {
   });
 
   return (
-      <div 
+    <Show when={showBanner()}>
+      <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="cookie-consent-title"
@@ -49,9 +50,6 @@ export default function CookieConsent() {
           handleKeyDown(event);
         }}
         style={{
-        aria-describedby="cookie-consent-description"
-        onKeyDown={handleKeyDown}
-        style={{
           position: 'fixed',
           bottom: '0',
           left: '0',
@@ -64,17 +62,17 @@ export default function CookieConsent() {
         }}
       >
         <div style={{ 'max-width': '800px', margin: '0 auto' }}>
-          <h2 
+          <h2
             id="cookie-consent-title"
-            style={{ 
-              margin: '0 0 1rem 0', 
+            style={{
+              margin: '0 0 1rem 0',
               'font-size': '1.2rem',
               'font-weight': 'bold',
             }}
           >
             クッキーの使用について
           </h2>
-          <div 
+          <div
             id="cookie-consent-description"
             style={{ margin: '0 0 1.5rem 0', 'line-height': '1.5' }}
           >
@@ -90,7 +88,7 @@ export default function CookieConsent() {
               継続してご利用いただくには、クッキーの使用に同意してください。
             </p>
           </div>
-          <button 
+          <button
             ref={buttonRef}
             onClick={handleAccept}
             aria-label="クッキーの使用に同意してバナーを閉じる"

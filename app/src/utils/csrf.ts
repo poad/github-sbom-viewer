@@ -8,7 +8,7 @@ interface CsrfTokenCache {
 }
 
 let csrfTokenCache: CsrfTokenCache | null = null;
-const TOKEN_LIFETIME = 2 * 60 * 1000; // 2分
+const TOKEN_LIFETIME = 20 * 60 * 1000; // 20分（セキュリティとユーザビリティのバランス）
 const MAX_RETRY_COUNT = 3;
 
 export async function getCsrfToken(): Promise<string> {
@@ -67,11 +67,11 @@ export async function refreshCsrfToken(): Promise<string> {
   try {
     clearCsrfToken();
     const newToken = await getCsrfToken();
-    
+
     if (!newToken) {
       throw new Error('Failed to obtain new CSRF token');
     }
-    
+
     return newToken;
   } catch (error) {
     console.error('CSRF token refresh failed:', error);
