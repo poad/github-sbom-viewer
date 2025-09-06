@@ -1,54 +1,84 @@
-import { createSignal, Show, onMount } from 'solid-js';
+import { createSignal, Show, onMount, onCleanup } from 'solid-js';
 import { hasGivenConsent, giveConsent } from '../utils/cookie-consent';
 
 export default function CookieConsent() {
   const [showBanner, setShowBanner] = createSignal(!hasGivenConsent());
   let buttonRef: HTMLButtonElement | undefined;
+  let dialogRef: HTMLDivElement | undefined;
+  let previousActiveElement: Element | null = null;
 
   const handleAccept = () => {
     giveConsent();
     setShowBanner(false);
+    // フォーカスを元の要素に戻す
+    if (previousActiveElement && 'focus' in previousActiveElement) {
+      (previousActiveElement as HTMLElement).focus();
+    }
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
-      // Escapeキーでフォーカスを移動（バナーは残る）
-      buttonRef?.blur();
+      handleAccept();
       return;
     }
 
     // キーボードトラップの実装
     if (event.key === 'Tab') {
       event.preventDefault();
-      // フォーカスをボタンに固定（モーダル内の唯一のフォーカス可能要素）
       buttonRef?.focus();
     }
   };
 
-  // モーダルが表示されたときにフォーカスを設定
+  // モーダルが表示されたときのフォーカス管理
   onMount(() => {
     if (showBanner()) {
+      // 現在のフォーカス要素を保存
+      previousActiveElement = document.activeElement;
+      
+      // 背景要素のフォーカスを無効化
+      const focusableElements = document.querySelectorAll(
+        'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      
+      focusableElements.forEach((element) => {
+        if (!dialogRef?.contains(element)) {
+          element.setAttribute('tabindex', '-1');
+          element.setAttribute('data-original-tabindex', element.getAttribute('tabindex') || '0');
+        }
+      });
+
+      // ダイアログにフォーカスを設定
       setTimeout(() => {
         buttonRef?.focus();
       }, 100);
     }
   });
 
+  // クリーンアップ時にフォーカスを復元
+  onCleanup(() => {
+    // 背景要素のフォーカスを復元
+    const disabledElements = document.querySelectorAll('[data-original-tabindex]');
+    disabledElements.forEach((element) => {
+      const originalTabindex = element.getAttribute('data-original-tabindex');
+      element.removeAttribute('data-original-tabindex');
+      if (originalTabindex === '0') {
+        element.removeAttribute('tabindex');
+      } else {
+        element.setAttribute('tabindex', originalTabindex || '0');
+      }
+    });
+  });
+
   return (
     <Show when={showBanner()}>
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="cookie-consent-title"
         aria-describedby="cookie-consent-description"
         aria-live="polite"
-        onKeyDown={(event) => {
-          if (event.key === 'Escape') {
-            handleAccept();
-            return;
-          }
-          handleKeyDown(event);
-        }}
+        onKeyDown={handleKeyDown}
         style={{
           position: 'fixed',
           bottom: '0',
