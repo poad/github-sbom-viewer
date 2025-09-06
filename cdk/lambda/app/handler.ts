@@ -38,10 +38,15 @@ async function rootHandler(
     const maxAge = calculateTokenMaxAge(token);
 
     // httpOnlyクッキーでトークンを設定
-    c.header('Set-Cookie', `token=${token.token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${maxAge}`);
+    const cookies = [`token=${token.token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${maxAge}`];
     if (user?.login) {
-      c.header('Set-Cookie', `user=${user.login}; Secure; SameSite=Strict; Path=/; Max-Age=${maxAge}`);
+      cookies.push(`user=${user.login}; Secure; SameSite=Strict; Path=/; Max-Age=${maxAge}`);
     }
+    
+    // 複数のSet-Cookieヘッダーを設定
+    cookies.forEach(cookie => {
+      c.res.headers.append('Set-Cookie', cookie);
+    });
 
     // Accept ヘッダーをチェックしてJSONリクエストかどうか判定
     const acceptHeader = c.req.header('Accept');
@@ -54,7 +59,9 @@ async function rootHandler(
     }
 
     // ブラウザからの直接アクセスの場合はコールバックページにリダイレクト
-    return c.redirect('/callback', 303);
+    const domain = process.env.DOMAIN;
+    const callbackUrl = domain ? `https://${domain}/callback` : '/callback';
+    return c.redirect(callbackUrl, 303);
   } catch (e) {
     return c.json(JSON.parse(JSON.stringify(e)), 500);
   }
