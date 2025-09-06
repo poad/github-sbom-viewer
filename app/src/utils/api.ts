@@ -281,7 +281,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
       const response = await fetch(sanitizedUrl, {
         ...options,
         headers,
-        credentials: 'same-origin',
+        credentials: 'include',
         mode: 'cors',
         cache: 'no-store',
         signal: AbortSignal.timeout(30000), // 30秒タイムアウト

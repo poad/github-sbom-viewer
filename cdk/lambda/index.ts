@@ -19,10 +19,20 @@ const callbackUrl = domain ? `https://${domain}${apiRoot}/` : undefined;
 const app = apiRoot ? new Hono().basePath(apiRoot) : new Hono();
 app.use(logger())
   .use(cors({
-    origin: domain ? [`https://${domain}`] : ['http://localhost:5173', 'http://localhost:5174'],
-    allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token'],
+    origin: (origin) => {
+      const allowedOrigins = domain 
+        ? [`https://${domain}`] 
+        : ['http://localhost:5173', 'http://localhost:5174', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174'];
+      
+      // originがnullの場合（同一オリジン）は許可
+      if (!origin) return true;
+      
+      return allowedOrigins.includes(origin);
+    },
+    allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token', 'Accept'],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
+    exposeHeaders: ['Set-Cookie'],
   }))
   .use(async (c, next) => {
     // セキュリティヘッダーの設定
