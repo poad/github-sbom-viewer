@@ -34,8 +34,28 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
   // CSRFトークンエラー（403）の場合は一度だけリトライ
   if (response.status === 403 && csrfToken) {
     try {
-      const newCsrfToken = await refreshCsrfToken();
-      if (newCsrfToken) {
+  if (response.status === 403 && csrfToken) {
+    const maxRetries = 3;
+    let retryCount = 0;
+    
+    while (retryCount < maxRetries) {
+      try {
+        const newCsrfToken = await refreshCsrfToken();
+        if (newCsrfToken) {
+          response = await makeRequest(newCsrfToken);
+          break;
+        }
+      } catch (error) {
+        console.warn(`CSRF token refresh attempt ${retryCount + 1} failed:`, error);
+        retryCount++;
+        if (retryCount === maxRetries) {
+          throw new Error('CSRF token refresh failed after multiple attempts');
+        }
+        // 次の試行前に待機
+        await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+      }
+    }
+  }
         response = await makeRequest(newCsrfToken);
       }
     } catch (error) {
