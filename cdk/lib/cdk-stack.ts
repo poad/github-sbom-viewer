@@ -115,7 +115,7 @@ export class CloudfrontCdnTemplateStack extends cdk.Stack {
     const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, 'SecurityHeadersPolicy', {
       securityHeadersBehavior: {
         contentSecurityPolicy: {
-          contentSecurityPolicy: 'default-src \'self\'; script-src \'self\'; style-src \'self\'; img-src \'self\' data: https:; connect-src \'self\' https://api.github.com https://github.com; frame-ancestors \'none\'; object-src \'none\'; base-uri \'self\'; form-action \'self\';',
+          contentSecurityPolicy: 'default-src \'none\'; script-src \'self\'; style-src \'self\'; img-src \'self\' data: https:; connect-src \'self\' https://api.github.com https://github.com; font-src \'self\'; manifest-src \'self\'; frame-ancestors \'none\'; object-src \'none\'; base-uri \'self\'; form-action \'self\'; upgrade-insecure-requests;',
           override: true,
         },
         contentTypeOptions: {
@@ -135,6 +135,30 @@ export class CloudfrontCdnTemplateStack extends cdk.Stack {
           preload: true,
           override: true,
         },
+      },
+      customHeadersBehavior: {
+        customHeaders: [
+          {
+            header: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), ambient-light-sensor=()',
+            override: true,
+          },
+          {
+            header: 'Cross-Origin-Embedder-Policy',
+            value: 'require-corp',
+            override: true,
+          },
+          {
+            header: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
+            override: true,
+          },
+          {
+            header: 'Cross-Origin-Resource-Policy',
+            value: 'same-origin',
+            override: true,
+          },
+        ],
       },
     });
 
