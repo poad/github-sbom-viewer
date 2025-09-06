@@ -34,7 +34,7 @@ const calculateDelay = (attempt: number): number => {
 
 // ネットワークエラーかどうかを判定
 const isNetworkError = (error: Error): boolean => {
-  return error.name === 'TypeError' || 
+  return error.name === 'TypeError' ||
          error.message.includes('fetch') ||
          error.message.includes('network') ||
          error.message.includes('Failed to fetch');
@@ -79,7 +79,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
     console.warn('CSRF token retrieval failed, proceeding without CSRF token:', error);
     csrfToken = '';
   }
-  
+
   const makeRequest = async (csrf: string, attempt = 1): Promise<Response> => {
     const headers = {
       ...options.headers,
@@ -102,9 +102,12 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
 
         // リトライ可能なエラーかつ最大リトライ回数未満の場合
         if (isRetryableError(response) && attempt < RETRY_CONFIG.maxRetries) {
+          // 改善された通知機能を使用
+          const { showHttpErrorNotification } = await import('./notification');
+           
+          showHttpErrorNotification(response.status, attempt, RETRY_CONFIG.maxRetries);
+
           const delay = calculateDelay(attempt);
-          console.warn(`Request failed (attempt ${attempt}), retrying in ${delay}ms:`, httpError.message);
-          
           await new Promise(resolve => setTimeout(resolve, delay));
           return makeRequest(csrf, attempt + 1);
         }
@@ -122,9 +125,12 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
 
         // リトライ可能かつ最大リトライ回数未満の場合
         if (attempt < RETRY_CONFIG.maxRetries) {
+          // 改善された通知機能を使用
+          const { showNetworkErrorNotification } = await import('./notification');
+           
+          showNetworkErrorNotification(attempt, RETRY_CONFIG.maxRetries);
+
           const delay = calculateDelay(attempt);
-          console.warn(`Network error (attempt ${attempt}), retrying in ${delay}ms:`, error);
-          
           await new Promise(resolve => setTimeout(resolve, delay));
           return makeRequest(csrf, attempt + 1);
         }
@@ -135,7 +141,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
       // その他のエラー
       throw error;
     }
-  };
+  };;
 
   let response = await makeRequest(csrfToken);
 
@@ -148,11 +154,13 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
       console.warn('CSRF token refresh failed:', error);
       // CSRFトークンリフレッシュ失敗時の処理
       const { showCsrfErrorNotification } = await import('./notification');
+       
       showCsrfErrorNotification();
-      
+
       // セッション切れの可能性が高い場合は再認証を促す
       if (response.status === 403) {
         const { showSessionExpiredNotification } = await import('./notification');
+         
         showSessionExpiredNotification();
         logout();
         throw new Error('Session expired - please login again');
@@ -163,6 +171,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
   // 401エラーの場合はログアウト
   if (response.status === 401) {
     const { showSessionExpiredNotification } = await import('./notification');
+     
     showSessionExpiredNotification();
     logout();
     throw new Error('Unauthorized');
