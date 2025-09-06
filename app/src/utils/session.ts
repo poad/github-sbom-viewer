@@ -2,8 +2,8 @@ import { clearCsrfToken } from './csrf';
 
 export function initSessionCleanup(): void {
   let hiddenTime: number | null = null;
-  const CLEANUP_DELAY = 10000; // 10秒後にクリーンアップ
-  const SESSION_REVALIDATION_THRESHOLD = 30 * 60 * 1000; // 30分
+  const CLEANUP_DELAY = 60000; // 1分後にクリーンアップ
+  const SESSION_REVALIDATION_THRESHOLD = 15 * 60 * 1000; // 15分（トークン有効期限と同期）
 
   // センシティブなローカルストレージデータをクリア
   const clearSensitiveData = () => {
