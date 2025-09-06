@@ -34,6 +34,14 @@ async function rootHandler(
   try {
     const user = c.get('user-github');
     
+    // デバッグ情報をログに出力
+    logger.info('認証処理開始', {
+      hasToken: !!token?.token,
+      hasUser: !!user?.login,
+      tokenLength: token?.token ? token.token.length : 0,
+      userLogin: user?.login,
+    });
+    
     // トークンの有効期限を動的に計算
     const maxAge = calculateTokenMaxAge(token);
 
@@ -46,6 +54,7 @@ async function rootHandler(
     // 複数のSet-Cookieヘッダーを設定
     cookies.forEach(cookie => {
       c.res.headers.append('Set-Cookie', cookie);
+      logger.info('Set-Cookieヘッダー設定', { cookie: cookie.split(';')[0] }); // 値の部分のみログ出力
     });
 
     // Accept ヘッダーをチェックしてJSONリクエストかどうか判定

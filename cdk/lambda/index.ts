@@ -24,6 +24,14 @@ app.use(logger())
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
   }))
+  .use(async (c, next) => {
+    // セキュリティヘッダーの設定
+    c.header('Cross-Origin-Resource-Policy', 'cross-origin');
+    c.header('Cross-Origin-Embedder-Policy', 'unsafe-none');
+    c.header('X-Frame-Options', 'DENY');
+    c.header('X-Content-Type-Options', 'nosniff');
+    await next();
+  })
   .use(csrf())
   .use(
     '/',
