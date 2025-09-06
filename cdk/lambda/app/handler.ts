@@ -39,28 +39,7 @@ async function rootHandler(
     // ブラウザからの直接アクセスの場合はコールバックページにリダイレクト
     return c.redirect('/callback', 303);
   } catch (e) {
-  if (!token) {
-    return c.json({
-      error: {
-        code: 'UNAUTHORIZED',
-        message: 'Authentication required',
-        status: 401
-      }
-    }, 401);
-  }
-
-  try {
-    const owners = await getOwners(token);
-    return c.json({ data: owners });
-  } catch (e) {
-    const error = e as Error;
-    return c.json({
-      error: {
-        code: 'INTERNAL_SERVER_ERROR',
-        message: error.message,
-        status: 500
-      }
-    }, 500);
+    return c.json(JSON.parse(JSON.stringify(e)), 500);
   }
 }
 
@@ -73,6 +52,20 @@ async function githubHandler(c: Context) {
   try {
     const owners = await getOwners(token);
     return c.json({ owners });
+  } catch (e) {
+    return c.json(JSON.parse(JSON.stringify(e)), 500);
+  }
+}
+
+async function githubUserHandler(c: Context) {
+  const token = c.req.header('Cookie')?.match(/token=([^;]+)/)?.[1];
+  if (!token) {
+    return c.json({ error: 'Unauthorized' }, 401);
+  }
+
+  try {
+    const repos = await getUserRepos(token);
+    return c.json({ repos });
   } catch (e) {
     return c.json(JSON.parse(JSON.stringify(e)), 500);
   }
@@ -109,20 +102,6 @@ async function githubSbomHandler(c: Context, owner: string, repo: string) {
 async function csrfTokenHandler(c: Context) {
   // CSRFトークンを返す
   return c.json({ csrfToken: c.get('csrfToken') });
-}
-
-async function githubUserHandler(c: Context) {
-  const token = c.req.header('Cookie')?.match(/token=([^;]+)/)?.[1];
-  if (!token) {
-    return c.json({ error: 'Unauthorized' }, 401);
-  }
-
-  try {
-    const repos = await getUserRepos(token);
-    return c.json({ repos });
-  } catch (e) {
-    return c.json(JSON.parse(JSON.stringify(e)), 500);
-  }
 }
 
 export {
