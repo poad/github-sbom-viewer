@@ -34,8 +34,17 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
   // CSRFトークンエラー（403）の場合は一度だけリトライ
   if (response.status === 403 && csrfToken) {
     try {
+    try {
       const newCsrfToken = await refreshCsrfToken();
       response = await makeRequest(newCsrfToken);
+    } catch (error) {
+      console.error('CSRF token refresh failed:', error);
+      // セッション切れの可能性があるため、ユーザーに通知
+      showSessionExpiredNotification();
+      // 再認証が必要な場合はログアウト処理を実行
+      logout();
+      throw new Error('Session expired');
+    }
     } catch (error) {
       console.warn('CSRF token refresh failed:', error);
       // リフレッシュ失敗時は元のレスポンスを返す
