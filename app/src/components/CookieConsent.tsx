@@ -1,7 +1,7 @@
 import { createSignal, Show, onMount, onCleanup } from 'solid-js';
 import { hasGivenConsent, giveConsent } from '../utils/cookie-consent';
 import { disableBackgroundFocus, restoreBackgroundFocus, saveFocus, restoreFocus } from '../utils/focus-management';
-import styles from './CookieConsent.module.css';
+import { announceToScreenReader, announceAlert } from '../utils/screen-reader';
 
 export default function CookieConsent() {
   const [showBanner, setShowBanner] = createSignal(!hasGivenConsent());
@@ -15,26 +15,13 @@ export default function CookieConsent() {
     giveConsent();
     setShowBanner(false);
     restoreFocus(previousActiveElement);
-    announceToScreenReader('クッキーの使用に同意しました');
+    announceToScreenReader('クッキーの使用に同意しました', 'status');
   };
 
   const handleReject = () => {
     setShowBanner(false);
     restoreFocus(previousActiveElement);
-    announceToScreenReader('クッキーの使用を拒否しました');
-  };
-
-  const announceToScreenReader = (message: string) => {
-    const announcement = document.createElement('div');
-    announcement.setAttribute('aria-live', 'polite');
-    announcement.setAttribute('aria-atomic', 'true');
-    announcement.className = styles['sr-only'];
-    announcement.textContent = message;
-    document.body.appendChild(announcement);
-    
-    setTimeout(() => {
-      document.body.removeChild(announcement);
-    }, 1000);
+    announceToScreenReader('クッキーの使用を拒否しました', 'status');
   };
 
   const updateFocusableElements = () => {
@@ -103,8 +90,8 @@ export default function CookieConsent() {
         updateFocusableElements();
       }
 
-      // スクリーンリーダーに通知
-      announceToScreenReader('クッキー使用に関する重要な通知が表示されました');
+      // スクリーンリーダーに重要な通知として伝える
+      announceAlert('クッキー使用に関する重要な通知が表示されました');
 
       setTimeout(() => {
         acceptButtonRef?.focus();
