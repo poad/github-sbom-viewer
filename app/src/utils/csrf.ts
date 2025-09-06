@@ -10,7 +10,7 @@ interface CsrfTokenCache {
 }
 
 let csrfTokenCache: CsrfTokenCache | null = null;
-const TOKEN_LIFETIME = 30 * 60 * 1000; // 30分
+const TOKEN_LIFETIME = 15 * 60 * 1000; // 15分
 const MAX_RETRY_COUNT = 3;
 
 export async function getCsrfToken(): Promise<string> {
