@@ -11,7 +11,7 @@ export function giveConsent(): void {
 export function revokeConsent(): void {
   localStorage.removeItem(CONSENT_KEY);
   // クッキーを削除
-  document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; secure; SameSite=Strict; domain=' + window.location.hostname + '; HttpOnly';
+  document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; secure; SameSite=Strict; domain=' + window.location.hostname;
   document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; secure; SameSite=Strict; domain=' + window.location.hostname;
 }
 
