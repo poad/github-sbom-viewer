@@ -5,6 +5,8 @@ export function logout(): void {
   // クッキー同意を取り消し（クッキーも削除される）
   revokeConsent();
   clearCsrfToken();
+  // ローカルストレージをクリア
+  localStorage.clear();
   window.location.href = '/';
 }
 
