@@ -3,16 +3,21 @@ import styles from './index.module.css';
 import { createResource, For, Show } from 'solid-js';
 import { A } from '@solidjs/router';
 import { FadeLoader } from '../features/ui/components';
+import { fetchWithAuth } from '../utils/api';
+import { getCurrentUser, isAuthenticated } from '../utils/auth';
+import { hasGivenConsent } from '../utils/cookie-consent';
+import CookieConsent from '../components/CookieConsent';
 
 export default function (): JSX.Element {
-  const clientID = import.meta.env.VITE_GITHUB_APPS_CLIENT_ID ?? '';
-  const [data] = createResource<{ owners: string[] } | undefined>(() => {
-    if (document.cookie.split('; ').some((item) => item.startsWith('user='))) {
-      return fetch('/api/github').then((resp) => resp.json());
+  const clientID = (import.meta.env.VITE_GITHUB_APPS_CLIENT_ID as string) ?? '';
+  const [data] = createResource<{ owners: string[] } | undefined>(async () => {
+    if (hasGivenConsent() && isAuthenticated()) {
+      const response = await fetchWithAuth('/api/github');
+      return response.json();
     }
     return undefined;
   });
-  const user = document.cookie.split('; ').find(item => item.startsWith('user='))?.split('=')[1];
+  const user = getCurrentUser();
 
   return (
     <div class={styles.App}>
@@ -38,6 +43,7 @@ export default function (): JSX.Element {
           </ul>
         </Show>
       </Show>
+      <CookieConsent />
     </div>
   );
 }

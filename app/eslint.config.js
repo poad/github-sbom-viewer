@@ -9,11 +9,6 @@ import pluginPromise from 'eslint-plugin-promise'
 
 import solid from 'eslint-plugin-solid';
 
-
-import { FlatCompat } from '@eslint/eslintrc';
-
-const compat = new FlatCompat();
-
 import { includeIgnoreFile } from '@eslint/compat';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -27,11 +22,7 @@ export default tseslint.config(
   {
     ignores: [
       '**/*.d.ts',
-      '*.{js,jsx}',
-      'src/tsconfig.json',
-      'src/stories',
-      '**/*.css',
-      'node_modules/**/*',
+      '**/node_modules/**',
       'dist',
     ],
   },
@@ -40,7 +31,7 @@ export default tseslint.config(
   ...tseslint.configs.strict,
   ...tseslint.configs.stylistic,
   {
-    files: ['src/**/*.tsx', 'src/**/*.ts', 'vite-env.d.ts', 'vite.config.ts'],
+    files: ['**/*.tsx', '**/*.ts', 'vite-env.d.ts', 'vite.config.ts'],
     extends: [
       importPlugin.flatConfigs.recommended,
       importPlugin.flatConfigs.typescript,
