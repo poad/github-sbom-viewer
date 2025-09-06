@@ -10,6 +10,11 @@ export default defineConfig({
     extensions: ['tsx', 'jsx'],
     importMode: 'async',
   }), solidPlugin()],
+  server: {
+    headers: {
+      'Content-Security-Policy': 'frame-ancestors \'self\'',
+    },
+  },
   test: {
     environment: 'jsdom',
     globals: true,
