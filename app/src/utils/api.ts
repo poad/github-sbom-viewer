@@ -12,25 +12,33 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
       ...(csrf && { 'X-CSRF-Token': csrf }),
     };
 
-    return fetch(url, {
-      ...options,
-      headers,
-    });
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers,
+        timeout: 5000, // 5秒タイムアウト
+      });
+
+      if (!response.ok) {
+        if (response.status === 403) {
+          csrfToken = await refreshCsrfToken();
+          return makeRequest(csrfToken);
+        }
+        if (response.status === 401) {
+          logout();
+          throw new Error('認証エラー');
+        }
+        throw new Error(`APIエラー: ${response.status}`);
+      }
+
+      return response;
+    } catch (error) {
+      if (error instanceof TypeError) {
+        throw new Error('ネットワークエラー');
+      }
+      throw error;
+    }
   };
 
-  let response = await makeRequest(csrfToken);
-
-  // CSRFトークンエラー（403）の場合は一度だけリトライ
-  if (response.status === 403) {
-    csrfToken = await refreshCsrfToken();
-    response = await makeRequest(csrfToken);
-  }
-
-  // 401エラーの場合はログアウト
-  if (response.status === 401) {
-    logout();
-    throw new Error('Unauthorized');
-  }
-
-  return response;
+  return makeRequest(csrfToken);
 }
