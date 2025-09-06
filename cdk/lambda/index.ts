@@ -28,7 +28,7 @@ app.use(logger())
     }),
   );
 
-app.get('/', async (c: Context) => rootHandler(c, apiRoot, domain));
+app.get('/', async (c: Context) => rootHandler(c, apiRoot));
 app.get('/csrf-token', csrfTokenHandler);
 app.get('/github', githubHandler);
 app.get('/github/repos', githubUserHandler);
