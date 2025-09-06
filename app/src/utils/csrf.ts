@@ -1,5 +1,3 @@
-import { showCsrfWarning } from './notification';
-
 interface CsrfResponse {
   csrfToken: string;
 }
@@ -47,6 +45,7 @@ export async function getCsrfToken(): Promise<string> {
 
       if (attempt === MAX_RETRY_COUNT) {
         console.error('All CSRF token retrieval attempts failed');
+        const { showCsrfWarning } = await import('./notification');
         showCsrfWarning();
         // 最後の試行でも失敗した場合は空文字列を返す（フォールバック）
         return '';

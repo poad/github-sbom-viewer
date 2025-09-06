@@ -34,26 +34,28 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
   // CSRFトークンエラー（403）の場合は一度だけリトライ
   if (response.status === 403 && csrfToken) {
     try {
-    try {
       const newCsrfToken = await refreshCsrfToken();
       response = await makeRequest(newCsrfToken);
     } catch (error) {
-      console.error('CSRF token refresh failed:', error);
-      // セッション切れの可能性があるため、ユーザーに通知
-      showSessionExpiredNotification();
-      // 再認証が必要な場合はログアウト処理を実行
-      logout();
-      throw new Error('Session expired');
-    }
-    } catch (error) {
       console.warn('CSRF token refresh failed:', error);
-      // リフレッシュ失敗時は元のレスポンスを返す
-      // これにより上位層で適切なエラーハンドリングが可能
+      // CSRFトークンリフレッシュ失敗時の処理
+      const { showCsrfErrorNotification } = await import('./notification');
+      showCsrfErrorNotification();
+      
+      // セッション切れの可能性が高い場合は再認証を促す
+      if (response.status === 403) {
+        const { showSessionExpiredNotification } = await import('./notification');
+        showSessionExpiredNotification();
+        logout();
+        throw new Error('Session expired - please login again');
+      }
     }
   }
 
   // 401エラーの場合はログアウト
   if (response.status === 401) {
+    const { showSessionExpiredNotification } = await import('./notification');
+    showSessionExpiredNotification();
     logout();
     throw new Error('Unauthorized');
   }
