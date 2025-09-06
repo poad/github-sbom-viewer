@@ -3,45 +3,30 @@ import { A, useParams } from '@solidjs/router';
 import { FadeLoader } from '../../../../features/ui/components';
 import { fetchWithAuth } from '../../../../utils/api';
 import { DependencyGraph } from '../../../../components/DependencyGraph';
+import styles from './styles.module.css';
 
 export default function OrganizationRepos() {
   const { login, repo } = useParams();
   const [viewMode, setViewMode] = createSignal<'table' | 'graph'>('table');
-  
+
   const [data] = createResource<Sbom[]>(async () => {
     const response = await fetchWithAuth(`/api/github/sbom/${login}/${repo}`);
     return response.json();
   });
-  
+
   return (
     <>
       <h1>SBOM</h1>
-      <div style={{ margin: '20px 0' }}>
-        <button 
+      <div class={styles.viewModeContainer}>
+        <button
           onClick={() => setViewMode('table')}
-          style={{
-            padding: '8px 16px',
-            margin: '0 5px',
-            background: viewMode() === 'table' ? '#2196F3' : '#f0f0f0',
-            color: viewMode() === 'table' ? 'white' : 'black',
-            border: 'none',
-            'border-radius': '4px',
-            cursor: 'pointer',
-          }}
+          class={`${styles.viewModeButton} ${viewMode() === 'table' ? styles.active : styles.inactive}`}
         >
           テーブル表示
         </button>
-        <button 
+        <button
           onClick={() => setViewMode('graph')}
-          style={{
-            padding: '8px 16px',
-            margin: '0 5px',
-            background: viewMode() === 'graph' ? '#2196F3' : '#f0f0f0',
-            color: viewMode() === 'graph' ? 'white' : 'black',
-            border: 'none',
-            'border-radius': '4px',
-            cursor: 'pointer',
-          }}
+          class={`${styles.viewModeButton} ${viewMode() === 'graph' ? styles.active : styles.inactive}`}
         >
           依存関係グラフ
         </button>
@@ -53,21 +38,21 @@ export default function OrganizationRepos() {
               <>
                 <h2>{sbom.sbom.name}</h2>
                 <Show when={viewMode() === 'table'}>
-                  <table style={{ width: '100%', 'border-collapse': 'collapse' }}>
+                  <table class={styles.table}>
                     <thead>
-                      <tr style={{ background: '#f5f5f5' }}>
-                        <th style={{ padding: '12px', border: '1px solid #ddd', 'text-align': 'left' }}>名前</th>
-                        <th style={{ padding: '12px', border: '1px solid #ddd', 'text-align': 'left' }}>バージョン</th>
-                        <th style={{ padding: '12px', border: '1px solid #ddd', 'text-align': 'left' }}>ライセンス</th>
+                      <tr class={styles.tableHeader}>
+                        <th class={styles.tableHeaderCell}>名前</th>
+                        <th class={styles.tableHeaderCell}>バージョン</th>
+                        <th class={styles.tableHeaderCell}>ライセンス</th>
                       </tr>
                     </thead>
                     <tbody>
                       <For each={sbom.sbom.packages}>
                         {(pkg) => (
                           <tr>
-                            <td style={{ padding: '12px', border: '1px solid #ddd' }}>{pkg.name || 'N/A'}</td>
-                            <td style={{ padding: '12px', border: '1px solid #ddd' }}>{pkg.versionInfo || 'N/A'}</td>
-                            <td style={{ padding: '12px', border: '1px solid #ddd' }}>{pkg.licenseConcluded || 'N/A'}</td>
+                            <td class={styles.tableCell}>{pkg.name || 'N/A'}</td>
+                            <td class={styles.tableCell}>{pkg.versionInfo || 'N/A'}</td>
+                            <td class={styles.tableCell}>{pkg.licenseConcluded || 'N/A'}</td>
                           </tr>
                         )}
                       </For>
@@ -75,7 +60,7 @@ export default function OrganizationRepos() {
                   </table>
                 </Show>
                 <Show when={viewMode() === 'graph'}>
-                  <div style={{ margin: '20px 0' }}>
+                  <div class={styles.graphContainer}>
                     <DependencyGraph packages={sbom.sbom.packages} width={1000} height={700} />
                   </div>
                 </Show>
@@ -84,7 +69,7 @@ export default function OrganizationRepos() {
           </For>
         </Show>
       </div>
-      <p style={{ margin: '20px 0' }}>
+      <p class={styles.homeLink}>
         <A href="/">HOME</A>
       </p>
     </>

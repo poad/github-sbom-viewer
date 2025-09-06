@@ -1,0 +1,60 @@
+/* View Mode Toggle Buttons */
+.viewModeContainer {
+  margin: 20px 0;
+}
+
+.viewModeButton {
+  padding: 8px 16px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.viewModeButton.active {
+  background: #2196F3;
+  color: white;
+}
+
+.viewModeButton.inactive {
+  background: #f0f0f0;
+  color: black;
+}
+
+.viewModeButton:hover {
+  opacity: 0.8;
+}
+
+/* Table Styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.tableHeader {
+  background: #f5f5f5;
+}
+
+.tableHeaderCell {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-weight: bold;
+}
+
+.tableCell {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+/* Graph Container */
+.graphContainer {
+  margin: 20px 0;
+}
+
+/* Home Link */
+.homeLink {
+  margin: 20px 0;
+}
