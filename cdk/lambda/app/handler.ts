@@ -1,9 +1,5 @@
 import { Context } from 'hono';
 import { Logger } from '@aws-lambda-powertools/logger';
-import {
-  setCookie,
-  getCookie,
-} from 'hono/cookie';
 import { GitHub } from './github';
 
 const logger = new Logger();
@@ -11,7 +7,6 @@ const logger = new Logger();
 async function rootHandler(
   c: Context,
   apiRoot?: string,
-  domain?: string,
 ) {
   const token = c.get('token');
   if (!token?.token) {
@@ -25,52 +20,33 @@ async function rootHandler(
   try {
     const user = c.get('user-github');
 
-    if (domain) {
-      const expires = new Date(new Date().getTime() + (token.expires_in ?? 0) * 1000);
-      setCookie(c, 'token', token.token, {
-        secure: true,
-        domain,
-        httpOnly: true,
-        maxAge: 1000,
-        expires,
-        sameSite: 'Lax',
-      });
-      if (user?.login) {
-        setCookie(c, 'user', user.login, {
-          secure: true,
-          domain,
-          httpOnly: false,
-          maxAge: 1000,
-          expires,
-          sameSite: 'Lax',
-        });
-      }
+    // localStorageに保存するためのスクリプトを含むHTMLを返す
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Authentication Success</title>
+</head>
+<body>
+  <script>
+    localStorage.setItem('token', '${token.token}');
+    ${user?.login ? `localStorage.setItem('user', '${user.login}');` : ''}
+    window.location.href = '/';
+  </script>
+</body>
+</html>`;
 
-      const refreshToken = c.get('refresh-token');
-      if (refreshToken) {
-        const refreshTokenExpires = new Date(new Date().getTime() + (refreshToken.expires_in ?? 0) * 1000);
-        setCookie(c, 'refresh-token', refreshToken.token, {
-          secure: true,
-          domain,
-          httpOnly: true,
-          maxAge: 1000,
-          expires: refreshTokenExpires,
-          sameSite: 'Lax',
-        });
-      }
-    }
-
-    return c.redirect('/', 303);
+    return c.html(html);
   } catch (e) {
     return c.json(JSON.parse(JSON.stringify(e)), 500);
   }
 }
 
 async function githubHandler(c: Context) {
-  const token = getCookie(c, 'token');
+  const authHeader = c.req.header('Authorization');
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  
   if (!token) {
-    // TODO:
-
     return c.redirect('/', 303);
   }
 
@@ -82,10 +58,10 @@ async function githubHandler(c: Context) {
 }
 
 async function githubOwnerHandler(c: Context, owner: string) {
-  const token = getCookie(c, 'token');
+  const authHeader = c.req.header('Authorization');
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  
   if (!token) {
-    // TODO:
-
     return c.redirect('/', 303);
   }
 
@@ -97,10 +73,10 @@ async function githubOwnerHandler(c: Context, owner: string) {
 }
 
 async function githubSbomHandler(c: Context, owner: string, repo: string) {
-  const token = getCookie(c, 'token');
+  const authHeader = c.req.header('Authorization');
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  
   if (!token) {
-    // TODO:
-
     return c.redirect('/', 303);
   }
 
@@ -110,10 +86,10 @@ async function githubSbomHandler(c: Context, owner: string, repo: string) {
 }
 
 async function githubUserHandler(c: Context) {
-  const token = getCookie(c, 'token');
+  const authHeader = c.req.header('Authorization');
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  
   if (!token) {
-    // TODO:
-
     return c.redirect('/', 303);
   }
 

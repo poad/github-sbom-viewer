@@ -4,11 +4,15 @@ import { FadeLoader } from '../../../features/ui/components';
 
 export default function OrganizationRepos() {
   const { repo } = useParams();
-  const user = document.cookie.split('; ').find(item => item.startsWith('user='))?.split('=')[1] ?? '';
+  const user = localStorage.getItem('user') ?? '';
 
-  const [data] = createResource<Sbom[]>(() =>
-    fetch(`/api/github/sbom/${user}/${repo}`).then((resp) => resp.json()),
-  );
+  const [data] = createResource<Sbom[]>(() => {
+    const token = localStorage.getItem('token');
+    return fetch(`/api/github/sbom/${user}/${repo}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    }).then((resp) => resp.json());
+  });
+  
   return (
     <>
       <h1>SBOM</h1>

@@ -5,14 +5,17 @@ import { A } from '@solidjs/router';
 import { FadeLoader } from '../features/ui/components';
 
 export default function (): JSX.Element {
-  const clientID = import.meta.env.VITE_GITHUB_APPS_CLIENT_ID ?? '';
+  const clientID = (import.meta.env.VITE_GITHUB_APPS_CLIENT_ID as string) ?? '';
   const [data] = createResource<{ owners: string[] } | undefined>(() => {
-    if (document.cookie.split('; ').some((item) => item.startsWith('user='))) {
-      return fetch('/api/github').then((resp) => resp.json());
+    if (localStorage.getItem('user')) {
+      const token = localStorage.getItem('token');
+      return fetch('/api/github', {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      }).then((resp) => resp.json());
     }
     return undefined;
   });
-  const user = document.cookie.split('; ').find(item => item.startsWith('user='))?.split('=')[1];
+  const user = localStorage.getItem('user');
 
   return (
     <div class={styles.App}>
