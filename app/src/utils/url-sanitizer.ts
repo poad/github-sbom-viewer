@@ -1,9 +1,12 @@
+import { getEffectiveBlockedTlds, getTldRiskLevel, checkForTldUpdates } from '../config/blocked-tlds';
+
 // URL サニタイズとバリデーション
 interface URLValidationResult {
   isValid: boolean;
   sanitizedUrl?: string;
   error?: string;
   warnings?: string[];
+  riskLevel?: 'low' | 'medium' | 'high' | 'critical';
 }
 
 interface URLSecurityConfig {
@@ -287,10 +290,26 @@ export function validateAndSanitizeURL(url: string, config?: Partial<URLSecurity
     // URLの正規化
     const sanitizedUrl = urlObj.toString();
 
+    // TLD リスク評価
+    const tld = urlObj.hostname.split('.').pop() || '';
+    const riskLevel = getTldRiskLevel(tld);
+    
+    // 高リスクTLDの警告
+    if (riskLevel === 'high' || riskLevel === 'critical') {
+      warnings.push(`High-risk TLD detected: ${tld} (${riskLevel})`);
+    }
+
+    // TLD ブラックリスト チェック
+    const blockedTlds = getEffectiveBlockedTlds();
+    if (blockedTlds.includes(tld.toLowerCase())) {
+      return { isValid: false, error: `Blocked TLD: ${tld}`, riskLevel };
+    }
+
     return {
       isValid: true,
       sanitizedUrl,
       warnings: warnings.length > 0 ? warnings : undefined,
+      riskLevel,
     };
 
   } catch (error) {
@@ -321,4 +340,45 @@ export function getProdConfig(): Partial<URLSecurityConfig> {
     allowDataUrls: false,
     allowedProtocols: ['https:'], // HTTPSのみ
   };
+}
+
+// TLD更新チェックの初期化
+let updateCheckInterval: number | null = null;
+
+export function initializeTldUpdateCheck(): void {
+  // 初回チェック
+  checkForTldUpdates().then(result => {
+    if (result.hasUpdates) {
+      console.warn('TLD Update Check:', result.message);
+    }
+    return result;
+  }).catch(error => {
+    console.error('Initial TLD update check failed:', error);
+  });
+
+  // 24時間ごとの定期チェック
+  if (typeof window !== 'undefined' && !updateCheckInterval) {
+    updateCheckInterval = window.setInterval(async () => {
+      try {
+        const result = await checkForTldUpdates();
+        if (result.hasUpdates) {
+          console.warn('TLD Update Check:', result.message);
+          
+          // 開発環境でのみ詳細ログ
+          if (process.env.NODE_ENV === 'development') {
+            console.info('Consider updating the TLD blacklist in blocked-tlds.ts');
+          }
+        }
+      } catch (error) {
+        console.error('TLD update check failed:', error);
+      }
+    }, 24 * 60 * 60 * 1000); // 24時間
+  }
+}
+
+export function stopTldUpdateCheck(): void {
+  if (updateCheckInterval) {
+    clearInterval(updateCheckInterval);
+    updateCheckInterval = null;
+  }
 }
