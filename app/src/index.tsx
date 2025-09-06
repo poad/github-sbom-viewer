@@ -4,6 +4,7 @@ import routes from '~solid-pages';
 import { initSessionCleanup } from './utils/session';
 import { initializeCSP } from './utils/csp-middleware';
 import { initializeTldUpdateCheck } from './utils/url-sanitizer';
+import { initializeCSPReporting } from './utils/csp-reporter';
 
 const root = document.getElementById('root');
 
@@ -15,6 +16,9 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 
 // CSPの初期化
 initializeCSP();
+
+// CSPレポート機能の初期化
+initializeCSPReporting();
 
 // TLD更新チェックの初期化
 initializeTldUpdateCheck();

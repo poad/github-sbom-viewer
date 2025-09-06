@@ -76,8 +76,9 @@ export function generateCSPString(options: {
   nonce?: string;
   scriptHashes?: string[];
   styleHashes?: string[];
+  reportUri?: string;
 } = {}): string {
-  const { isDevelopment = false, nonce, scriptHashes = [], styleHashes = [] } = options;
+  const { isDevelopment = false, nonce, scriptHashes = [], styleHashes = [], reportUri } = options;
   
   // script-srcの構築
   let scriptSrc = isDevelopment ? CSP_CONFIG.DEVELOPMENT_OVERRIDES.SCRIPT_SRC_DEV : CSP_CONFIG.SCRIPT_SRC;
@@ -127,6 +128,11 @@ export function generateCSPString(options: {
   
   if (CSP_CONFIG.REQUIRE_TRUSTED_TYPES) {
     directives.push(`require-trusted-types-for ${CSP_CONFIG.REQUIRE_TRUSTED_TYPES}`);
+  }
+
+  // report-uri ディレクティブを追加
+  if (reportUri) {
+    directives.push(`report-uri ${reportUri}`);
   }
 
   return directives.join('; ') + ';';

@@ -115,7 +115,7 @@ export class CloudfrontCdnTemplateStack extends cdk.Stack {
     const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, 'SecurityHeadersPolicy', {
       securityHeadersBehavior: {
         contentSecurityPolicy: {
-          contentSecurityPolicy: 'default-src \'none\'; script-src \'self\'; style-src \'self\'; img-src \'self\' data: https:; connect-src \'self\' https://api.github.com https://github.com; font-src \'self\'; manifest-src \'self\'; frame-ancestors \'none\'; frame-src \'none\'; object-src \'none\'; base-uri \'self\'; form-action \'self\'; upgrade-insecure-requests; block-all-mixed-content; require-trusted-types-for \'script\';',
+          contentSecurityPolicy: 'default-src \'none\'; script-src \'self\'; style-src \'self\'; img-src \'self\' data: https:; connect-src \'self\' https://api.github.com https://github.com; font-src \'self\'; manifest-src \'self\'; frame-ancestors \'none\'; frame-src \'none\'; object-src \'none\'; base-uri \'self\'; form-action \'self\'; upgrade-insecure-requests; block-all-mixed-content; require-trusted-types-for \'script\'; report-uri /api/csp-report;',
           override: true,
         },
         contentTypeOptions: {

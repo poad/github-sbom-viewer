@@ -49,11 +49,14 @@ export class CSPMiddleware {
   // CSPを更新
   private updateCSP(): void {
     const isDevelopment = process.env.NODE_ENV === 'development';
+    const reportUri = isDevelopment ? '/api/csp-report-dev' : '/api/csp-report';
+    
     const cspString = generateCSPString({
       isDevelopment,
       nonce: this.currentNonce || undefined,
       scriptHashes: this.scriptHashes,
       styleHashes: this.styleHashes,
+      reportUri,
     });
 
     // メタタグを更新
