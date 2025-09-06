@@ -39,7 +39,28 @@ async function rootHandler(
     // ブラウザからの直接アクセスの場合はコールバックページにリダイレクト
     return c.redirect('/callback', 303);
   } catch (e) {
-    return c.json(JSON.parse(JSON.stringify(e)), 500);
+  if (!token) {
+    return c.json({
+      error: {
+        code: 'UNAUTHORIZED',
+        message: 'Authentication required',
+        status: 401
+      }
+    }, 401);
+  }
+
+  try {
+    const owners = await getOwners(token);
+    return c.json({ data: owners });
+  } catch (e) {
+    const error = e as Error;
+    return c.json({
+      error: {
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error.message,
+        status: 500
+      }
+    }, 500);
   }
 }
 
