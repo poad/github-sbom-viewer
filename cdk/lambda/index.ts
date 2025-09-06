@@ -1,6 +1,7 @@
 import { Hono, Context } from 'hono';
 import { handle, LambdaContext, LambdaEvent } from 'hono/aws-lambda';
 import { logger } from 'hono/logger';
+import { cors } from 'hono/cors';
 import { csrf } from 'hono/csrf';
 import { githubAuth } from '@hono/oauth-providers/github';
 import { Logger } from '@aws-lambda-powertools/logger';
@@ -17,6 +18,12 @@ const callbackUrl = domain ? `https://${domain}${apiRoot}/` : undefined;
 
 const app = apiRoot ? new Hono().basePath(apiRoot) : new Hono();
 app.use(logger())
+  .use(cors({
+    origin: domain ? [`https://${domain}`] : ['http://localhost:5173', 'http://localhost:5174'],
+    allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token'],
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+  }))
   .use(csrf())
   .use(
     '/',
