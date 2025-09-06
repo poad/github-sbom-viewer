@@ -10,10 +10,12 @@ jobs:
   auto-merge:
     runs-on: ubuntu-24.04-arm
 
+    if: github.event.pull_request.draft == false
+
     steps:
       - uses: actions/checkout@v5
 
-      - name: Enable auto-merge for Dependabot Dependabot Pull Request
+      - name: Enable auto-merge for Pull Request
         run: |
           gh pr review --approve "$PR_URL"
           gh pr merge --auto --squash "$PR_URL"

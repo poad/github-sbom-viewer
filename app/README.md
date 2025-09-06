@@ -1,34 +1,60 @@
-## Usage
+# GitHub SBOM Viewer - Frontend
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+SolidJS frontend application for visualizing GitHub SBOM data with
+Canvas-based dependency graphs.
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+## Features
+
+- GitHub OAuth authentication with localStorage
+- Interactive Canvas visualization of SBOM dependencies
+- Repository browsing for users and organizations
+- Real-time SBOM data fetching and rendering
+
+## Development
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm
+
+### Setup
 
 ```bash
-$ pnpm install
+pnpm install
 ```
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
+### Available Scripts
 
-## Available Scripts
+#### `pnpm dev` or `pnpm start`
 
-In the project directory, you can run:
-
-### `pnpm dev` or `pnpm start`
-
-Runs the app in the development mode.<br>
+Runs the app in development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
+The page will reload if you make edits.
 
-### `pnpm build`
+#### `pnpm build`
 
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
+Builds the app for production to the `dist` folder.
+It correctly bundles Solid in production mode and optimizes the build for the
+best performance.
 
-The build is minified and the filenames include the hashes.<br>
+The build is minified and the filenames include the hashes.
 Your app is ready to be deployed!
+
+#### `pnpm lint`
+
+Runs ESLint to check for code quality issues.
+
+## Environment Variables
+
+- `VITE_GITHUB_APPS_CLIENT_ID`: GitHub App Client ID
 
 ## Deployment
 
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+You can deploy the `dist` folder to any static host provider
+(Netlify, Surge, Vercel, etc.)
+
+## Learn More
+
+- [Solid Website](https://solidjs.com)
+- [Solid Discord](https://discord.com/invite/solidjs)
