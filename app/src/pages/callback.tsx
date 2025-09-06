@@ -11,10 +11,14 @@ export default function Callback() {
       const user = searchParams.user;
 
       if (token && user) {
-        // localStorageにトークンとユーザー情報を保存
+        // トークンと有効期限を保存
+        const expiryTime = Date.now() + 3600000; // 1時間後
         localStorage.setItem('token', token);
+        localStorage.setItem('tokenExpiry', expiryTime.toString());
         localStorage.setItem('user', user);
         
+        // ホーム画面にリダイレクト
+        navigate('/', { replace: true });
         // ホーム画面にリダイレクト
         navigate('/', { replace: true });
       } else {
