@@ -17,6 +17,15 @@ export function showCsrfWarning(): void {
   console.warn('セキュリティトークンの取得に失敗しました。一部の機能が制限される可能性があります。');
 }
 
+export function showRateLimitNotification(retryAfterSeconds: number): void {
+  alert('⏱️ リクエスト制限に達しました\n\n' +
+    `${retryAfterSeconds}秒後に再試行してください\n\n` +
+    '対処方法：\n' +
+    '1. しばらく待ってから操作を再開してください\n' +
+    '2. 短時間での大量リクエストを避けてください\n' +
+    '3. 必要に応じてページを再読み込みしてください');
+}
+
 export function showNetworkErrorNotification(attempt: number, maxRetries: number): void {
   const isLastAttempt = attempt === maxRetries;
   
