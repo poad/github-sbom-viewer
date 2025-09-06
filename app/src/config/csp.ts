@@ -3,7 +3,7 @@ export const CSP_CONFIG = {
   // 基本ディレクティブ
   DEFAULT_SRC: '\'none\'', // 最も厳格な設定
   
-  // スクリプト関連（unsafe-inline, unsafe-evalを明示的に禁止）
+  // スクリプト関連（nonce/hashベースの厳密な制御）
   SCRIPT_SRC: '\'self\'', // 同一オリジンのスクリプトのみ
   
   // スタイル関連
@@ -46,12 +46,65 @@ export const CSP_CONFIG = {
   },
 } as const;
 
-// CSP文字列を生成する関数
-export function generateCSPString(isDevelopment = false): string {
+// セキュアなnonce生成
+export function generateNonce(): string {
+  const array = new Uint8Array(16);
+  crypto.getRandomValues(array);
+  return btoa(String.fromCharCode(...array)).replace(/[+/=]/g, (match) => {
+    switch (match) {
+      case '+': return '-';
+      case '/': return '_';
+      case '=': return '';
+      default: return match;
+    }
+  });
+}
+
+// スクリプトハッシュ生成
+export async function generateScriptHash(script: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(script);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashBase64 = btoa(String.fromCharCode(...hashArray));
+  return `'sha256-${hashBase64}'`;
+}
+
+// CSP文字列を生成する関数（nonce/hash対応）
+export function generateCSPString(options: {
+  isDevelopment?: boolean;
+  nonce?: string;
+  scriptHashes?: string[];
+  styleHashes?: string[];
+} = {}): string {
+  const { isDevelopment = false, nonce, scriptHashes = [], styleHashes = [] } = options;
+  
+  // script-srcの構築
+  let scriptSrc = isDevelopment ? CSP_CONFIG.DEVELOPMENT_OVERRIDES.SCRIPT_SRC_DEV : CSP_CONFIG.SCRIPT_SRC;
+  
+  if (nonce) {
+    scriptSrc += ` 'nonce-${nonce}'`;
+  }
+  
+  if (scriptHashes.length > 0) {
+    scriptSrc += ` ${scriptHashes.join(' ')}`;
+  }
+  
+  // style-srcの構築
+  let styleSrc = CSP_CONFIG.STYLE_SRC;
+  
+  if (nonce) {
+    styleSrc += ` 'nonce-${nonce}'`;
+  }
+  
+  if (styleHashes.length > 0) {
+    styleSrc += ` ${styleHashes.join(' ')}`;
+  }
+
   const directives = [
     `default-src ${CSP_CONFIG.DEFAULT_SRC}`,
-    `script-src ${isDevelopment ? CSP_CONFIG.DEVELOPMENT_OVERRIDES.SCRIPT_SRC_DEV : CSP_CONFIG.SCRIPT_SRC}`,
-    `style-src ${CSP_CONFIG.STYLE_SRC}`,
+    `script-src ${scriptSrc}`,
+    `style-src ${styleSrc}`,
     `img-src ${CSP_CONFIG.IMG_SRC}`,
     `connect-src ${CSP_CONFIG.CONNECT_SRC}`,
     `font-src ${CSP_CONFIG.FONT_SRC}`,
@@ -105,6 +158,9 @@ export function validateCSP(): {
   if (!CSP_CONFIG.BLOCK_ALL_MIXED_CONTENT) {
     recommendations.push('Consider enabling block-all-mixed-content');
   }
+
+  // nonce/hashの使用推奨
+  recommendations.push('Consider using nonce or hash values for inline scripts/styles');
 
   return {
     isValid: warnings.length === 0,
