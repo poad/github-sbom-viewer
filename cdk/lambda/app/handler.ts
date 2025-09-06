@@ -85,6 +85,11 @@ async function githubSbomHandler(c: Context, owner: string, repo: string) {
   return c.json(sbom);
 }
 
+async function csrfTokenHandler(c: Context) {
+  // CSRFトークンを返す
+  return c.json({ csrfToken: c.get('csrfToken') });
+}
+
 async function githubUserHandler(c: Context) {
   const authHeader = c.req.header('Authorization');
   const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
@@ -106,4 +111,5 @@ export {
   githubOwnerHandler,
   githubUserHandler,
   githubSbomHandler,
+  csrfTokenHandler,
 };

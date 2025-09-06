@@ -3,15 +3,14 @@ import styles from './index.module.css';
 import { createResource, For, Show } from 'solid-js';
 import { A } from '@solidjs/router';
 import { FadeLoader } from '../features/ui/components';
+import { fetchWithAuth } from '../utils/api';
 
 export default function (): JSX.Element {
   const clientID = (import.meta.env.VITE_GITHUB_APPS_CLIENT_ID as string) ?? '';
-  const [data] = createResource<{ owners: string[] } | undefined>(() => {
+  const [data] = createResource<{ owners: string[] } | undefined>(async () => {
     if (localStorage.getItem('user')) {
-      const token = localStorage.getItem('token');
-      return fetch('/api/github', {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      }).then((resp) => resp.json());
+      const response = await fetchWithAuth('/api/github');
+      return response.json();
     }
     return undefined;
   });

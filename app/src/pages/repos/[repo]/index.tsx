@@ -1,16 +1,15 @@
 import { For, Show, createResource } from 'solid-js';
 import { A, useParams } from '@solidjs/router';
 import { FadeLoader } from '../../../features/ui/components';
+import { fetchWithAuth } from '../../../utils/api';
 
 export default function OrganizationRepos() {
   const { repo } = useParams();
   const user = localStorage.getItem('user') ?? '';
 
-  const [data] = createResource<Sbom[]>(() => {
-    const token = localStorage.getItem('token');
-    return fetch(`/api/github/sbom/${user}/${repo}`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    }).then((resp) => resp.json());
+  const [data] = createResource<Sbom[]>(async () => {
+    const response = await fetchWithAuth(`/api/github/sbom/${user}/${repo}`);
+    return response.json();
   });
   
   return (
