@@ -289,7 +289,7 @@ export function DependencyGraph(props: DependencyGraphProps) {
   };
 
   // アニメーションループ
-  let animationFrame: number;
+  let animationFrame: number | undefined = undefined;
   const animate = () => {
     applyForces();
     draw();
@@ -335,6 +335,8 @@ export function DependencyGraph(props: DependencyGraphProps) {
         ref={setCanvas}
         width={width()}
         height={height()}
+        aria-label="依存関係グラフ"
+        role='img'
         style={{
           border: '1px solid #ccc',
           'border-radius': '4px',
