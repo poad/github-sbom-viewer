@@ -11,17 +11,21 @@ export default function CookieConsent() {
 
   return (
     <Show when={showBanner()}>
-      <div style={{
-        position: 'fixed',
-        bottom: '0',
-        left: '0',
-        right: '0',
-        'background-color': '#333',
-        color: 'white',
-        padding: '1rem',
-        'z-index': '1000',
-        'text-align': 'center',
-      }}>
+      <div 
+        role="alert"
+        aria-live="polite"
+        style={{
+          position: 'fixed',
+          bottom: '0',
+          left: '0',
+          right: '0',
+          'background-color': '#333',
+          color: 'white',
+          padding: '1rem',
+          'z-index': '1000',
+          'text-align': 'center',
+        }}
+      >
         <p style={{ margin: '0 0 1rem 0' }}>
           このサイトでは、認証とセキュリティのためにクッキーを使用します。
           継続してご利用いただくには、クッキーの使用に同意してください。
