@@ -12,7 +12,13 @@ export default defineConfig({
   }), solidPlugin()],
   server: {
     headers: {
-      'Content-Security-Policy': 'frame-ancestors \'self\'',
+      'Content-Security-Policy': [
+        'default-src \'self\'',
+        'frame-ancestors \'self\'',
+        'img-src \'self\' data: https:',
+        'script-src \'self\' \'unsafe-inline\' \'unsafe-eval\'',
+        'style-src \'self\' \'unsafe-inline\'',
+      ].join('; '),
     },
   },
   test: {
