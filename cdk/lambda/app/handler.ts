@@ -26,7 +26,7 @@ async function rootHandler(
     const user = c.get('user-github');
 
     if (domain) {
-      const expires = new Date(new Date().getTime() + token.expires_in * 1000);
+      const expires = new Date(new Date().getTime() + (token.expires_in ?? 0) * 1000);
       setCookie(c, 'token', token.token, {
         secure: true,
         domain,
@@ -48,7 +48,7 @@ async function rootHandler(
 
       const refreshToken = c.get('refresh-token');
       if (refreshToken) {
-        const refreshTokenExpires = new Date(new Date().getTime() + refreshToken.expires_in * 1000);
+        const refreshTokenExpires = new Date(new Date().getTime() + (refreshToken.expires_in ?? 0) * 1000);
         setCookie(c, 'refresh-token', refreshToken.token, {
           secure: true,
           domain,
