@@ -59,7 +59,11 @@ const getErrorMessage = (status: number): string => {
 // リトライ可能なエラーかどうかを判定
 const isRetryableError = (error: Error | Response): boolean => {
   if (error instanceof Response) {
-    // 5xx系エラーと429はリトライ可能
+    // セキュリティ上の理由で認証エラーはリトライしない
+    if (error.status === 401 || error.status === 403) {
+      return false;
+    }
+    // 5xx系エラーと429のみリトライ可能
     return error.status >= 500 || error.status === 429;
   }
   // ネットワークエラーはリトライ可能
