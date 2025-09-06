@@ -36,34 +36,93 @@ interface RateLimitErrorInterface extends Error {
   retryAfter: number;
 }
 
-// レート制限追跡
+// レート制限追跡（永続化対応）
 const rateLimitTracker = {
-  requests: new Map<string, number[]>(),
-  
+  getStorageKey(endpoint: string): string {
+    return `rate_limit_${btoa(endpoint).replace(/[+/=]/g, '')}`;
+  },
+
+  getRequests(endpoint: string): number[] {
+    try {
+      const key = this.getStorageKey(endpoint);
+      const stored = localStorage.getItem(key);
+      if (!stored) return [];
+      
+      const requests = JSON.parse(stored) as number[];
+      const now = Date.now();
+      
+      // 古いリクエストを削除
+      const validRequests = requests.filter(time => now - time < RATE_LIMIT_CONFIG.windowMs);
+      
+      // 更新されたデータを保存
+      if (validRequests.length !== requests.length) {
+        localStorage.setItem(key, JSON.stringify(validRequests));
+      }
+      
+      return validRequests;
+    } catch (error) {
+      console.warn(`Failed to get rate limit data for ${endpoint}:`, error);
+      return [];
+    }
+  },
+
+  setRequests(endpoint: string, requests: number[]): void {
+    try {
+      const key = this.getStorageKey(endpoint);
+      localStorage.setItem(key, JSON.stringify(requests));
+    } catch (error) {
+      console.warn(`Failed to save rate limit data for ${endpoint}:`, error);
+      // ストレージ容量不足の場合は古いデータを削除
+      this.cleanupOldData();
+    }
+  },
+
   isRateLimited(endpoint: string): boolean {
-    const now = Date.now();
-    const requests = this.requests.get(endpoint) || [];
-    
-    // 古いリクエストを削除
-    const validRequests = requests.filter(time => now - time < RATE_LIMIT_CONFIG.windowMs);
-    this.requests.set(endpoint, validRequests);
-    
-    return validRequests.length >= RATE_LIMIT_CONFIG.maxRequests;
+    const requests = this.getRequests(endpoint);
+    return requests.length >= RATE_LIMIT_CONFIG.maxRequests;
   },
   
   recordRequest(endpoint: string): void {
-    const now = Date.now();
-    const requests = this.requests.get(endpoint) || [];
-    requests.push(now);
-    this.requests.set(endpoint, requests);
+    const requests = this.getRequests(endpoint);
+    requests.push(Date.now());
+    this.setRequests(endpoint, requests);
   },
   
   getRetryAfter(endpoint: string): number {
-    const requests = this.requests.get(endpoint) || [];
+    const requests = this.getRequests(endpoint);
     if (requests.length === 0) return 0;
     
     const oldestRequest = Math.min(...requests);
     return Math.max(0, RATE_LIMIT_CONFIG.windowMs - (Date.now() - oldestRequest));
+  },
+
+  cleanupOldData(): void {
+    try {
+      const now = Date.now();
+      const keysToRemove: string[] = [];
+      
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('rate_limit_')) {
+          try {
+            const data = JSON.parse(localStorage.getItem(key) || '[]') as number[];
+            const validRequests = data.filter(time => now - time < RATE_LIMIT_CONFIG.windowMs);
+            
+            if (validRequests.length === 0) {
+              keysToRemove.push(key);
+            } else if (validRequests.length !== data.length) {
+              localStorage.setItem(key, JSON.stringify(validRequests));
+            }
+          } catch {
+            keysToRemove.push(key);
+          }
+        }
+      }
+      
+      keysToRemove.forEach(key => localStorage.removeItem(key));
+    } catch (error) {
+      console.warn('Failed to cleanup rate limit data:', error);
+    }
   },
 };
 
@@ -368,6 +427,19 @@ export async function fetchWithoutAuth(url: string, options: RequestInit = {}): 
     }
     throw error;
   }
+}
+
+// 定期的なレート制限データクリーンアップ
+if (typeof window !== 'undefined') {
+  // 5分ごとにクリーンアップ実行
+  setInterval(() => {
+    rateLimitTracker.cleanupOldData();
+  }, 5 * 60 * 1000);
+
+  // ページ離脱時にもクリーンアップ
+  window.addEventListener('beforeunload', () => {
+    rateLimitTracker.cleanupOldData();
+  });
 }
 
 // SecurityErrorクラスの定義
