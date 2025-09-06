@@ -1,6 +1,6 @@
 import { createSignal, Show, onMount, onCleanup } from 'solid-js';
 import { hasGivenConsent, giveConsent } from '../utils/cookie-consent';
-import { disableBackgroundFocus, restoreBackgroundFocus, saveFocus, restoreFocus } from '../utils/focus-management';
+import { disableBackgroundFocus, restoreBackgroundFocus, saveFocus, restoreFocus, getFocusableElements } from '../utils/focus-management';
 import { announceToScreenReader, announceAlert } from '../utils/screen-reader';
 
 export default function CookieConsent() {
@@ -14,21 +14,27 @@ export default function CookieConsent() {
   const handleAccept = () => {
     giveConsent();
     setShowBanner(false);
+    
+    // フォーカスを適切に復元
     restoreFocus(previousActiveElement);
+    restoreBackgroundFocus();
+    
     announceToScreenReader('クッキーの使用に同意しました', 'status');
   };
 
   const handleReject = () => {
     setShowBanner(false);
+    
+    // フォーカスを適切に復元
     restoreFocus(previousActiveElement);
+    restoreBackgroundFocus();
+    
     announceToScreenReader('クッキーの使用を拒否しました', 'status');
   };
 
   const updateFocusableElements = () => {
     if (!dialogRef) return;
-    focusableElements = Array.from(
-      dialogRef.querySelectorAll('button:not([disabled]), [tabindex]:not([tabindex="-1"])'),
-    ) as HTMLElement[];
+    focusableElements = getFocusableElements(dialogRef);
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -78,6 +84,28 @@ export default function CookieConsent() {
         event.preventDefault();
         focusableElements[focusableElements.length - 1]?.focus();
         break;
+      
+      case 'ArrowRight':
+      case 'ArrowDown': {
+        event.preventDefault();
+        if (focusableElements.length === 0) return;
+        
+        const currentRightIndex = focusableElements.findIndex(el => el === document.activeElement);
+        const nextRightIndex = currentRightIndex >= focusableElements.length - 1 ? 0 : currentRightIndex + 1;
+        focusableElements[nextRightIndex]?.focus();
+        break;
+      }
+      
+      case 'ArrowLeft':
+      case 'ArrowUp': {
+        event.preventDefault();
+        if (focusableElements.length === 0) return;
+        
+        const currentLeftIndex = focusableElements.findIndex(el => el === document.activeElement);
+        const nextLeftIndex = currentLeftIndex <= 0 ? focusableElements.length - 1 : currentLeftIndex - 1;
+        focusableElements[nextLeftIndex]?.focus();
+        break;
+      }
     }
   };
 
@@ -100,6 +128,10 @@ export default function CookieConsent() {
   });
 
   onCleanup(() => {
+    // コンポーネント破棄時に確実にフォーカスを復元
+    if (showBanner()) {
+      restoreFocus(previousActiveElement);
+    }
     restoreBackgroundFocus();
   });
 
