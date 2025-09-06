@@ -112,6 +112,32 @@ export class CloudfrontCdnTemplateStack extends cdk.Stack {
       queryStringBehavior: cloudfront.OriginRequestQueryStringBehavior.all(),
     });
 
+    const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, 'SecurityHeadersPolicy', {
+      securityHeadersBehavior: {
+        contentSecurityPolicy: {
+          contentSecurityPolicy: 'default-src \'self\'; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data: https:; connect-src \'self\' https://api.github.com; frame-ancestors \'none\';',
+          override: true,
+        },
+        contentTypeOptions: {
+          override: true,
+        },
+        frameOptions: {
+          frameOption: cloudfront.HeadersFrameOption.DENY,
+          override: true,
+        },
+        referrerPolicy: {
+          referrerPolicy: cloudfront.HeadersReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN,
+          override: true,
+        },
+        strictTransportSecurity: {
+          accessControlMaxAge: cdk.Duration.seconds(31536000),
+          includeSubdomains: true,
+          preload: true,
+          override: true,
+        },
+      },
+    });
+
     const cf = new cloudfront.Distribution(this, 'CloudFront', {
       comment,
       defaultRootObject: 'index.html',
@@ -123,6 +149,7 @@ export class CloudfrontCdnTemplateStack extends cdk.Stack {
         }),
         cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        responseHeadersPolicy: securityHeadersPolicy,
       },
       additionalBehaviors: {
         [`${apiRootPath}*`]: {
@@ -135,6 +162,7 @@ export class CloudfrontCdnTemplateStack extends cdk.Stack {
           viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
           cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
           originRequestPolicy: apiRequestPolicy,
+          responseHeadersPolicy: securityHeadersPolicy,
         },
       },
       httpVersion: cloudfront.HttpVersion.HTTP2_AND_3,
