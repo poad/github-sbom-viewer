@@ -4,6 +4,20 @@ import { getOwners, getUserRepos, getOwnerRepos, getSbomData } from './github';
 
 const logger = new Logger();
 
+// トークンの有効期限を動的に計算する関数
+// トークンの有効期限を動的に計算する関数
+function calculateTokenMaxAge(token: { expires_in?: number }): number {
+  if (token.expires_in && typeof token.expires_in === 'number' && token.expires_in > 0) {
+    // expires_inが提供されている場合はそれを使用
+    return token.expires_in;
+  }
+  
+  // GitHubのデフォルトトークン有効期限は8時間（28800秒）
+  // セキュリティを考慮して少し短めに設定
+  const DEFAULT_TOKEN_LIFETIME = 6 * 60 * 60; // 6時間
+  return DEFAULT_TOKEN_LIFETIME;
+}
+
 async function rootHandler(
   c: Context,
   apiRoot?: string,
@@ -19,11 +33,14 @@ async function rootHandler(
 
   try {
     const user = c.get('user-github');
+    
+    // トークンの有効期限を動的に計算
+    const maxAge = calculateTokenMaxAge(token);
 
     // httpOnlyクッキーでトークンを設定
-    c.header('Set-Cookie', `token=${token.token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${token.expires_in || 3600}`);
+    c.header('Set-Cookie', `token=${token.token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${maxAge}`);
     if (user?.login) {
-      c.header('Set-Cookie', `user=${user.login}; Secure; SameSite=Strict; Path=/; Max-Age=${token.expires_in || 3600}`);
+      c.header('Set-Cookie', `user=${user.login}; Secure; SameSite=Strict; Path=/; Max-Age=${maxAge}`);
     }
 
     // Accept ヘッダーをチェックしてJSONリクエストかどうか判定
