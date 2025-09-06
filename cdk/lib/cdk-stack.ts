@@ -115,7 +115,7 @@ export class CloudfrontCdnTemplateStack extends cdk.Stack {
     const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, 'SecurityHeadersPolicy', {
       securityHeadersBehavior: {
         contentSecurityPolicy: {
-          contentSecurityPolicy: 'default-src \'self\'; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data: https:; connect-src \'self\' https://api.github.com; frame-ancestors \'none\';',
+          contentSecurityPolicy: 'default-src \'self\'; script-src \'self\'; style-src \'self\'; img-src \'self\' data: https:; connect-src \'self\' https://api.github.com https://github.com; frame-ancestors \'none\'; object-src \'none\'; base-uri \'self\'; form-action \'self\';',
           override: true,
         },
         contentTypeOptions: {
