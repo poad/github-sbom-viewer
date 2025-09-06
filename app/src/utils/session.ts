@@ -1,5 +1,6 @@
 import { clearCsrfToken } from './csrf';
 import { SENSITIVE_STORAGE_KEYS } from '../config/security';
+import { initializeSessionSecurity, validateSession, destroySession } from './session-security';
 
 export function initSessionCleanup(): void {
   let hiddenTime: number | null = null;
@@ -11,6 +12,11 @@ export function initSessionCleanup(): void {
   // セッション開始時刻を記録（タイミング攻撃対策付き）
   const sessionStartTime = Date.now() + Math.random() * TIMING_ATTACK_DELAY;
   secureStorageSet('session-start-time', sessionStartTime.toString());
+
+  // セッションセキュリティ初期化
+  initializeSessionSecurity().catch(error => {
+    console.error('Failed to initialize session security:', error);
+  });
 
   // セキュアなデータ消去（複数回上書き）
   const secureErase = (key: string): void => {
@@ -61,6 +67,11 @@ export function initSessionCleanup(): void {
       secureErase('session-start-time');
       secureErase('last-activity-time');
       
+      // セッションセキュリティの破棄
+      destroySession().catch(error => {
+        console.error('Failed to destroy session security:', error);
+      });
+      
       // メモリ内の機密データもクリア
       if (typeof window !== 'undefined' && window.crypto && window.crypto.subtle) {
         // 可能であればメモリを強制的にガベージコレクション
@@ -98,7 +109,7 @@ export function initSessionCleanup(): void {
     }
   };
 
-  // セッション再検証（タイミング攻撃対策付き）
+  // セッション再検証（強化版）
   const revalidateSession = async (): Promise<void> => {
     const startTime = performance.now();
     
@@ -107,6 +118,16 @@ export function initSessionCleanup(): void {
       const startTimeStr = localStorage.getItem('session-start-time');
       if (startTimeStr && Date.now() - parseInt(startTimeStr) > MAX_SESSION_DURATION) {
         console.warn('Session exceeded maximum duration');
+        clearSensitiveData();
+        const { logout } = await import('./auth');
+        logout();
+        return;
+      }
+
+      // セッションセキュリティ検証（フィンガープリント + トークン）
+      const sessionValid = await validateSession();
+      if (!sessionValid) {
+        console.warn('Session security validation failed');
         clearSensitiveData();
         const { logout } = await import('./auth');
         logout();
@@ -124,7 +145,7 @@ export function initSessionCleanup(): void {
       });
       
       if (!response.ok) {
-        console.warn('Session validation failed:', response.status);
+        console.warn('Server session validation failed:', response.status);
         clearSensitiveData();
         const { logout } = await import('./auth');
         logout();
