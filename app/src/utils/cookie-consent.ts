@@ -1,3 +1,5 @@
+import { SENSITIVE_COOKIE_NAMES, COOKIE_PATHS } from '../config/security';
+
 const CONSENT_KEY = 'cookie-consent';
 
 export function hasGivenConsent(): boolean {
@@ -16,17 +18,15 @@ function deleteCookie(name: string, path = '/', domain?: string): void {
 
 function clearAllCookies(): void {
   const hostname = window.location.hostname;
-  const cookieNames = ['token', 'user', 'session', 'csrf-token', 'auth-state'];
-  const paths = ['/', '/api/', '/auth/'];
   const domains = [
     hostname,
     `.${hostname}`,
     hostname.startsWith('www.') ? hostname.substring(4) : `www.${hostname}`,
   ];
 
-  // 各クッキー名、パス、ドメインの組み合わせで削除
-  cookieNames.forEach(name => {
-    paths.forEach(path => {
+  // 設定から取得したクッキー名、パス、ドメインの組み合わせで削除
+  SENSITIVE_COOKIE_NAMES.forEach(name => {
+    COOKIE_PATHS.forEach(path => {
       // ドメイン指定なし
       deleteCookie(name, path);
       // 各ドメインで削除

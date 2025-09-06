@@ -1,4 +1,5 @@
 import { clearCsrfToken } from './csrf';
+import { SENSITIVE_STORAGE_KEYS } from '../config/security';
 
 export function initSessionCleanup(): void {
   let hiddenTime: number | null = null;
@@ -9,16 +10,8 @@ export function initSessionCleanup(): void {
   const clearSensitiveData = () => {
     clearCsrfToken();
     
-    // ローカルストレージからセンシティブなデータを削除
-    const sensitiveKeys = [
-      'github-token',
-      'user-session',
-      'auth-state',
-      'csrf-token',
-      'session-data',
-    ];
-    
-    sensitiveKeys.forEach(key => {
+    // 設定からセンシティブなキーを取得して削除
+    SENSITIVE_STORAGE_KEYS.forEach(key => {
       localStorage.removeItem(key);
     });
   };
