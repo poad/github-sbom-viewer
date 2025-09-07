@@ -40,6 +40,11 @@ app.use(logger())
     c.header('Cross-Origin-Embedder-Policy', 'unsafe-none');
     c.header('X-Frame-Options', 'DENY');
     c.header('X-Content-Type-Options', 'nosniff');
+    
+    // Safari拡張機能との競合を回避するためのヘッダー
+    c.header('Access-Control-Allow-Private-Network', 'true');
+    c.header('Vary', 'Origin, Access-Control-Request-Method, Access-Control-Request-Headers');
+    
     await next();
   })
   .use(csrf())
