@@ -1,6 +1,8 @@
 import { JSXElement } from 'solid-js';
 
-interface ButtonProps {
+
+ 
+export interface ButtonProps {
   /**
    * ボタンのテキストやアイコンなど、子要素として表示する内容
    */
@@ -20,15 +22,11 @@ interface ButtonProps {
   /**
    * ボタンの type 属性（デフォルトは 'button'）
    */
-  type?: "button" | "submit" | "reset";
+  type?: 'button' | 'submit' | 'reset';
   /**
    * 無効化状態
    */
   disabled?: boolean;
-}
-  children: JSXElement;
-  onClick: (e: MouseEvent) => void;
-  active?: boolean;
 }
 
 export default function Button(props: ButtonProps) {
@@ -49,13 +47,14 @@ export default function Button(props: ButtonProps) {
 
   return (
     <button
-        onClick={props.onClick}
-        style={style}
-        aria-label={props.ariaLabel}
-        type={props.type ?? "button"}
-        disabled={props.disabled}
-      >
+      onClick={props.onClick}
+      style={style}
+      aria-label={props.ariaLabel}
+      type={props.type ?? 'button'}
+      disabled={props.disabled}
+    >
       {props.children}
     </button>
   );
 }
+

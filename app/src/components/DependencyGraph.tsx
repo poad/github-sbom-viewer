@@ -26,6 +26,7 @@ interface DependencyGraphProps {
 
 export default function DependencyGraph(props: DependencyGraphProps) {
   let canvasRef: HTMLCanvasElement | undefined;
+  let ctx!: CanvasRenderingContext2D;
   const [hoveredNode, setHoveredNode] = createSignal<string | null>(null);
   const [nodes, setNodes] = createSignal<Node[]>([]);
   const [links, setLinks] = createSignal<Link[]>([]);
@@ -37,9 +38,9 @@ export default function DependencyGraph(props: DependencyGraphProps) {
   createEffect(() => {
     const packages = props.packages.filter(pkg => pkg.name);
     const mainName = props.mainPackageName;
-    
+
     const nodeMap = new Map<string, Node>();
-    
+
     // Create main package node
     const mainNode: Node = {
       id: mainName,
@@ -147,7 +148,7 @@ export default function DependencyGraph(props: DependencyGraphProps) {
       if (this.southwest?.insert(point)) return true;
       return false;
     }
-    
+
 
     query(range: Rectangle, found: { node: Node; x: number; y: number }[] = []): { node: Node; x: number; y: number }[] {
       if (!this.boundary.intersects(range)) {
@@ -171,7 +172,7 @@ export default function DependencyGraph(props: DependencyGraphProps) {
   const simulate = () => {
     const nodeArray = nodes();
     const linkArray = links();
-    
+
     // Apply forces
     // Build quadtree for repulsion calculations
     const boundary = new Rectangle(width() / 2, height() / 2, width() / 2, height() / 2);
@@ -227,7 +228,7 @@ export default function DependencyGraph(props: DependencyGraphProps) {
         const force = (distance - targetDistance) * 0.01;
         const fx = (dx / distance) * force;
         const fy = (dy / distance) * force;
-        
+
         source.vx += fx;
         source.vy += fy;
         target.vx -= fx;
@@ -240,12 +241,9 @@ export default function DependencyGraph(props: DependencyGraphProps) {
 
   // Canvas drawing
   const draw = () => {
-    const canvas = canvasRef;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    ctx.save();
     ctx.clearRect(0, 0, width(), height());
 
     // Draw links
@@ -268,7 +266,7 @@ export default function DependencyGraph(props: DependencyGraphProps) {
       if (hoveredNode() === node.id) {
         ctx.fillStyle = node.isMain ? '#1d4ed8' : '#475569';
       }
-      
+
       ctx.beginPath();
       ctx.arc(node.x, node.y, node.radius, 0, 2 * Math.PI);
       ctx.fill();
@@ -278,10 +276,11 @@ export default function DependencyGraph(props: DependencyGraphProps) {
       ctx.font = node.isMain ? '14px bold sans-serif' : '12px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      
+
       const displayName = node.name.length > 15 ? node.name.substring(0, 12) + '...' : node.name;
       ctx.fillText(displayName, node.x, node.y);
     });
+    ctx.restore();
   };
 
   // Mouse interaction
@@ -322,6 +321,10 @@ export default function DependencyGraph(props: DependencyGraphProps) {
   onMount(() => {
     if (canvasRef) {
       canvasRef.addEventListener('mousemove', handleMouseMove);
+      const ctxTemp = canvasRef.getContext('2d');
+      if (ctxTemp) {
+        ctx = ctxTemp;
+      }
       animationFrameId = requestAnimationFrame(animate);
     }
   });
