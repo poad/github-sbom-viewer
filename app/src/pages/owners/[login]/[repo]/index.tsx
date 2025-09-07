@@ -1,5 +1,6 @@
 import { For, Show, createResource, createSignal } from 'solid-js';
 import Button from '../../../../features/ui/components/Button';
+import Table, { Th } from '../../../../features/ui/components/Table';
 import { A, useParams } from '@solidjs/router';
 import { FadeLoader } from '../../../../features/ui/components';
 import DependencyGraph from '../../../../components/DependencyGraph';
@@ -34,23 +35,11 @@ export default function OrganizationRepos() {
               <>
                 <h2>{sbom.sbom.name}</h2>
                 <Show when={viewMode() === 'table'}>
-                  <table style={{
-                    width: '100%',
-                    'border-collapse': 'collapse',
-                    border: '1px solid #d1d5db',
-                  }}>
+                  <Table>
                     <thead>
                       <tr style={{ background: '#374151', color: 'white' }}>
-                        <th style={{
-                          padding: '12px',
-                          'text-align': 'left',
-                          border: '1px solid #d1d5db',
-                        }}>name</th>
-                        <th style={{
-                          padding: '12px',
-                          'text-align': 'left',
-                          border: '1px solid #d1d5db',
-                        }}>version info</th>
+                        <Th>name</Th>
+                        <Th>version info</Th>
                       </tr>
                     </thead>
                     <tbody>
@@ -69,7 +58,7 @@ export default function OrganizationRepos() {
                         )}
                       </For>
                     </tbody>
-                  </table>
+                  </Table>
                 </Show>
                 <Show when={viewMode() === 'graph'}>
                   <div style={{ margin: '20px 0' }}>
