@@ -1,7 +1,6 @@
 import { For, Show, createResource } from 'solid-js';
 import { A, useParams } from '@solidjs/router';
 import { FadeLoader } from '../../../features/ui/components';
-import { fetchWithAuth } from '../../../utils/api';
 
 export default function OrganizationRepos() {
   const { login } = useParams();
@@ -12,10 +11,9 @@ export default function OrganizationRepos() {
         nameWithOwner: string;
         owner: string;
       }[];
-    }>(async () => {
-    const response = await fetchWithAuth(`/api/github/owners/${login}`);
-    return response.json();
-  });
+    }>(() =>
+    fetch(`/api/github/owners/${login}`).then((resp) => resp.json()),
+  );
   return (
     <>
       <h1>Repositories</h1>
