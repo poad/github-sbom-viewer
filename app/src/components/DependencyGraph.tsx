@@ -85,11 +85,97 @@ export default function DependencyGraph(props: DependencyGraphProps) {
   });
 
   // Physics simulation
+  // 使用する四分木（Quadtree）クラスの定義
+  class Rectangle {
+    constructor(public x: number, public y: number, public w: number, public h: number) {}
+    contains(point: { x: number; y: number }): boolean {
+      return (
+        point.x >= this.x - this.w &&
+      point.x < this.x + this.w &&
+      point.y >= this.y - this.h &&
+      point.y < this.y + this.h
+      );
+    }
+    intersects(range: Rectangle): boolean {
+      return !(
+        range.x - range.w > this.x + this.w ||
+      range.x + range.w < this.x - this.w ||
+      range.y - range.h > this.y + this.h ||
+      range.y + range.h < this.y - this.h
+      );
+    }
+  }
+
+  class Quadtree {
+    boundary: Rectangle;
+    capacity: number;
+    points: { node: Node; x: number; y: number }[] = [];
+    divided = false;
+    northeast?: Quadtree;
+    northwest?: Quadtree;
+    southeast?: Quadtree;
+    southwest?: Quadtree;
+    constructor(boundary: Rectangle, capacity: number) {
+      this.boundary = boundary;
+      this.capacity = capacity;
+    }
+    subdivide() {
+      const x = this.boundary.x;
+      const y = this.boundary.y;
+      const w = this.boundary.w / 2;
+      const h = this.boundary.h / 2;
+      this.northeast = new Quadtree(new Rectangle(x + w, y - h, w, h), this.capacity);
+      this.northwest = new Quadtree(new Rectangle(x - w, y - h, w, h), this.capacity);
+      this.southeast = new Quadtree(new Rectangle(x + w, y + h, w, h), this.capacity);
+      this.southwest = new Quadtree(new Rectangle(x - w, y + h, w, h), this.capacity);
+      this.divided = true;
+    }
+    insert(point: { node: Node; x: number; y: number }): boolean {
+      if (!this.boundary.contains(point)) {
+        return false;
+      }
+      if (this.points.length < this.capacity) {
+        this.points.push(point);
+        return true;
+      }
+      if (!this.divided) {
+        this.subdivide();
+      }
+      if (this.northeast?.insert(point)) return true;
+      if (this.northwest?.insert(point)) return true;
+      if (this.southeast?.insert(point)) return true;
+      if (this.southwest?.insert(point)) return true;
+      return false;
+    }
+    query(range: Rectangle, found: { node: Node; x: number; y: number }[] = []): { node: Node; x: number; y: number }[] {
+      if (!this.boundary.intersects(range)) {
+        return found;
+      }
+      for (const p of this.points) {
+        if (range.contains(p)) {
+          found.push(p);
+        }
+      }
+      if (this.divided) {
+        this.northwest?.query(range, found);
+        this.northeast?.query(range, found);
+        this.southwest?.query(range, found);
+        this.southeast?.query(range, found);
+      }
+      return found;
+    }
+  }
+
   const simulate = () => {
     const nodeArray = nodes();
     const linkArray = links();
     
     // Apply forces
+    // Build quadtree for repulsion calculations
+    const boundary = new Rectangle(width() / 2, height() / 2, width() / 2, height() / 2);
+    const qt = new Quadtree(boundary, 4);
+    nodeArray.forEach(n => qt.insert({ node: n, x: n.x, y: n.y }));
+
     nodeArray.forEach(node => {
       // Center force for main package
       if (node.isMain) {
@@ -99,8 +185,11 @@ export default function DependencyGraph(props: DependencyGraphProps) {
         node.vy += (centerY - node.y) * 0.001;
       }
 
-      // Repulsion between nodes
-      nodeArray.forEach(other => {
+      // Repulsion using quadtree (query nearby nodes within a reasonable range)
+      const range = new Rectangle(node.x, node.y, 100, 100); // 100px radius approximation
+      const neighbors = qt.query(range);
+      neighbors.forEach(p => {
+        const other = p.node;
         if (node !== other) {
           const dx = node.x - other.x;
           const dy = node.y - other.y;
