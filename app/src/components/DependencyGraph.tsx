@@ -1,4 +1,4 @@
-import { createEffect, createSignal, onMount } from 'solid-js';
+import { createEffect, createSignal, onMount, onCleanup } from 'solid-js';
 
 interface Node {
   id: string;
@@ -225,11 +225,20 @@ export default function DependencyGraph(props: DependencyGraphProps) {
     requestAnimationFrame(animate);
   };
 
+  let animationFrameId: number;
+
   onMount(() => {
     if (canvasRef) {
       canvasRef.addEventListener('mousemove', handleMouseMove);
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     }
+  });
+
+  onCleanup(() => {
+    if (canvasRef) {
+      canvasRef.removeEventListener('mousemove', handleMouseMove);
+    }
+    cancelAnimationFrame(animationFrameId);
   });
 
   return (
