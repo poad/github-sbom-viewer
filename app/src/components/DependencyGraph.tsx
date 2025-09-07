@@ -212,17 +212,23 @@ export default function DependencyGraph(props: DependencyGraphProps) {
     setHoveredNode(foundNode);
   };
 
-  // Animation loop
-  const animate = () => {
-    simulate();
-    draw();
+  // Animation loop with throttling to reduce CPU load
+  const FRAME_INTERVAL = 1000 / 30; // target ~30 FPS
+  let lastTimestamp = 0;
+  const animate = (timestamp: number) => {
+    const delta = timestamp - lastTimestamp;
+    if (delta >= FRAME_INTERVAL) {
+      simulate();
+      draw();
+      lastTimestamp = timestamp;
+    }
     requestAnimationFrame(animate);
   };
 
   onMount(() => {
     if (canvasRef) {
       canvasRef.addEventListener('mousemove', handleMouseMove);
-      animate();
+      requestAnimationFrame(animate);
     }
   });
 
