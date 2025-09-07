@@ -1,0 +1,108 @@
+.banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #e1e5e9;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 16px;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.message {
+  margin: 0;
+  color: #24292f;
+  font-size: 14px;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.button {
+  padding: 8px 16px;
+  border: 1px solid;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+.accept {
+  color: #fff;
+  background-color: #2da44e;
+  border-color: #2da44e;
+}
+
+.accept:hover {
+  background-color: #2c974b;
+  border-color: #2c974b;
+}
+
+.reject {
+  color: #24292f;
+  background-color: #f6f8fa;
+  border-color: #d0d7de;
+}
+
+.reject:hover {
+  background-color: #f3f4f6;
+  border-color: #b8bdc3;
+}
+
+.enable {
+  color: #fff;
+  background-color: #0969da;
+  border-color: #0969da;
+}
+
+.enable:hover {
+  background-color: #0860ca;
+  border-color: #0860ca;
+}
+
+.rejectedNotice {
+  background-color: #fff8c5;
+  border: 1px solid #d8b308;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin: 16px;
+  color: #24292f;
+}
+
+.rejectedNotice p {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .buttons {
+    justify-content: center;
+  }
+  
+  .message {
+    text-align: center;
+  }
+}
