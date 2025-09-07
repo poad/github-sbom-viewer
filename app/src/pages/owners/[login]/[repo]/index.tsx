@@ -1,4 +1,5 @@
 import { For, Show, createResource, createSignal } from 'solid-js';
+import Button from '../../../../features/ui/components/Button';
 import { A, useParams } from '@solidjs/router';
 import { FadeLoader } from '../../../../features/ui/components';
 import DependencyGraph from '../../../../components/DependencyGraph';
@@ -13,35 +14,18 @@ export default function OrganizationRepos() {
     <>
       <h1>SBOM</h1>
       <div style={{ margin: '20px 0' }}>
-        <button
+        <Button
           onClick={() => setViewMode('table')}
-          aria-label="Table View"
-          aria-pressed={viewMode() === 'table'}
-          style={{
-            padding: '8px 16px',
-            margin: '0 8px 0 0',
-            background: viewMode() === 'table' ? '#2563eb' : '#e5e7eb',
-            color: viewMode() === 'table' ? 'white' : '#374151',
-            border: 'none',
-            'border-radius': '4px',
-            cursor: 'pointer',
-          }}
+          active={viewMode() === 'table'}
         >
           テーブル表示
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => setViewMode('graph')}
-          style={{
-            padding: '8px 16px',
-            background: viewMode() === 'graph' ? '#2563eb' : '#e5e7eb',
-            color: viewMode() === 'graph' ? 'white' : '#374151',
-            border: 'none',
-            'border-radius': '4px',
-            cursor: 'pointer',
-          }}
+          active={viewMode() === 'graph'}
         >
           グラフ表示
-        </button>
+        </Button>
       </div>
       <div>
         <Show when={!data.loading} fallback={(<FadeLoader />)}>
