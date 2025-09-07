@@ -1,8 +1,11 @@
 body {
-  text-align: center;
   background-color: #282c34;
   min-height: 100vh;
   color: lightgray;
+}
+
+.App {
+  text-align: center;
 }
 
 .logo {
@@ -13,7 +16,7 @@ body {
 
 .header {
   background-color: #282c34;
-  min-height: 20vh;
+  min-height: 5vh;
   display: flex;
   flex-direction: column;
   align-items: center;

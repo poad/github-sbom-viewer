@@ -1,38 +1,80 @@
-import { For, Show, createResource } from 'solid-js';
+import { For, Show, createResource, createSignal } from 'solid-js';
+import Button from '../../../../features/ui/components/Button';
+import Table, { Th } from '../../../../features/ui/components/Table';
 import { A, useParams } from '@solidjs/router';
 import { FadeLoader } from '../../../../features/ui/components';
+import DependencyGraph from '../../../../components/DependencyGraph';
 
 export default function OrganizationRepos() {
   const { login, repo } = useParams();
   const [data] = createResource<Sbom[]>(() =>
     fetch(`/api/github/sbom/${login}/${repo}`).then((resp) => resp.json()),
   );
+  const [viewMode, setViewMode] = createSignal<'table' | 'graph'>('table');
   return (
     <>
       <h1>SBOM</h1>
-      <p>
+      <div style={{ margin: '20px 0' }}>
+        <Button
+          onClick={() => setViewMode('table')}
+          active={viewMode() === 'table'}
+        >
+          テーブル表示
+        </Button>
+        <Button
+          onClick={() => setViewMode('graph')}
+          active={viewMode() === 'graph'}
+        >
+          グラフ表示
+        </Button>
+      </div>
+      <div>
         <Show when={!data.loading} fallback={(<FadeLoader />)}>
           <For each={data()}>
             {(sbom) => (
               <>
                 <h2>{sbom.sbom.name}</h2>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>name</th><th>version info</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <For each={sbom.sbom.packages}>
-                      {(pkg) => <tr><td>{pkg.name}</td><td>{pkg.versionInfo}</td></tr>}
-                    </For>
-                  </tbody>
-                </table>
+                <Show when={viewMode() === 'table'}>
+                  <Table>
+                    <thead>
+                      <tr style={{ background: '#374151', color: 'white' }}>
+                        <Th>name</Th>
+                        <Th>version info</Th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <For each={sbom.sbom.packages}>
+                        {(pkg) => (
+                          <tr style={{ background: '#cbd5e1' }}>
+                            <td style={{
+                              padding: '12px',
+                              border: '1px solid #d1d5db',
+                            }}>{pkg.name}</td>
+                            <td style={{
+                              padding: '12px',
+                              border: '1px solid #d1d5db',
+                            }}>{pkg.versionInfo}</td>
+                          </tr>
+                        )}
+                      </For>
+                    </tbody>
+                  </Table>
+                </Show>
+                <Show when={viewMode() === 'graph'}>
+                  <div style={{ margin: '20px 0' }}>
+                    <DependencyGraph
+                      packages={sbom.sbom.packages}
+                      mainPackageName={sbom.sbom.name}
+                      width={800}
+                      height={600}
+                    />
+                  </div>
+                </Show>
               </>
             )}
           </For>
         </Show>
-      </p>
+      </div>
       <p>
         <A href="/">HOME</A>
       </p>
