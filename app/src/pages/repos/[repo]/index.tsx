@@ -1,6 +1,8 @@
 import { For, Show, createResource, createSignal } from 'solid-js';
 import { A, useParams } from '@solidjs/router';
 import { FadeLoader } from '../../../features/ui/components';
+import Button from '../../../features/ui/components/Button';
+import Table, { Th } from '../../../features/ui/components/Table';
 import DependencyGraph from '../../../components/DependencyGraph';
 
 export default function OrganizationRepos() {
@@ -15,33 +17,18 @@ export default function OrganizationRepos() {
     <>
       <h1>SBOM</h1>
       <div style={{ margin: '20px 0' }}>
-        <button 
+        <Button
           onClick={() => setViewMode('table')}
-          style={{
-            padding: '8px 16px',
-            margin: '0 8px 0 0',
-            background: viewMode() === 'table' ? '#2563eb' : '#e5e7eb',
-            color: viewMode() === 'table' ? 'white' : '#374151',
-            border: 'none',
-            'border-radius': '4px',
-            cursor: 'pointer',
-          }}
+          active={viewMode() === 'table'}
         >
           テーブル表示
-        </button>
-        <button 
+        </Button>
+        <Button
           onClick={() => setViewMode('graph')}
-          style={{
-            padding: '8px 16px',
-            background: viewMode() === 'graph' ? '#2563eb' : '#e5e7eb',
-            color: viewMode() === 'graph' ? 'white' : '#374151',
-            border: 'none',
-            'border-radius': '4px',
-            cursor: 'pointer',
-          }}
+          active={viewMode() === 'graph'}
         >
           グラフ表示
-        </button>
+        </Button>
       </div>
       <div>
         <Show when={!data.loading} fallback={(<FadeLoader />)}>
@@ -50,23 +37,11 @@ export default function OrganizationRepos() {
               <>
                 <h2>{sbom.sbom.name}</h2>
                 <Show when={viewMode() === 'table'}>
-                  <table style={{
-                    width: '100%',
-                    'border-collapse': 'collapse',
-                    border: '1px solid #d1d5db',
-                  }}>
+                  <Table>
                     <thead>
                       <tr style={{ background: '#374151', color: 'white' }}>
-                        <th style={{
-                          padding: '12px',
-                          'text-align': 'left',
-                          border: '1px solid #d1d5db',
-                        }}>name</th>
-                        <th style={{
-                          padding: '12px',
-                          'text-align': 'left',
-                          border: '1px solid #d1d5db',
-                        }}>version info</th>
+                        <Th>name</Th>
+                        <Th>version info</Th>
                       </tr>
                     </thead>
                     <tbody>
@@ -76,16 +51,18 @@ export default function OrganizationRepos() {
                             <td style={{
                               padding: '12px',
                               border: '1px solid #d1d5db',
+                              color: '#374151',
                             }}>{pkg.name}</td>
                             <td style={{
                               padding: '12px',
                               border: '1px solid #d1d5db',
+                              color: '#374151',
                             }}>{pkg.versionInfo}</td>
                           </tr>
                         )}
                       </For>
                     </tbody>
-                  </table>
+                  </Table>
                 </Show>
                 <Show when={viewMode() === 'graph'}>
                   <div style={{ margin: '20px 0' }}>
