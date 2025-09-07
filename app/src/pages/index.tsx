@@ -5,7 +5,7 @@ import { A } from '@solidjs/router';
 import { FadeLoader } from '../features/ui/components';
 
 export default function (): JSX.Element {
-  const clientID = import.meta.env.VITE_GITHUB_APPS_CLIENT_ID ?? '';
+  const clientID = (import.meta.env.VITE_GITHUB_APPS_CLIENT_ID as string || undefined) ?? '';
   const [data] = createResource<{ owners: string[] } | undefined>(() => {
     if (document.cookie.split('; ').some((item) => item.startsWith('user='))) {
       return fetch('/api/github').then((resp) => resp.json());
