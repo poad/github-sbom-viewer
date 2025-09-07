@@ -1,4 +1,5 @@
 import { createEffect, createSignal, onMount, onCleanup } from 'solid-js';
+// パフォーマンス改善とメモリリーク防止のための実装
 
 interface Node {
   id: string;

@@ -13,8 +13,10 @@ export default function OrganizationRepos() {
     <>
       <h1>SBOM</h1>
       <div style={{ margin: '20px 0' }}>
-        <button 
+        <button
           onClick={() => setViewMode('table')}
+          aria-label="Table View"
+          aria-pressed={viewMode() === 'table'}
           style={{
             padding: '8px 16px',
             margin: '0 8px 0 0',
@@ -27,7 +29,7 @@ export default function OrganizationRepos() {
         >
           テーブル表示
         </button>
-        <button 
+        <button
           onClick={() => setViewMode('graph')}
           style={{
             padding: '8px 16px',
