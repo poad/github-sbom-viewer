@@ -15,6 +15,9 @@ export default function OrganizationRepos() {
   const [viewMode, setViewMode] = createSignal<'table' | 'graph'>('table');
   return (
     <>
+      <p style={{ 'margin-bottom': '20px', 'margin-left': '3rem' }}>
+        <A href="/">HOME</A>
+      </p>
       <h1>SBOM</h1>
       <div style={{ margin: '20px 0' }}>
         <Button
@@ -79,9 +82,6 @@ export default function OrganizationRepos() {
           </For>
         </Show>
       </div>
-      <p>
-        <A href="/">HOME</A>
-      </p>
     </>
   );
 }
