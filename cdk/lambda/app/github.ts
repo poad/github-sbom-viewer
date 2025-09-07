@@ -120,24 +120,3 @@ export function GitHub(token: string) {
     getSbom:(param: { owner: string; repo: string; }) => getSbom(octokit, param),
   };
 }
-
-// Individual function exports for handler
-export async function getOwners(token: string) {
-  const octokit = newOctokit(token);
-  return listOwners(octokit);
-}
-
-export async function getUserRepos(token: string) {
-  const octokit = newOctokit(token);
-  return listCurrentUserRepositories(octokit);
-}
-
-export async function getOwnerRepos(token: string, owner: string) {
-  const octokit = newOctokit(token);
-  return listOrganizationRepositories(octokit, owner);
-}
-
-export async function getSbomData(token: string, owner: string, repo: string) {
-  const octokit = newOctokit(token);
-  return getSbom(octokit, { owner, repo });
-}

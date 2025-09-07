@@ -5,7 +5,7 @@ import { csrf } from 'hono/csrf';
 import { githubAuth } from '@hono/oauth-providers/github';
 import { Logger } from '@aws-lambda-powertools/logger';
 
-import { rootHandler, githubHandler, githubUserHandler, githubOwnerHandler, githubSbomHandler, csrfTokenHandler } from './app';
+import { rootHandler, githubHandler, githubUserHandler, githubOwnerHandler, githubSbomHandler } from './app';
 
 const apiRoot = process.env.API_ROOT_PATH;
 
@@ -29,7 +29,6 @@ app.use(logger())
   );
 
 app.get('/', async (c: Context) => rootHandler(c, apiRoot, domain));
-app.get('/csrf-token', csrfTokenHandler);
 app.get('/github', githubHandler);
 app.get('/github/repos', githubUserHandler);
 app.get('/github/owners/:owner', async (c: Context) => githubOwnerHandler(c, c.req.param('owner')));

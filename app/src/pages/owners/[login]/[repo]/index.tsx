@@ -1,14 +1,12 @@
 import { For, Show, createResource } from 'solid-js';
 import { A, useParams } from '@solidjs/router';
 import { FadeLoader } from '../../../../features/ui/components';
-import { fetchWithAuth } from '../../../../utils/api';
 
 export default function OrganizationRepos() {
   const { login, repo } = useParams();
-  const [data] = createResource<Sbom[]>(async () => {
-    const response = await fetchWithAuth(`/api/github/sbom/${login}/${repo}`);
-    return response.json();
-  });
+  const [data] = createResource<Sbom[]>(() =>
+    fetch(`/api/github/sbom/${login}/${repo}`).then((resp) => resp.json()),
+  );
   return (
     <>
       <h1>SBOM</h1>
