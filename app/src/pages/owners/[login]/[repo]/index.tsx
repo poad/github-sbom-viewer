@@ -70,7 +70,7 @@ export default function OrganizationRepos() {
                     <tbody>
                       <For each={sbom.sbom.packages}>
                         {(pkg) => (
-                          <tr style={{ background: '#ffffff' }}>
+                          <tr style={{ background: '#cbd5e1' }}>
                             <td style={{
                               padding: '12px',
                               border: '1px solid #d1d5db',
