@@ -1,18 +1,10 @@
-import { getCsrfToken, refreshCsrfToken } from './csrf';
+import { getCsrfToken } from './csrf';
 import { hasGivenConsent } from './cookie-consent';
 import { validateAndSanitizeURL, getDevConfig, getProdConfig } from './url-sanitizer';
+import { 
+  showSessionExpiredNotification,
+} from './notification';
 
-const RETRY_CONFIG = {
-  maxRetries: 3,
-  baseDelay: 1000,
-  maxDelay: 5000,
-} as const;
-
-const RATE_LIMIT_CONFIG = {
-  maxRequests: 100,
-  windowMs: 60 * 1000, // 1分
-  backoffMultiplier: 2,
-} as const;
 
 interface NetworkError extends Error {
   code: 'NETWORK_ERROR';
@@ -31,100 +23,7 @@ interface SecurityError extends Error {
   reason: string;
 }
 
-interface RateLimitErrorInterface extends Error {
-  code: 'RATE_LIMIT_ERROR';
-  retryAfter: number;
-}
 
-// レート制限追跡（永続化対応）
-const rateLimitTracker = {
-  getStorageKey(endpoint: string): string {
-    return `rate_limit_${btoa(endpoint).replace(/[+/=]/g, '')}`;
-  },
-
-  getRequests(endpoint: string): number[] {
-    try {
-      const key = this.getStorageKey(endpoint);
-      const stored = localStorage.getItem(key);
-      if (!stored) return [];
-      
-      const requests = JSON.parse(stored) as number[];
-      const now = Date.now();
-      
-      // 古いリクエストを削除
-      const validRequests = requests.filter(time => now - time < RATE_LIMIT_CONFIG.windowMs);
-      
-      // 更新されたデータを保存
-      if (validRequests.length !== requests.length) {
-        localStorage.setItem(key, JSON.stringify(validRequests));
-      }
-      
-      return validRequests;
-    } catch (error) {
-      console.warn(`Failed to get rate limit data for ${endpoint}:`, error);
-      return [];
-    }
-  },
-
-  setRequests(endpoint: string, requests: number[]): void {
-    try {
-      const key = this.getStorageKey(endpoint);
-      localStorage.setItem(key, JSON.stringify(requests));
-    } catch (error) {
-      console.warn(`Failed to save rate limit data for ${endpoint}:`, error);
-      // ストレージ容量不足の場合は古いデータを削除
-      this.cleanupOldData();
-    }
-  },
-
-  isRateLimited(endpoint: string): boolean {
-    const requests = this.getRequests(endpoint);
-    return requests.length >= RATE_LIMIT_CONFIG.maxRequests;
-  },
-  
-  recordRequest(endpoint: string): void {
-    const requests = this.getRequests(endpoint);
-    requests.push(Date.now());
-    this.setRequests(endpoint, requests);
-  },
-  
-  getRetryAfter(endpoint: string): number {
-    const requests = this.getRequests(endpoint);
-    if (requests.length === 0) return 0;
-    
-    const oldestRequest = Math.min(...requests);
-    return Math.max(0, RATE_LIMIT_CONFIG.windowMs - (Date.now() - oldestRequest));
-  },
-
-  cleanupOldData(): void {
-    try {
-      const now = Date.now();
-      const keysToRemove: string[] = [];
-      
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('rate_limit_')) {
-          try {
-            const data = JSON.parse(localStorage.getItem(key) || '[]') as number[];
-            const validRequests = data.filter(time => now - time < RATE_LIMIT_CONFIG.windowMs);
-            
-            if (validRequests.length === 0) {
-              keysToRemove.push(key);
-            } else if (validRequests.length !== data.length) {
-              localStorage.setItem(key, JSON.stringify(validRequests));
-            }
-          } catch {
-            keysToRemove.push(key);
-          }
-        }
-      }
-      
-      keysToRemove.forEach(key => localStorage.removeItem(key));
-    } catch (error) {
-      console.warn('Failed to cleanup rate limit data:', error);
-    }
-  },
-};
 
 const isNetworkError = (error: Error): boolean => {
   return error.name === 'TypeError' || 
@@ -163,22 +62,6 @@ const getSecureErrorMessage = (status: number, isDevelopment = false): string =>
   return messages[status] || '予期しないエラーが発生しました';
 };
 
-const isRetryableError = (error: Error | Response): boolean => {
-  if (error instanceof Response) {
-    // セキュリティ上の理由で認証・認可エラーはリトライしない
-    if (error.status === 401 || error.status === 403) {
-      return false;
-    }
-    // 4xx系エラー（クライアントエラー）は基本的にリトライしない
-    if (error.status >= 400 && error.status < 500 && error.status !== 429) {
-      return false;
-    }
-    // 5xx系エラーと429のみリトライ可能
-    return error.status >= 500 || error.status === 429;
-  }
-  // ネットワークエラーはリトライ可能
-  return isNetworkError(error);
-};
 
 const sanitizeUrl = (url: string): string => {
   const isDevelopment = process.env.NODE_ENV === 'development';
@@ -218,22 +101,6 @@ const sanitizeForLogging = (data: unknown): unknown => {
   return sanitized;
 };
 
-const handleRateLimit = async (response: Response, endpoint: string): Promise<void> => {
-  const retryAfter = response.headers.get('Retry-After');
-  const retryAfterMs = retryAfter ? parseInt(retryAfter) * 1000 : rateLimitTracker.getRetryAfter(endpoint);
-  
-  const rateLimitError: RateLimitErrorInterface = new Error(
-    `レート制限に達しました。${Math.ceil(retryAfterMs / 1000)}秒後に再試行してください`,
-  ) as RateLimitErrorInterface;
-  rateLimitError.code = 'RATE_LIMIT_ERROR';
-  rateLimitError.retryAfter = retryAfterMs;
-
-  // レート制限情報をユーザーに通知
-  const { showRateLimitNotification } = await import('./notification');
-  showRateLimitNotification(Math.ceil(retryAfterMs / 1000));
-
-  throw rateLimitError;
-};
 
 export async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
   // セキュリティチェック
@@ -245,18 +112,6 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
   }
 
   const sanitizedUrl = sanitizeUrl(url);
-  const endpoint = new URL(sanitizedUrl).pathname;
-
-  // レート制限チェック
-  if (rateLimitTracker.isRateLimited(endpoint)) {
-    const retryAfter = rateLimitTracker.getRetryAfter(endpoint);
-    const rateLimitError: RateLimitErrorInterface = new Error(
-      `レート制限に達しました。${Math.ceil(retryAfter / 1000)}秒後に再試行してください`,
-    ) as RateLimitErrorInterface;
-    rateLimitError.code = 'RATE_LIMIT_ERROR';
-    rateLimitError.retryAfter = retryAfter;
-    throw rateLimitError;
-  }
 
   let csrfToken = '';
   
@@ -266,127 +121,61 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
     console.warn('CSRF token retrieval failed:', sanitizeForLogging(error));
   }
   
-  const makeRequest = async (csrf: string, attempt = 1): Promise<Response> => {
-    const headers = {
-      ...options.headers,
-      'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest',
-      ...(csrf && { 'X-CSRF-Token': csrf }),
-    };
-
-    try {
-      // リクエストを記録
-      rateLimitTracker.recordRequest(endpoint);
-
-      const response = await fetch(sanitizedUrl, {
-        ...options,
-        headers,
-        credentials: 'include',
-        mode: 'cors',
-        cache: 'no-store',
-        signal: AbortSignal.timeout(30000), // 30秒タイムアウト
-      });
-
-      if (!response.ok) {
-        // レート制限の特別処理
-        if (response.status === 429) {
-          await handleRateLimit(response, endpoint);
-          return response; // この行は実行されない（handleRateLimitがthrowする）
-        }
-
-        const isDevelopment = process.env.NODE_ENV === 'development';
-        const httpError: HttpError = new Error(
-          getSecureErrorMessage(response.status, isDevelopment),
-        ) as HttpError;
-        httpError.code = 'HTTP_ERROR';
-        httpError.status = response.status;
-        httpError.statusText = response.statusText;
-        httpError.isRetryable = isRetryableError(response);
-
-        // リトライ可能エラーの場合
-        if (httpError.isRetryable && attempt < RETRY_CONFIG.maxRetries) {
-          const delay = Math.min(
-            RETRY_CONFIG.baseDelay * Math.pow(RATE_LIMIT_CONFIG.backoffMultiplier, attempt - 1),
-            RETRY_CONFIG.maxDelay,
-          );
-          
-          const { showHttpErrorNotification } = await import('./notification');
-          showHttpErrorNotification(response.status, attempt, RETRY_CONFIG.maxRetries);
-          
-          await new Promise(resolve => setTimeout(resolve, delay));
-          return makeRequest(csrf, attempt + 1);
-        }
-
-        // センシティブ情報を除外してログ出力
-        console.error('HTTP Error:', {
-          status: response.status,
-          statusText: response.statusText,
-          url: sanitizedUrl,
-          attempt,
-        });
-
-        throw httpError;
-      }
-
-      return response;
-    } catch (error) {
-      // ネットワークエラーの処理
-      if (isNetworkError(error as Error)) {
-        const networkError: NetworkError = new Error('ネットワークエラーが発生しました') as NetworkError;
-        networkError.code = 'NETWORK_ERROR';
-        networkError.originalError = error as Error;
-
-        // リトライ可能な場合
-        if (attempt < RETRY_CONFIG.maxRetries) {
-          const delay = Math.min(
-            RETRY_CONFIG.baseDelay * Math.pow(RATE_LIMIT_CONFIG.backoffMultiplier, attempt - 1),
-            RETRY_CONFIG.maxDelay,
-          );
-          
-          const { showNetworkErrorNotification } = await import('./notification');
-          showNetworkErrorNotification(attempt, RETRY_CONFIG.maxRetries);
-          
-          await new Promise(resolve => setTimeout(resolve, delay));
-          return makeRequest(csrf, attempt + 1);
-        }
-
-        console.error('Network Error:', sanitizeForLogging(error));
-        throw networkError;
-      }
-
-      // その他のエラー
-      console.error('Request Error:', sanitizeForLogging(error));
-      throw error;
-    }
+  const headers = {
+    ...options.headers,
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
+    ...(csrfToken && { 'X-CSRF-Token': csrfToken }),
   };
 
   try {
-    return await makeRequest(csrfToken);
-  } catch (error) {
-    // CSRF関連エラーの場合、トークンを更新して再試行
-    if ((error as HttpError).status === 403 && csrfToken) {
-      try {
-        const newCsrfToken = await refreshCsrfToken();
-        return await makeRequest(newCsrfToken);
-      } catch (refreshError) {
-        console.warn('CSRF token refresh failed:', sanitizeForLogging(refreshError));
-        
-        const { showCsrfErrorNotification } = await import('./notification');
-        showCsrfErrorNotification();
+    const response = await fetch(sanitizedUrl, {
+      ...options,
+      headers,
+      credentials: 'include',
+      mode: 'cors',
+      cache: 'no-store',
+      signal: AbortSignal.timeout(30000), // 30秒タイムアウト
+    });
+
+    if (!response.ok) {
+      const isDevelopment = process.env.NODE_ENV === 'development';
+      const httpError: HttpError = new Error(
+        getSecureErrorMessage(response.status, isDevelopment),
+      ) as HttpError;
+      httpError.code = 'HTTP_ERROR';
+      httpError.status = response.status;
+      httpError.statusText = response.statusText;
+      httpError.isRetryable = false;
+
+      // 認証エラーの場合
+      if (response.status === 401) {
+        showSessionExpiredNotification();
       }
+
+      console.error('HTTP Error:', {
+        status: response.status,
+        statusText: response.statusText,
+        url: sanitizedUrl,
+      });
+
+      throw httpError;
     }
 
-    // 認証エラーの場合、セッション期限切れとして処理
-    if ((error as HttpError).status === 401) {
-      const { showSessionExpiredNotification } = await import('./notification');
-      showSessionExpiredNotification();
-      
-      const securityError: SecurityError = new Error('Session expired - please login again') as SecurityError;
-      securityError.code = 'SECURITY_ERROR';
-      securityError.reason = 'SESSION_EXPIRED';
-      throw securityError;
+    return response;
+  } catch (error) {
+    // ネットワークエラーの処理
+    if (isNetworkError(error as Error)) {
+      const networkError: NetworkError = new Error('ネットワークエラーが発生しました') as NetworkError;
+      networkError.code = 'NETWORK_ERROR';
+      networkError.originalError = error as Error;
+
+      console.error('Network Error:', sanitizeForLogging(error));
+      throw networkError;
     }
 
+    // その他のエラー
+    console.error('Request Error:', sanitizeForLogging(error));
     throw error;
   }
 }
@@ -429,18 +218,6 @@ export async function fetchWithoutAuth(url: string, options: RequestInit = {}): 
   }
 }
 
-// 定期的なレート制限データクリーンアップ
-if (typeof window !== 'undefined') {
-  // 5分ごとにクリーンアップ実行
-  setInterval(() => {
-    rateLimitTracker.cleanupOldData();
-  }, 5 * 60 * 1000);
-
-  // ページ離脱時にもクリーンアップ
-  window.addEventListener('beforeunload', () => {
-    rateLimitTracker.cleanupOldData();
-  });
-}
 
 // SecurityErrorクラスの定義
 class SecurityErrorClass extends Error {
