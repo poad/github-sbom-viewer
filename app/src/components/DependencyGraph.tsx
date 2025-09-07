@@ -147,6 +147,8 @@ export default function DependencyGraph(props: DependencyGraphProps) {
       if (this.southwest?.insert(point)) return true;
       return false;
     }
+    
+
     query(range: Rectangle, found: { node: Node; x: number; y: number }[] = []): { node: Node; x: number; y: number }[] {
       if (!this.boundary.intersects(range)) {
         return found;
@@ -329,8 +331,8 @@ export default function DependencyGraph(props: DependencyGraphProps) {
       canvasRef.removeEventListener('mousemove', handleMouseMove);
     }
     if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
+      cancelAnimationFrame(animationFrameId);
+    }
   });
 
   return (
