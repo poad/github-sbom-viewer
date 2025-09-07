@@ -328,7 +328,9 @@ export default function DependencyGraph(props: DependencyGraphProps) {
     if (canvasRef) {
       canvasRef.removeEventListener('mousemove', handleMouseMove);
     }
-    cancelAnimationFrame(animationFrameId);
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
   });
 
   return (
