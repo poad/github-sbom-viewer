@@ -19,7 +19,7 @@
     "@octokit/types": "^15.0.0",
     "@stylistic/eslint-plugin": "^5.3.1",
     "@types/aws-lambda": "^8.10.152",
-    "@types/node": "^24.5.1",
+    "@types/node": "^24.5.2",
     "aws-cdk": "^2.1029.2",
     "eslint": "^9.35.0",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -30,7 +30,7 @@
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.44.0",
-    "vite": "^7.1.5",
+    "vite": "^7.1.6",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
   },
@@ -42,7 +42,7 @@
     "aws-cdk-lib": "^2.215.0",
     "constructs": "^10.4.2",
     "esbuild": "^0.25.10",
-    "hono": "^4.9.7",
+    "hono": "^4.9.8",
     "loaders.css": "^0.1.2",
     "source-map-support": "^0.5.21"
   }
