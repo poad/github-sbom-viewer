@@ -39,7 +39,7 @@
     "@octokit/core": "^7.0.4",
     "@octokit/plugin-paginate-graphql": "^6.0.0",
     "@octokit/plugin-paginate-rest": "^13.1.1",
-    "aws-cdk-lib": "^2.216.0",
+    "aws-cdk-lib": "^2.217.0",
     "constructs": "^10.4.2",
     "esbuild": "^0.25.10",
     "hono": "^4.9.8",
