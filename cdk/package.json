@@ -27,7 +27,7 @@
     "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-solid": "^0.14.5",
     "ts-node": "^10.9.2",
-    "tsx": "^4.20.5",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.44.1",
     "vite": "^7.1.7",
@@ -42,7 +42,7 @@
     "aws-cdk-lib": "^2.217.0",
     "constructs": "^10.4.2",
     "esbuild": "^0.25.10",
-    "hono": "^4.9.8",
+    "hono": "^4.9.9",
     "loaders.css": "^0.1.2",
     "source-map-support": "^0.5.21"
   }
