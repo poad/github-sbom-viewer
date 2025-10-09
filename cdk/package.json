@@ -19,7 +19,7 @@
     "@octokit/types": "^15.0.0",
     "@stylistic/eslint-plugin": "^5.4.0",
     "@types/aws-lambda": "^8.10.155",
-    "@types/node": "^24.7.0",
+    "@types/node": "^24.7.1",
     "aws-cdk": "^2.1029.4",
     "eslint": "^9.37.0",
     "eslint-import-resolver-typescript": "^4.4.4",
