@@ -19,7 +19,7 @@
     "@octokit/types": "^15.0.0",
     "@stylistic/eslint-plugin": "^5.4.0",
     "@types/aws-lambda": "^8.10.155",
-    "@types/node": "^24.7.1",
+    "@types/node": "^24.7.2",
     "aws-cdk": "^2.1030.0",
     "eslint": "^9.37.0",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -42,7 +42,7 @@
     "aws-cdk-lib": "^2.219.0",
     "constructs": "^10.4.2",
     "esbuild": "^0.25.10",
-    "hono": "^4.9.10",
+    "hono": "^4.9.11",
     "loaders.css": "^0.1.2",
     "source-map-support": "^0.5.21"
   }
