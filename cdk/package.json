@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@aws-lambda-powertools/logger": "^2.28.1",
-    "@eslint/compat": "^1.4.0",
+    "@eslint/compat": "^1.4.1",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.38.0",
     "@octokit/types": "^15.0.1",
@@ -32,14 +32,14 @@
     "typescript-eslint": "^8.46.2",
     "vite": "^7.1.12",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^4.0.4"
+    "vitest": "^4.0.5"
   },
   "dependencies": {
     "@hono/oauth-providers": "^0.8.5",
     "@octokit/core": "^7.0.5",
     "@octokit/plugin-paginate-graphql": "^6.0.0",
     "@octokit/plugin-paginate-rest": "^13.2.1",
-    "aws-cdk-lib": "^2.221.0",
+    "aws-cdk-lib": "^2.221.1",
     "constructs": "^10.4.2",
     "esbuild": "^0.25.11",
     "hono": "^4.10.3",
