@@ -25,11 +25,7 @@ concurrency:
 
 jobs:
   deploy:
-    strategy:
-      matrix:
-        node-version: [24.x]
-
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     steps:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v5
@@ -48,10 +44,10 @@ jobs:
             args: [--no-frozen-lockfile]
           - args: [--global, aws-cdk, esbuild]
 
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js
       uses: actions/setup-node@v6
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 'lts/*'
         check-latest: true
         cache: pnpm
 
