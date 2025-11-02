@@ -9,44 +9,51 @@ import {
   listOrganizationRepositoriesQuery,
 } from './constants';
 
-
-type OctokitInstance = Octokit & paginateGraphQLInterface & {
+interface Pagenation {
   paginate: PaginateInterface
 };
 
+type OctokitInstance = Octokit & paginateGraphQLInterface & Pagenation;
+
+interface Organization {
+  name: string
+}
+
+interface OrganizationNode {
+  nodes: Organization[],
+}
+
+interface Organizations {
+  organizations: OrganizationNode
+}
+
+interface Viewer {
+  login: string
+}
+
 interface ListOrganizationsResponse {
-  viewer: {
-    login: string
-    organizations: {
-      nodes: {
-        name: string
-      }[],
-    },
-  },
+  viewer: Viewer & Organizations,
 };
 
+interface Repository {
+  name: string
+  nameWithOwner: string
+};
+
+interface Repositories {
+  nodes: Repository[],
+};
+
+interface RepositoryViewer extends Viewer {
+  repositories: Repositories
+}
+
 interface listCurrentUserRepositoriesResponse {
-  viewer: {
-    login: string
-    repositories: {
-      nodes: {
-        name: string
-        nameWithOwner: string
-      }[],
-    },
-  },
+  viewer: RepositoryViewer,
 };
 
 interface listOrganizationRepositoriesResponse {
-  organization: {
-    login: string
-    repositories: {
-      nodes: {
-        name: string
-        nameWithOwner: string
-      }[],
-    },
-  },
+  organization: RepositoryViewer,
 };
 
 function newOctokit(token: string): OctokitInstance {
@@ -59,9 +66,11 @@ async function listOwners(octokit: OctokitInstance): Promise<string[]> {
   return response.viewer.organizations.nodes.map((node) => node.name).concat(response.viewer.login);
 }
 
+interface ListCurrentUserRepositoriesResponse { name: string; nameWithOwner: string, owner: string };
+
 async function listCurrentUserRepositories(
   octokit: OctokitInstance,
-): Promise<{ name: string; nameWithOwner: string, owner: string }[]> {
+): Promise<ListCurrentUserRepositoriesResponse[]> {
   const response = await octokit.graphql.paginate<listCurrentUserRepositoriesResponse>(
     listCurrentUserRepositoriesQuery);
 
@@ -74,9 +83,10 @@ async function listCurrentUserRepositories(
   }));
 }
 
+interface ListOrganizationRepositoriesResponse { name: string; nameWithOwner: string, owner: string };
 async function listOrganizationRepositories(
   octokit: OctokitInstance, org: string,
-): Promise<{ name: string; nameWithOwner: string, owner: string }[]> {
+): Promise<ListOrganizationRepositoriesResponse[]> {
   const response = await octokit.graphql.paginate<listOrganizationRepositoriesResponse>(
     listOrganizationRepositoriesQuery, {
       login: org,
@@ -94,9 +104,11 @@ async function listOrganizationRepositories(
 
 type GetSbomResponse = Endpoints['GET /repos/{owner}/{repo}/dependency-graph/sbom']['response']['data'];
 
+interface GetSbomProps { owner: string, repo: string }
+
 async function getSbom(
   octokit: OctokitInstance,
-  { owner, repo }: { owner: string, repo: string },
+  { owner, repo }: GetSbomProps,
 ) {
   return octokit.paginate<GetSbomResponse>(
     '/repos/{owner}/{repo}/dependency-graph/sbom', {
@@ -117,6 +129,6 @@ export function GitHub(token: string) {
     listOwners: () => listOwners(octokit),
     listCurrentUserRepositories: () => listCurrentUserRepositories(octokit),
     listOrganizationRepositories: (org: string) => listOrganizationRepositories(octokit, org),
-    getSbom:(param: { owner: string; repo: string; }) => getSbom(octokit, param),
+    getSbom: (param: GetSbomProps) => getSbom(octokit, param),
   };
 }

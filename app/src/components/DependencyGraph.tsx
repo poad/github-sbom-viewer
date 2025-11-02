@@ -17,12 +17,18 @@ interface Link {
   target: string;
 }
 
+interface Package { name?: string; versionInfo?: string }
+
 interface DependencyGraphProps {
-  packages: { name?: string; versionInfo?: string }[];
+  packages: Package[];
   mainPackageName: string;
   width?: number;
   height?: number;
 }
+
+interface RectangleProps { x: number; y: number }
+
+interface Points { node: Node; x: number; y: number }
 
 export default function DependencyGraph(props: DependencyGraphProps) {
   let canvasRef: HTMLCanvasElement | undefined;
@@ -85,11 +91,12 @@ export default function DependencyGraph(props: DependencyGraphProps) {
     setLinks(linkList);
   });
 
+
   // Physics simulation
   // 使用する四分木（Quadtree）クラスの定義
   class Rectangle {
     constructor(public x: number, public y: number, public w: number, public h: number) {}
-    contains(point: { x: number; y: number }): boolean {
+    contains(point: RectangleProps): boolean {
       return (
         point.x >= this.x - this.w &&
       point.x < this.x + this.w &&
@@ -110,7 +117,7 @@ export default function DependencyGraph(props: DependencyGraphProps) {
   class Quadtree {
     boundary: Rectangle;
     capacity: number;
-    points: { node: Node; x: number; y: number }[] = [];
+    points: Points[] = [];
     divided = false;
     northeast?: Quadtree;
     northwest?: Quadtree;
@@ -131,7 +138,7 @@ export default function DependencyGraph(props: DependencyGraphProps) {
       this.southwest = new Quadtree(new Rectangle(x - w, y + h, w, h), this.capacity);
       this.divided = true;
     }
-    insert(point: { node: Node; x: number; y: number }): boolean {
+    insert(point: Points): boolean {
       if (!this.boundary.contains(point)) {
         return false;
       }
@@ -150,7 +157,7 @@ export default function DependencyGraph(props: DependencyGraphProps) {
     }
 
 
-    query(range: Rectangle, found: { node: Node; x: number; y: number }[] = []): { node: Node; x: number; y: number }[] {
+    query(range: Rectangle, found: Points[] = []): Points[] {
       if (!this.boundary.intersects(range)) {
         return found;
       }

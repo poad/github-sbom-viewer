@@ -3,17 +3,21 @@ import { createResource, For, Show } from 'solid-js';
 import { FadeLoader } from '../../features/ui/components';
 import styles from './index.module.css';
 
+interface Repository {
+  name: string;
+  nameWithOwner: string;
+  owner: string;
+}
+
+interface UserRepositories {
+  repos: Repository[];
+}
+
 export default function UserRepos() {
   const [data] = createResource<
-    {
-      repos: {
-        name: string;
-        nameWithOwner: string;
-        owner: string;
-      }[];
-    }>(() =>
-    fetch('/api/github/repos').then((resp) => resp.json()),
-  );
+    UserRepositories>(() =>
+      fetch('/api/github/repos').then((resp) => resp.json()),
+    );
   return (
     <>
       <header class={styles.header}>
