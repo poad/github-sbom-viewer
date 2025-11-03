@@ -1,17 +1,12 @@
-// @ts-check
-
+import { defineConfig } from 'eslint/config';
 import eslint from '@eslint/js';
+import { configs, parser } from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
-import tseslint from 'typescript-eslint';
 import importPlugin from 'eslint-plugin-import';
-
-import pluginPromise from 'eslint-plugin-promise'
+// @ts-expect-error ignore type errors
+import pluginPromise from 'eslint-plugin-promise';
 
 import solid from 'eslint-plugin-solid';
-
-import { FlatCompat } from '@eslint/eslintrc';
-
-const compat = new FlatCompat();
 
 import { includeIgnoreFile } from '@eslint/compat';
 import path from 'node:path';
@@ -21,59 +16,58 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const gitignorePath = path.resolve(__dirname, '.gitignore');
 
-export default tseslint.config(
-  includeIgnoreFile(gitignorePath),
+export default defineConfig(
   {
     ignores: [
+      ...(includeIgnoreFile(gitignorePath).ignores || []),
       '**/*.d.ts',
-      '*.{js,jsx}',
       'src/tsconfig.json',
       'src/stories',
       '**/*.css',
       'node_modules/**/*',
+      'out',
+      'cdk.out',
       'dist',
+      'app',
     ],
   },
   eslint.configs.recommended,
+  configs.strict,
+  configs.stylistic,
   pluginPromise.configs['flat/recommended'],
-  ...tseslint.configs.strict,
-  ...tseslint.configs.stylistic,
   {
-    files: ['**/*.ts'],
-    extends: [
-      importPlugin.flatConfigs.recommended,
-      importPlugin.flatConfigs.typescript,
-    ],
-    languageOptions: {
-      parser: tseslint.parser,
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      parserOptions: {
-        project: true,
-        tsconfigRootDir: import.meta.dirname,
-        projectServices: true,
-      },
-    },
+    files: ['**/*.ts', '*.js'],
     plugins: {
       '@stylistic': stylistic,
       solid,
     },
-    settings: {
-      'import/parsers': {
-        espree: ['.js', '.cjs', '.mjs'],
-        'typescript-eslint/parser': ['.ts'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      parser,
+      parserOptions: {
+        tsconfigRootDir: __dirname,
+        project: ['tsconfig-eslint.json'],
       },
-      'import/internal-regex': '^~/',
+    },
+    extends: [
+      importPlugin.flatConfigs.recommended,
+      importPlugin.flatConfigs.typescript,
+    ],
+    settings: {
       'import/resolver': {
-        node: true,
-        typescript: true,
+        // You will also need to install and configure the TypeScript resolver
+        // See also https://github.com/import-js/eslint-import-resolver-typescript#configuration
+        'typescript': true,
+        'node': true,
       },
     },
     rules: {
       '@stylistic/semi': ['error', 'always'],
       '@stylistic/indent': ['error', 2],
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
+      '@stylistic/arrow-parens': ['error', 'always'],
       '@stylistic/quotes': ['error', 'single'],
-    }
+    },
   },
 );

@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "./tsconfig-test.json"
+  ],
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "bin",
+    "lambda",
+    "lib",
+    "*.config.ts",
+    "*.config.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

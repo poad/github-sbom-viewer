@@ -16,13 +16,17 @@ const defaultContextValue: CookieConsentContextType = {
 
 const CookieConsentContext = createContext<CookieConsentContextType>(defaultContextValue);
 
-export function CookieConsentProvider(props: { children: JSX.Element }): JSX.Element {
+interface CookieConsentProviderProps {
+  children: JSX.Element;
+}
+
+export function CookieConsentProvider(props: CookieConsentProviderProps): JSX.Element {
   const [consentStatus, setConsentStatusInternal] = createSignal<CookieConsentStatus>(null);
-  
+
   onMount(() => {
     setConsentStatusInternal(getCookieConsentStatus());
   });
-  
+
   const setConsentStatus = (status: CookieConsentStatus) => {
     if (status) {
       localStorage.setItem('cookie-consent', status);

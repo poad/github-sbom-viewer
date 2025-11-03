@@ -10,13 +10,15 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import { buildFrontend } from './process/setup';
 import * as deployment from 'aws-cdk-lib/aws-s3-deployment';
 
+interface CloudFrontProps {
+  comment: string;
+}
+
 export interface Config {
   stackName: string;
   bucketName: string;
   appName: string;
-  cloudfront: {
-    comment: string;
-  };
+  cloudfront: CloudFrontProps;
 }
 
 interface CloudfrontCdnTemplateStackProps extends cdk.StackProps {

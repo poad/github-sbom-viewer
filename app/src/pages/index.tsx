@@ -5,11 +5,13 @@ import { A } from '@solidjs/router';
 import { FadeLoader, CookieConsent } from '../features/ui/components';
 import { useCookieConsent } from '../contexts/CookieConsentContext';
 
+interface CreateResourceProps { owners: string[] }
+
 export default function (): JSX.Element {
   const clientID = (import.meta.env.VITE_GITHUB_APPS_CLIENT_ID as string || undefined) ?? '';
   const { consentStatus } = useCookieConsent();
-  
-  const [data] = createResource<{ owners: string[] } | undefined>(() => {
+
+  const [data] = createResource<CreateResourceProps | undefined>(() => {
     if (consentStatus() === 'accepted' && document.cookie.split('; ').some((item) => item.startsWith('user='))) {
       return fetch('/api/github').then((resp) => resp.json());
     }
