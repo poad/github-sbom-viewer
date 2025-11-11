@@ -29,7 +29,7 @@
     "jiti": "2.6.1",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.3",
+    "typescript-eslint": "^8.46.4",
     "vite": "^7.2.2",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.8"
@@ -39,10 +39,10 @@
     "@octokit/core": "^7.0.6",
     "@octokit/plugin-paginate-graphql": "^6.0.0",
     "@octokit/plugin-paginate-rest": "^14.0.0",
-    "aws-cdk-lib": "^2.222.0",
+    "aws-cdk-lib": "^2.223.0",
     "constructs": "^10.4.3",
-    "esbuild": "^0.26.0",
-    "hono": "^4.10.4",
+    "esbuild": "^0.27.0",
+    "hono": "^4.10.5",
     "loaders.css": "^0.1.2",
     "source-map-support": "^0.5.21"
   }
