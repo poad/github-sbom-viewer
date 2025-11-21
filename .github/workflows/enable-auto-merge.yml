@@ -13,7 +13,7 @@ jobs:
     if: github.event.pull_request.draft == false
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Enable auto-merge for Pull Request
         run: |
