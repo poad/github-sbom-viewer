@@ -116,8 +116,8 @@ importers:
         version: 0.5.21
     devDependencies:
       '@aws-lambda-powertools/logger':
-        specifier: ^2.30.0
-        version: 2.30.0
+        specifier: ^2.30.1
+        version: 2.30.1
       '@eslint/compat':
         specifier: ^2.0.0
         version: 2.0.0(eslint@9.39.2(jiti@2.6.1))
@@ -140,8 +140,8 @@ importers:
         specifier: ^25.0.3
         version: 25.0.3
       aws-cdk:
-        specifier: ^2.1100.2
-        version: 2.1100.2
+        specifier: ^2.1100.3
+        version: 2.1100.3
       eslint:
         specifier: ^9.39.2
         version: 9.39.2(jiti@2.6.1)
@@ -209,13 +209,13 @@ packages:
       - jsonschema
       - semver
 
-  '@aws-lambda-powertools/commons@2.30.0':
-    resolution: {integrity: sha512-5kjamCPR/dIEHIk4BAFDSO/MgF21qL/q/f5AKi3GEOdvULuLcbw40xneMmPXo4ETaBSe+BHvovWLuI0Jl9BEnw==}
+  '@aws-lambda-powertools/commons@2.30.1':
+    resolution: {integrity: sha512-EbbnqrQ1zB8EIFHClHuG0kQWAA7hfy9bcbhacoFAJcwm5dZFmla7buwwfOWElWhy4+bUtLa0N7W9+gNT5KsYHw==}
 
-  '@aws-lambda-powertools/logger@2.30.0':
-    resolution: {integrity: sha512-ejmuzn8KNi7CrhJSnl4a/SLAjcmlHJPvH55QpSZvj8K8aQLhOKcCpd0u+gXp0oYlj50d22h9ZV5qtIn7O8V4Lw==}
+  '@aws-lambda-powertools/logger@2.30.1':
+    resolution: {integrity: sha512-WTakR1Qv7Vr2hmoDrACtdrOyDnomai7BN8NumYuloPhGqUj2gf72kd9qHcePPbnqlbMtyV2YdXT9W3k+VccLLg==}
     peerDependencies:
-      '@aws-lambda-powertools/jmespath': 2.30.0
+      '@aws-lambda-powertools/jmespath': 2.30.1
       '@middy/core': 4.x || 5.x || 6.x
     peerDependenciesMeta:
       '@aws-lambda-powertools/jmespath':
@@ -1207,8 +1207,8 @@ packages:
       - yaml
       - mime-types
 
-  aws-cdk@2.1100.2:
-    resolution: {integrity: sha512-PK80VEunZGpGW3+66EbPUpoKZKxsK7/BBR3X2qqtgk5wrSVJn+rq3Rwlih5lCD223rpf2RXAnC5weGHdEtgSuA==}
+  aws-cdk@2.1100.3:
+    resolution: {integrity: sha512-jeSamF+IwPJKhqMir7Cw+2IoeHsmNFc/SoDAlOS9BYM8Wrd0Q1jJd3GcJOFzsMcWv9mcBAP5o23amyKHu03dXA==}
     engines: {node: '>= 18.0.0'}
     hasBin: true
 
@@ -2661,15 +2661,14 @@ snapshots:
 
   '@aws-cdk/cloud-assembly-schema@48.20.0': {}
 
-  '@aws-lambda-powertools/commons@2.30.0':
+  '@aws-lambda-powertools/commons@2.30.1':
     dependencies:
       '@aws/lambda-invoke-store': 0.2.2
 
-  '@aws-lambda-powertools/logger@2.30.0':
+  '@aws-lambda-powertools/logger@2.30.1':
     dependencies:
-      '@aws-lambda-powertools/commons': 2.30.0
+      '@aws-lambda-powertools/commons': 2.30.1
       '@aws/lambda-invoke-store': 0.2.2
-      lodash.merge: 4.6.2
 
   '@aws/lambda-invoke-store@0.2.2': {}
 
@@ -3607,7 +3606,7 @@ snapshots:
       '@aws-cdk/cloud-assembly-schema': 48.20.0
       constructs: 10.4.4
 
-  aws-cdk@2.1100.2:
+  aws-cdk@2.1100.3:
     optionalDependencies:
       fsevents: 2.3.2
 
