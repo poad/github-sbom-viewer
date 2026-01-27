@@ -42,7 +42,7 @@
     "aws-cdk-lib": "^2.236.0",
     "constructs": "^10.4.5",
     "esbuild": "^0.27.2",
-    "hono": "^4.11.6",
+    "hono": "^4.11.7",
     "loaders.css": "^0.1.2",
     "source-map-support": "^0.5.21"
   }
