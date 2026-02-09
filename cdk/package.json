@@ -17,7 +17,7 @@
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
     "@octokit/types": "^16.0.0",
-    "@stylistic/eslint-plugin": "^5.7.1",
+    "@stylistic/eslint-plugin": "^5.8.0",
     "@types/aws-lambda": "^8.10.160",
     "@types/node": "^25.2.2",
     "aws-cdk": "^2.1105.0",
@@ -42,7 +42,7 @@
     "aws-cdk-lib": "^2.237.1",
     "constructs": "^10.4.5",
     "esbuild": "^0.27.3",
-    "hono": "^4.11.8",
+    "hono": "^4.11.9",
     "loaders.css": "^0.1.2",
     "source-map-support": "^0.5.21"
   }
