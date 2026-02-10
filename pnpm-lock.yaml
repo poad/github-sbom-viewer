@@ -69,7 +69,7 @@ importers:
         version: 28.0.0
       solid-devtools:
         specifier: ^0.34.5
-        version: 0.34.5(solid-js@1.9.11)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 0.34.5(solid-js@1.9.11)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -78,16 +78,16 @@ importers:
         version: 8.55.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
       vite-plugin-pages:
         specifier: ^0.33.3
-        version: 0.33.3(@solidjs/router@0.15.4(solid-js@1.9.11))(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 0.33.3(@solidjs/router@0.15.4(solid-js@1.9.11))(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.11)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.11)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
       vitest:
         specifier: ^4.0.18
-        version: 4.0.18(@types/node@25.2.2)(jiti@2.6.1)(jsdom@28.0.0)(tsx@4.21.0)(yaml@2.8.2)
+        version: 4.0.18(@types/node@25.2.3)(jiti@2.6.1)(jsdom@28.0.0)(tsx@4.21.0)(yaml@2.8.2)
 
   cdk:
     dependencies:
@@ -123,8 +123,8 @@ importers:
         version: 0.5.21
     devDependencies:
       '@aws-lambda-powertools/logger':
-        specifier: ^2.30.2
-        version: 2.30.2
+        specifier: ^2.31.0
+        version: 2.31.0
       '@eslint/compat':
         specifier: ^2.0.2
         version: 2.0.2(eslint@9.39.2(jiti@2.6.1))
@@ -144,8 +144,8 @@ importers:
         specifier: ^8.10.160
         version: 8.10.160
       '@types/node':
-        specifier: ^25.2.2
-        version: 25.2.2
+        specifier: ^25.2.3
+        version: 25.2.3
       aws-cdk:
         specifier: ^2.1105.0
         version: 2.1105.0
@@ -178,13 +178,13 @@ importers:
         version: 8.55.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
       vite-tsconfig-paths:
         specifier: ^6.1.0
-        version: 6.1.0(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 6.1.0(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
       vitest:
         specifier: ^4.0.18
-        version: 4.0.18(@types/node@25.2.2)(jiti@2.6.1)(jsdom@28.0.0)(tsx@4.21.0)(yaml@2.8.2)
+        version: 4.0.18(@types/node@25.2.3)(jiti@2.6.1)(jsdom@28.0.0)(tsx@4.21.0)(yaml@2.8.2)
 
 packages:
 
@@ -216,13 +216,13 @@ packages:
       - jsonschema
       - semver
 
-  '@aws-lambda-powertools/commons@2.30.2':
-    resolution: {integrity: sha512-bhhrpUdCfpBGKllJfGyi5faf12mh6tjYmOf5DALgIym89NkidFphPdZtWl5l6IN1YhgO8HWPX4Yvmi4tPBE/uw==}
+  '@aws-lambda-powertools/commons@2.31.0':
+    resolution: {integrity: sha512-K5Hy3WtU/n0M8/kgsgw6OVlF709PHOfnTfsWrJS2Cs1vVjEeBvW22a6u9n3VPNpDeqJ7GIodmSkbuzvQzq6vaA==}
 
-  '@aws-lambda-powertools/logger@2.30.2':
-    resolution: {integrity: sha512-BSh2hPcnYUJNn/Olwby4LpHbUWePKuSKtfNeTBXAn+op3OcC7kx7CHSqc5PYGW7x2T8uliE1IuGB5vQz2gBeDQ==}
+  '@aws-lambda-powertools/logger@2.31.0':
+    resolution: {integrity: sha512-FCchy2g/cK5poDvDWnVCBSN9uSDGSWDldDiHGC/bn1/oU2cCxIZu06QnYEOOOAUbCWdzgcT1F9fRjzzHbu0GxQ==}
     peerDependencies:
-      '@aws-lambda-powertools/jmespath': 2.30.2
+      '@aws-lambda-powertools/jmespath': 2.31.0
       '@middy/core': 4.x || 5.x || 6.x || 7.x
     peerDependenciesMeta:
       '@aws-lambda-powertools/jmespath':
@@ -947,8 +947,8 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
-  '@types/node@25.2.2':
-    resolution: {integrity: sha512-BkmoP5/FhRYek5izySdkOneRyXYN35I860MFAGupTdebyE66uZaR+bXLHq8k4DirE5DwQi3NuhvRU1jqTVwUrQ==}
+  '@types/node@25.2.3':
+    resolution: {integrity: sha512-m0jEgYlYz+mDJZ2+F4v8D1AyQb+QzsNqRuI7xg1VQX/KlKS0qT9r1Mo16yo5F/MtifXFgaofIFsdFMox2SxIbQ==}
 
   '@typescript-eslint/eslint-plugin@8.55.0':
     resolution: {integrity: sha512-1y/MVSz0NglV1ijHC8OT49mPJ4qhPYjiK08YUQVbIOyu+5k862LKUHFkpKHWu//zmr7hDR2rhwUm6gnCGNmGBQ==}
@@ -2710,13 +2710,13 @@ snapshots:
 
   '@aws-cdk/cloud-assembly-schema@48.20.0': {}
 
-  '@aws-lambda-powertools/commons@2.30.2':
+  '@aws-lambda-powertools/commons@2.31.0':
     dependencies:
       '@aws/lambda-invoke-store': 0.2.3
 
-  '@aws-lambda-powertools/logger@2.30.2':
+  '@aws-lambda-powertools/logger@2.31.0':
     dependencies:
-      '@aws-lambda-powertools/commons': 2.30.2
+      '@aws-lambda-powertools/commons': 2.31.0
       '@aws/lambda-invoke-store': 0.2.3
 
   '@aws/lambda-invoke-store@0.2.3': {}
@@ -3366,7 +3366,7 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
-  '@types/node@25.2.2':
+  '@types/node@25.2.3':
     dependencies:
       undici-types: 7.16.0
 
@@ -3580,13 +3580,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.0.3
 
-  '@vitest/mocker@4.0.18(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))':
+  '@vitest/mocker@4.0.18(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
       '@vitest/spy': 4.0.18
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
 
   '@vitest/pretty-format@4.0.18':
     dependencies:
@@ -4886,7 +4886,7 @@ snapshots:
 
   siginfo@2.0.0: {}
 
-  solid-devtools@0.34.5(solid-js@1.9.11)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)):
+  solid-devtools@0.34.5(solid-js@1.9.11)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)):
     dependencies:
       '@babel/core': 7.29.0
       '@babel/plugin-syntax-typescript': 7.28.6(@babel/core@7.29.0)
@@ -4895,7 +4895,7 @@ snapshots:
       '@solid-devtools/shared': 0.20.0(solid-js@1.9.11)
       solid-js: 1.9.11
     optionalDependencies:
-      vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -5130,7 +5130,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  vite-plugin-pages@0.33.3(@solidjs/router@0.15.4(solid-js@1.9.11))(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)):
+  vite-plugin-pages@0.33.3(@solidjs/router@0.15.4(solid-js@1.9.11))(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)):
     dependencies:
       '@types/debug': 4.1.12
       debug: 4.4.3
@@ -5141,14 +5141,14 @@ snapshots:
       micromatch: 4.0.8
       picocolors: 1.1.1
       tinyglobby: 0.2.15
-      vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
       yaml: 2.8.2
     optionalDependencies:
       '@solidjs/router': 0.15.4(solid-js@1.9.11)
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-solid@2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.11)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)):
+  vite-plugin-solid@2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.11)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)):
     dependencies:
       '@babel/core': 7.29.0
       '@types/babel__core': 7.20.5
@@ -5156,24 +5156,24 @@ snapshots:
       merge-anything: 5.1.7
       solid-js: 1.9.11
       solid-refresh: 0.6.3(solid-js@1.9.11)
-      vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
-      vitefu: 1.1.1(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
+      vite: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
+      vitefu: 1.1.1(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
     optionalDependencies:
       '@testing-library/jest-dom': 6.9.1
     transitivePeerDependencies:
       - supports-color
 
-  vite-tsconfig-paths@6.1.0(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)):
+  vite-tsconfig-paths@6.1.0(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)):
     dependencies:
       debug: 4.4.3
       globrex: 0.1.2
       tsconfck: 3.1.6(typescript@5.9.3)
-      vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2):
+  vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2):
     dependencies:
       esbuild: 0.27.3
       fdir: 6.5.0(picomatch@4.0.3)
@@ -5182,20 +5182,20 @@ snapshots:
       rollup: 4.57.1
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 25.2.2
+      '@types/node': 25.2.3
       fsevents: 2.3.3
       jiti: 2.6.1
       tsx: 4.21.0
       yaml: 2.8.2
 
-  vitefu@1.1.1(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)):
+  vitefu@1.1.1(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)):
     optionalDependencies:
-      vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
 
-  vitest@4.0.18(@types/node@25.2.2)(jiti@2.6.1)(jsdom@28.0.0)(tsx@4.21.0)(yaml@2.8.2):
+  vitest@4.0.18(@types/node@25.2.3)(jiti@2.6.1)(jsdom@28.0.0)(tsx@4.21.0)(yaml@2.8.2):
     dependencies:
       '@vitest/expect': 4.0.18
-      '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
+      '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
       '@vitest/pretty-format': 4.0.18
       '@vitest/runner': 4.0.18
       '@vitest/snapshot': 4.0.18
@@ -5212,10 +5212,10 @@ snapshots:
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 25.2.2
+      '@types/node': 25.2.3
       jsdom: 28.0.0
     transitivePeerDependencies:
       - jiti
