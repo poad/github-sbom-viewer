@@ -3,10 +3,11 @@ packages:
   - ./app
 
 overrides:
-  seroval@<1.4.1: '>=1.4.1'
-  seroval@<=1.4.0: '>=1.4.1'
-  # eslint: ">=10.0.0"
-  # '@eslint/js': ">=10.0.0"
-  eslint: "^9"
-  '@eslint/js': "^9"
+  '@eslint/eslintrc>ajv': ^6.12.4
+  '@eslint/js': ^9
   '@stylistic/eslint-plugin': '>=5.0.0'
+  ajv@<8.18.0: '>=8.18.0'
+  eslint: ^9
+  eslint>ajv: ^6.12.4
+  minimatch@<10.2.1: '>=10.2.1'
+  seroval@<1.4.1: '>=1.4.1'
