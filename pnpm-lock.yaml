@@ -38,19 +38,19 @@ importers:
         specifier: ^3.3.4
         version: 3.3.4
       '@eslint/js':
-        specifier: ^9.39.3
+        specifier: ^9
         version: 9.39.3
       '@solidjs/testing-library':
         specifier: ^0.8.10
         version: 0.8.10(@solidjs/router@0.15.4(solid-js@1.9.11))(solid-js@1.9.11)
       '@stylistic/eslint-plugin':
-        specifier: ^5.9.0
+        specifier: '>=5.0.0'
         version: 5.9.0(eslint@9.39.3(jiti@2.6.1))
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
       eslint:
-        specifier: ^9.39.3
+        specifier: ^9
         version: 9.39.3(jiti@2.6.1)
       eslint-import-resolver-typescript:
         specifier: ^4.4.4
@@ -135,13 +135,13 @@ importers:
         specifier: ^3.3.4
         version: 3.3.4
       '@eslint/js':
-        specifier: ^9.39.3
+        specifier: ^9
         version: 9.39.3
       '@octokit/types':
         specifier: ^16.0.0
         version: 16.0.0
       '@stylistic/eslint-plugin':
-        specifier: ^5.9.0
+        specifier: '>=5.0.0'
         version: 5.9.0(eslint@9.39.3(jiti@2.6.1))
       '@types/aws-lambda':
         specifier: ^8.10.160
@@ -153,7 +153,7 @@ importers:
         specifier: ^2.1107.0
         version: 2.1107.0
       eslint:
-        specifier: ^9.39.3
+        specifier: ^9
         version: 9.39.3(jiti@2.6.1)
       eslint-import-resolver-typescript:
         specifier: ^4.4.4
