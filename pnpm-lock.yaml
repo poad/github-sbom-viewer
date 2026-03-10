@@ -38,19 +38,19 @@ importers:
         specifier: ^3.3.5
         version: 3.3.5
       '@eslint/js':
-        specifier: ^9.39.4
+        specifier: ^9
         version: 9.39.4
       '@solidjs/testing-library':
         specifier: ^0.8.10
         version: 0.8.10(@solidjs/router@0.15.4(solid-js@1.9.11))(solid-js@1.9.11)
       '@stylistic/eslint-plugin':
-        specifier: ^5.10.0
+        specifier: '>=5.0.0'
         version: 5.10.0(eslint@9.39.4(jiti@2.6.1))
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
       eslint:
-        specifier: ^9.39.4
+        specifier: ^9
         version: 9.39.4(jiti@2.6.1)
       eslint-import-resolver-typescript:
         specifier: ^4.4.4
@@ -96,7 +96,7 @@ importers:
     dependencies:
       '@hono/oauth-providers':
         specifier: ^0.8.5
-        version: 0.8.5(hono@4.12.6)
+        version: 0.8.5(hono@4.12.7)
       '@octokit/core':
         specifier: ^7.0.6
         version: 7.0.6
@@ -107,8 +107,8 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(@octokit/core@7.0.6)
       aws-cdk-lib:
-        specifier: ^2.241.0
-        version: 2.241.0(constructs@10.5.1)
+        specifier: ^2.242.0
+        version: 2.242.0(constructs@10.5.1)
       constructs:
         specifier: ^10.5.1
         version: 10.5.1
@@ -116,8 +116,8 @@ importers:
         specifier: ^0.27.3
         version: 0.27.3
       hono:
-        specifier: ^4.12.6
-        version: 4.12.6
+        specifier: ^4.12.7
+        version: 4.12.7
       loaders.css:
         specifier: ^0.1.2
         version: 0.1.2
@@ -135,13 +135,13 @@ importers:
         specifier: ^3.3.5
         version: 3.3.5
       '@eslint/js':
-        specifier: ^9.39.4
+        specifier: ^9
         version: 9.39.4
       '@octokit/types':
         specifier: ^16.0.0
         version: 16.0.0
       '@stylistic/eslint-plugin':
-        specifier: ^5.10.0
+        specifier: '>=5.0.0'
         version: 5.10.0(eslint@9.39.4(jiti@2.6.1))
       '@types/aws-lambda':
         specifier: ^8.10.161
@@ -153,7 +153,7 @@ importers:
         specifier: ^2.1110.0
         version: 2.1110.0
       eslint:
-        specifier: ^9.39.4
+        specifier: ^9
         version: 9.39.4(jiti@2.6.1)
       eslint-import-resolver-typescript:
         specifier: ^4.4.4
@@ -1224,9 +1224,9 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  aws-cdk-lib@2.241.0:
-    resolution: {integrity: sha512-v0uDNDqJt6oJ/ZHRp+KIn4xzhF518uKpZxY8fi12bO+dt505t6fCqCaqXuadznokrAyWwIae6q3ByWJfmZzQjA==}
-    engines: {node: '>= 18.0.0'}
+  aws-cdk-lib@2.242.0:
+    resolution: {integrity: sha512-AmZl4Ep9gWX7wGxmIaLGNqE7DSQFrIg1tpiCQE/INf4vc9MbLvUVYE2qikzk8LUnwe0qF1bG2SaaZZ0u9UMs3w==}
+    engines: {node: '>= 20.0.0'}
     peerDependencies:
       constructs: ^10.5.0
     bundledDependencies:
@@ -1739,8 +1739,8 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
-  hono@4.12.6:
-    resolution: {integrity: sha512-KljEp+MeEEEIOT75qBo1UjqqB29fRMtlDEwCxcexOzdkUq6LR/vRvHk5pdROcxyOYyW1niq7Gb5pFVGy5R1eBw==}
+  hono@4.12.7:
+    resolution: {integrity: sha512-jq9l1DM0zVIvsm3lv9Nw9nlJnMNPOcAtsbsgiUhWcFzPE99Gvo6yRTlszSLLYacMeQ6quHD6hMfId8crVHvexw==}
     engines: {node: '>=16.9.0'}
 
   html-encoding-sniffer@6.0.0:
@@ -2989,9 +2989,9 @@ snapshots:
 
   '@exodus/bytes@1.15.0': {}
 
-  '@hono/oauth-providers@0.8.5(hono@4.12.6)':
+  '@hono/oauth-providers@0.8.5(hono@4.12.7)':
     dependencies:
-      hono: 4.12.6
+      hono: 4.12.7
 
   '@humanfs/core@0.19.1': {}
 
@@ -3625,7 +3625,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  aws-cdk-lib@2.241.0(constructs@10.5.1):
+  aws-cdk-lib@2.242.0(constructs@10.5.1):
     dependencies:
       '@aws-cdk/asset-awscli-v1': 2.2.263
       '@aws-cdk/asset-node-proxy-agent-v6': 2.1.1
@@ -4226,7 +4226,7 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hono@4.12.6: {}
+  hono@4.12.7: {}
 
   html-encoding-sniffer@6.0.0:
     dependencies:
