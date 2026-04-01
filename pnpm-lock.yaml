@@ -150,8 +150,8 @@ importers:
         specifier: ^25.5.0
         version: 25.5.0
       aws-cdk:
-        specifier: ^2.1115.1
-        version: 2.1115.1
+        specifier: ^2.1116.0
+        version: 2.1116.0
       eslint:
         specifier: ^9
         version: 9.39.4(jiti@2.6.1)
@@ -1248,8 +1248,8 @@ packages:
       - yaml
       - mime-types
 
-  aws-cdk@2.1115.1:
-    resolution: {integrity: sha512-6vvSuHTq5FKClXIIXXvbmdYkzG+I6Ij80iXyg3Oky3+FZn+lYgYlM3RCS9gLWyJLhgcOhwB8jQpy6593OlbQcw==}
+  aws-cdk@2.1116.0:
+    resolution: {integrity: sha512-CMB+FUnuuFDgsb3U3TId6JEKpA0vRErpjX2pMR44qxilisKyU8/Z4pJTH1KVRQtXQbLKIXpq73LUVkyIv1jmKQ==}
     engines: {node: '>= 18.0.0'}
     hasBin: true
 
@@ -3748,7 +3748,7 @@ snapshots:
       '@aws-cdk/cloud-assembly-schema': 53.11.0
       constructs: 10.6.0
 
-  aws-cdk@2.1115.1: {}
+  aws-cdk@2.1116.0: {}
 
   babel-plugin-jsx-dom-expressions@0.40.6(@babel/core@7.29.0):
     dependencies:
