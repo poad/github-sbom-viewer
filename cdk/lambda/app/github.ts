@@ -1,13 +1,13 @@
-import { Octokit } from '@octokit/core';
-import { paginateGraphQL, paginateGraphQLInterface } from '@octokit/plugin-paginate-graphql';
-import { Endpoints } from '@octokit/types';
-import { PaginateInterface, paginateRest } from '@octokit/plugin-paginate-rest';
-
 import {
   listOrganizationsQuery,
   listCurrentUserRepositoriesQuery,
   listOrganizationRepositoriesQuery,
 } from './constants';
+import { Octokit } from '@octokit/core';
+import { paginateGraphQL, paginateGraphQLInterface } from '@octokit/plugin-paginate-graphql';
+import { Endpoints } from '@octokit/types';
+import { PaginateInterface, paginateRest } from '@octokit/plugin-paginate-rest';
+
 
 interface Pagenation {
   paginate: PaginateInterface
@@ -104,7 +104,7 @@ async function listOrganizationRepositories(
 
 type GetSbomResponse = Endpoints['GET /repos/{owner}/{repo}/dependency-graph/sbom']['response']['data'];
 
-interface GetSbomProps { owner: string, repo: string }
+interface GetSbomProps { readonly owner: string, readonly repo: string }
 
 async function getSbom(
   octokit: OctokitInstance,

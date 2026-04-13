@@ -1,10 +1,10 @@
+import { GitHub } from './github';
 import { Context } from 'hono';
 import { Logger } from '@aws-lambda-powertools/logger';
 import {
   setCookie,
   getCookie,
 } from 'hono/cookie';
-import { GitHub } from './github';
 
 const logger = new Logger();
 

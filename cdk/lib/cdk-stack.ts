@@ -1,3 +1,4 @@
+import { buildFrontend } from './process/setup';
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -7,11 +8,10 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as nodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as awslogs from 'aws-cdk-lib/aws-logs';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { buildFrontend } from './process/setup';
 import * as deployment from 'aws-cdk-lib/aws-s3-deployment';
 
 interface CloudFrontProps {
-  comment: string;
+  readonly comment: string;
 }
 
 export interface Config {
@@ -22,11 +22,11 @@ export interface Config {
 }
 
 interface CloudfrontCdnTemplateStackProps extends cdk.StackProps {
-  clientId: string;
-  clientSecret: string;
-  debug: boolean;
-  domain?: string;
-  config: Config;
+  readonly clientId: string;
+  readonly clientSecret: string;
+  readonly debug: boolean;
+  readonly domain?: string;
+  readonly config: Config;
 }
 
 export class CloudfrontCdnTemplateStack extends cdk.Stack {

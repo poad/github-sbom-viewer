@@ -1,3 +1,4 @@
+import { rootHandler, githubHandler, githubUserHandler, githubOwnerHandler, githubSbomHandler } from './app';
 import { Hono, Context } from 'hono';
 import { handle, LambdaContext, LambdaEvent } from 'hono/aws-lambda';
 import { logger } from 'hono/logger';
@@ -5,7 +6,6 @@ import { csrf } from 'hono/csrf';
 import { githubAuth } from '@hono/oauth-providers/github';
 import { Logger } from '@aws-lambda-powertools/logger';
 
-import { rootHandler, githubHandler, githubUserHandler, githubOwnerHandler, githubSbomHandler } from './app';
 
 const apiRoot = process.env.API_ROOT_PATH;
 
