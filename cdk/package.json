@@ -15,13 +15,13 @@
     "@aws-lambda-powertools/logger": "^2.32.0",
     "@eslint/compat": "^2.0.5",
     "@eslint/eslintrc": "^3.3.5",
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "^9.39.4",
     "@octokit/types": "^16.0.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/aws-lambda": "^8.10.161",
     "@types/node": "^25.6.0",
     "aws-cdk": "^2.1118.0",
-    "eslint": "^10.2.0",
+    "eslint": "^9.39.4",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-promise": "^7.2.1",
@@ -43,7 +43,6 @@
     "constructs": "^10.6.0",
     "esbuild": "^0.28.0",
     "hono": "^4.12.12",
-    "loaders.css": "^0.1.2",
-    "source-map-support": "^0.5.21"
+    "loaders.css": "^0.1.2"
   }
 }
