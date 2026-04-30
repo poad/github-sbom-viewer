@@ -68,8 +68,8 @@ importers:
         specifier: 2.6.1
         version: 2.6.1
       jsdom:
-        specifier: ^29.1.0
-        version: 29.1.0
+        specifier: ^29.1.1
+        version: 29.1.1
       solid-devtools:
         specifier: ^0.34.5
         version: 0.34.5(solid-js@1.9.12)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3))
@@ -90,13 +90,13 @@ importers:
         version: 2.11.12(@testing-library/jest-dom@6.9.1)(solid-js@1.9.12)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3))
       vitest:
         specifier: ^4.1.5
-        version: 4.1.5(@types/node@25.6.0)(jsdom@29.1.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3))
+        version: 4.1.5(@types/node@25.6.0)(jsdom@29.1.1)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3))
 
   cdk:
     dependencies:
       '@hono/oauth-providers':
         specifier: ^0.8.5
-        version: 0.8.5(hono@4.12.15)
+        version: 0.8.5(hono@4.12.16)
       '@octokit/core':
         specifier: ^7.0.6
         version: 7.0.6
@@ -107,14 +107,14 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(@octokit/core@7.0.6)
       aws-cdk-lib:
-        specifier: ^2.251.0
-        version: 2.251.0(constructs@10.6.0)
+        specifier: ^2.252.0
+        version: 2.252.0(constructs@10.6.0)
       constructs:
         specifier: ^10.6.0
         version: 10.6.0
       hono:
-        specifier: ^4.12.15
-        version: 4.12.15
+        specifier: ^4.12.16
+        version: 4.12.16
       loaders.css:
         specifier: ^0.1.2
         version: 0.1.2
@@ -187,7 +187,7 @@ importers:
         version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3))
       vitest:
         specifier: ^4.1.5
-        version: 4.1.5(@types/node@25.6.0)(jsdom@29.1.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3))
+        version: 4.1.5(@types/node@25.6.0)(jsdom@29.1.1)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3))
 
 packages:
 
@@ -215,8 +215,8 @@ packages:
   '@aws-cdk/asset-node-proxy-agent-v6@2.1.1':
     resolution: {integrity: sha512-We4bmHaowOPHr+IQR4/FyTGjRfjgBj4ICMjtqmJeBDWad3Q/6St12NT07leNtyuukv2qMhtSZJQorD8KpKTwRA==}
 
-  '@aws-cdk/cloud-assembly-schema@53.18.0':
-    resolution: {integrity: sha512-/fa6rOpokkfa5tVIdhsaexQq5MVVTSsZSD1Tu45YcrdyGRusGrM9RlPMCPrwvMS1UfdVFBhcgO9dl9ODWAWOeQ==}
+  '@aws-cdk/cloud-assembly-schema@53.20.0':
+    resolution: {integrity: sha512-4kLAUO+I8b4nlk1Z2P4n3Ye8UtqCiXk0kJMLUThBnyHLbdz06rwAb+qlb9WZOie7NtPluemVS243ifcBh/NVsQ==}
     engines: {node: '>= 18.0.0'}
     bundledDependencies:
       - jsonschema
@@ -1399,8 +1399,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  aws-cdk-lib@2.251.0:
-    resolution: {integrity: sha512-H1Jfz2Oyejn+yG24i+By9fZpYfg+E3h1XnFCF2wnt/MyGOTIePRph7MRGkX73ap10ERSpmd0Ly58OLVykFoSQA==}
+  aws-cdk-lib@2.252.0:
+    resolution: {integrity: sha512-bRLyTtJxhVgsx2JrL2B/KYYWf+Rg0s68UgQp+VRZK0h5fXeaPqDVEJGPMr7FiOgrmYwEadjfbxsTsZKNAloAvg==}
     engines: {node: '>= 20.0.0'}
     peerDependencies:
       constructs: ^10.5.0
@@ -1948,8 +1948,8 @@ packages:
     resolution: {integrity: sha512-ej4AhfhfL2Q2zpMmLo7U1Uv9+PyhIZpgQLGT1F9miIGmiCJIoCgSmczFdrc97mWT4kVY72KA+WnnhJ5pghSvSg==}
     engines: {node: '>= 0.4'}
 
-  hono@4.12.15:
-    resolution: {integrity: sha512-qM0jDhFEaCBb4TxoW7f53Qrpv9RBiayUHo0S52JudprkhvpjIrGoU1mnnr29Fvd1U335ZFPZQY1wlkqgfGXyLg==}
+  hono@4.12.16:
+    resolution: {integrity: sha512-jN0ZewiNAWSe5khM3EyCmBb250+b40wWbwNILNfEvq84VREWwOIkuUsFONk/3i3nqkz7Oe1PcpM2mwQEK2L9Kg==}
     engines: {node: '>=16.9.0'}
 
   html-encoding-sniffer@6.0.0:
@@ -2121,8 +2121,8 @@ packages:
     resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
     hasBin: true
 
-  jsdom@29.1.0:
-    resolution: {integrity: sha512-YNUc7fB9QuvSSQWfrH0xF+TyABkxUwx8sswgIDaCrw4Hol8BghdZDkITtZheRJeMtzWlnTfsM3bBBusRvpO1wg==}
+  jsdom@29.1.1:
+    resolution: {integrity: sha512-ECi4Fi2f7BdJtUKTflYRTiaMxIB0O6zfR1fX0GXpUrf6flp8QIYn1UT20YQqdSOfk2dfkCwS8LAFoJDEppNK5Q==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24.0.0}
     peerDependencies:
       canvas: ^3.0.0
@@ -2641,11 +2641,11 @@ packages:
     resolution: {integrity: sha512-Bf+ILmBgretUrdJxzXM0SgXLZ3XfiaUuOj/IKQHuTXip+05Xn+uyEYdVg0kYDipTBcLrCVyUzAPz7QmArb0mmw==}
     engines: {node: '>=14.0.0'}
 
-  tldts-core@7.0.28:
-    resolution: {integrity: sha512-7W5Efjhsc3chVdFhqtaU0KtK32J37Zcr9RKtID54nG+tIpcY79CQK/veYPODxtD/LJ4Lue66jvrQzIX2Z2/pUQ==}
+  tldts-core@7.0.29:
+    resolution: {integrity: sha512-W99NuU7b1DcG3uJ3v9k9VztCH3WialNbBkBft5wCs8V8mexu0XQqaZEYb9l9RNNzK8+3EJ9PKWB0/RUtTQ/o+Q==}
 
-  tldts@7.0.28:
-    resolution: {integrity: sha512-+Zg3vWhRUv8B1maGSTFdev9mjoo8Etn2Ayfs4cnjlD3CsGkxXX4QyW3j2WJ0wdjYcYmy7Lx2RDsZMhgCWafKIw==}
+  tldts@7.0.29:
+    resolution: {integrity: sha512-JIXCerhudr/N6OWLwLF1HVsTTUo7ry6qHa5eWZEkiMuxsIiAACL55tGLfqfHfoH7QaMQUW8fngD7u7TxWexYQg==}
     hasBin: true
 
   to-regex-range@5.0.1:
@@ -2966,7 +2966,7 @@ snapshots:
 
   '@aws-cdk/asset-node-proxy-agent-v6@2.1.1': {}
 
-  '@aws-cdk/cloud-assembly-schema@53.18.0': {}
+  '@aws-cdk/cloud-assembly-schema@53.20.0': {}
 
   '@aws-lambda-powertools/commons@2.33.0':
     dependencies:
@@ -3355,9 +3355,9 @@ snapshots:
 
   '@exodus/bytes@1.15.0': {}
 
-  '@hono/oauth-providers@0.8.5(hono@4.12.15)':
+  '@hono/oauth-providers@0.8.5(hono@4.12.16)':
     dependencies:
-      hono: 4.12.15
+      hono: 4.12.16
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -4041,11 +4041,11 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  aws-cdk-lib@2.251.0(constructs@10.6.0):
+  aws-cdk-lib@2.252.0(constructs@10.6.0):
     dependencies:
       '@aws-cdk/asset-awscli-v1': 2.2.273
       '@aws-cdk/asset-node-proxy-agent-v6': 2.1.1
-      '@aws-cdk/cloud-assembly-schema': 53.18.0
+      '@aws-cdk/cloud-assembly-schema': 53.20.0
       constructs: 10.6.0
 
   aws-cdk@2.1120.0: {}
@@ -4695,7 +4695,7 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hono@4.12.15: {}
+  hono@4.12.16: {}
 
   html-encoding-sniffer@6.0.0:
     dependencies:
@@ -4860,7 +4860,7 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  jsdom@29.1.0:
+  jsdom@29.1.1:
     dependencies:
       '@asamuzakjp/css-color': 5.1.11
       '@asamuzakjp/dom-selector': 7.1.1
@@ -5411,11 +5411,11 @@ snapshots:
 
   tinyrainbow@3.1.0: {}
 
-  tldts-core@7.0.28: {}
+  tldts-core@7.0.29: {}
 
-  tldts@7.0.28:
+  tldts@7.0.29:
     dependencies:
-      tldts-core: 7.0.28
+      tldts-core: 7.0.29
 
   to-regex-range@5.0.1:
     dependencies:
@@ -5423,7 +5423,7 @@ snapshots:
 
   tough-cookie@6.0.1:
     dependencies:
-      tldts: 7.0.28
+      tldts: 7.0.29
 
   tr46@6.0.0:
     dependencies:
@@ -5615,7 +5615,7 @@ snapshots:
     optionalDependencies:
       vite: 8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3)
 
-  vitest@4.1.5(@types/node@25.6.0)(jsdom@29.1.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3)):
+  vitest@4.1.5(@types/node@25.6.0)(jsdom@29.1.1)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3)):
     dependencies:
       '@vitest/expect': 4.1.5
       '@vitest/mocker': 4.1.5(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3))
@@ -5639,7 +5639,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 25.6.0
-      jsdom: 29.1.0
+      jsdom: 29.1.1
     transitivePeerDependencies:
       - msw
 
