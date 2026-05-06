@@ -20,7 +20,7 @@
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/aws-lambda": "^8.10.161",
     "@types/node": "^25.6.0",
-    "aws-cdk": "^2.1120.0",
+    "aws-cdk": "^2.1121.0",
     "esbuild": "^0.28.0",
     "eslint": "^10.3.0",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -28,7 +28,7 @@
     "eslint-plugin-import-x": "^4.16.2",
     "eslint-plugin-promise": "^7.3.0",
     "globals": "^17.6.0",
-    "jiti": "2.6.1",
+    "jiti": "2.7.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.2",
@@ -41,9 +41,9 @@
     "@octokit/core": "^7.0.6",
     "@octokit/plugin-paginate-graphql": "^6.0.0",
     "@octokit/plugin-paginate-rest": "^14.0.0",
-    "aws-cdk-lib": "^2.252.0",
+    "aws-cdk-lib": "^2.253.0",
     "constructs": "^10.6.0",
-    "hono": "^4.12.17",
+    "hono": "^4.12.18",
     "loaders.css": "^0.1.2"
   }
 }
