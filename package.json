@@ -12,7 +12,7 @@
   "author": "",
   "license": "UNLICENSED",
   "devDependencies": {
-    "pnpm": "^11.1.0"
+    "pnpm": "^11.1.1"
   },
   "packageManager": "pnpm@10.33.3"
 }
