@@ -19,7 +19,7 @@
     "@solidjs/testing-library": "^0.8.10",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@testing-library/jest-dom": "^6.9.1",
-    "eslint": "^10.3.0",
+    "eslint": "^10.4.0",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-promise": "^7.3.0",
@@ -36,6 +36,6 @@
   },
   "dependencies": {
     "@solidjs/router": "^0.16.1",
-    "solid-js": "^1.9.12"
+    "solid-js": "^1.9.13"
   }
 }
