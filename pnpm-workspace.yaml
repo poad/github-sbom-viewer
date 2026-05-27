@@ -2,6 +2,10 @@ packages:
   - ./cdk
   - ./app
 
+allowBuilds:
+  esbuild: false
+  unrs-resolver: false
+
 overrides:
   '@eslint/eslintrc>ajv': ^6.12.4
   '@eslint/js': ^9
