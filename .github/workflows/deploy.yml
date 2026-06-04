@@ -56,7 +56,7 @@ jobs:
 
     - name: deploy
       working-directory: cdk
-      run: cdk deploy -c clientId=${{ secrets.CLIENT_ID }} -c clientSecret=${{ secrets.CLIENT_SECRET }}
+      run: pnx aws-cdk@latest deploy -c clientId=${{ secrets.CLIENT_ID }} -c clientSecret=${{ secrets.CLIENT_SECRET }}
 
     - name: Retirives CloudFront Distribution Domain Name
       id: distribution-url
@@ -69,4 +69,4 @@ jobs:
       working-directory: cdk
       env:
         CF_DOMAIN: ${{ steps.distribution-url.outputs.cloudfront-domain-name }}
-      run: cdk deploy -c clientId=${{ secrets.CLIENT_ID }} -c clientSecret=${{ secrets.CLIENT_SECRET }} -c domain="$CF_DOMAIN"
+      run: pnx aws-cdk@latest deploy -c clientId=${{ secrets.CLIENT_ID }} -c clientSecret=${{ secrets.CLIENT_SECRET }} -c domain="$CF_DOMAIN"
