@@ -31,6 +31,7 @@ interface RectangleProps { x: number; y: number }
 interface Points { node: Node; x: number; y: number }
 
 export default function DependencyGraph(props: DependencyGraphProps) {
+  // eslint-disable-next-line no-unassigned-vars
   let canvasRef: HTMLCanvasElement | undefined;
   let ctx!: CanvasRenderingContext2D;
   const [hoveredNode, setHoveredNode] = createSignal<string | null>(null);
