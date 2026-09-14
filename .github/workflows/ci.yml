@@ -27,9 +27,14 @@ jobs:
 
     - name: Install pnpm
       uses: pnpm/setup@703c52620218391530e48b9e8870d5c0082e1b9b # v2.1.0
+      with:
+        install: false
 
     - name: Install global dependencies
       run: pnpm add -g esbuild
+
+    - name: Install dependencies
+      run: pnpm install --no-frozen-lockfile
 
     - name: lint
       run: pnpm lint
