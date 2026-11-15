@@ -9,7 +9,7 @@ allowBuilds:
 minimumReleaseAge: 10080 # 7 days in minutes
 
 minimumReleaseAgeExclude:
-  - pnpm@12.15.0
+  - pnpm@12.21.0
 
 overrides:
   chokidar: '>=5'
