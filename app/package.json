@@ -28,8 +28,8 @@
     "jsdom": "^31.0.0",
     "solid-devtools": "^0.34.5",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "typescript-eslint": "^8.72.1",
-    "vite": "^8.3.6",
+    "typescript-eslint": "^8.72.2",
+    "vite": "^8.3.7",
     "vite-plugin-pages": "^0.33.3",
     "vite-plugin-solid": "^2.11.15",
     "vitest": "^5.1.0"
