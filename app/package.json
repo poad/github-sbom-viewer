@@ -29,13 +29,13 @@
     "solid-devtools": "^0.34.5",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.72.2",
-    "vite": "^8.3.7",
+    "vite": "^8.3.8",
     "vite-plugin-pages": "^0.33.3",
     "vite-plugin-solid": "^2.11.16",
     "vitest": "^5.1.0"
   },
   "dependencies": {
-    "@solidjs/router": "^1.0.2",
-    "solid-js": "^1.9.18"
+    "@solidjs/router": "^1.0.3",
+    "solid-js": "^1.9.19"
   }
 }
