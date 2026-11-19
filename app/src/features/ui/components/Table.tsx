@@ -1,8 +1,8 @@
-import { JSXElement } from 'solid-js';
+import { type Element } from 'solid-js';
 import styles from './Table.module.css';
 
 interface TableProps {
-  children: JSXElement;
+  children: Element;
 }
 
 export default function Table(props: TableProps) {
@@ -10,7 +10,7 @@ export default function Table(props: TableProps) {
 }
 
 interface ThProps {
-  children: JSXElement;
+  children: Element;
   sort?: 'none' | 'ascending' | 'descending' | 'other';
 }
 

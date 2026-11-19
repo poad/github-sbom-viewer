@@ -1,4 +1,4 @@
-import { JSXElement } from 'solid-js';
+import { type Element } from 'solid-js';
 
 
  
@@ -6,7 +6,7 @@ export interface ButtonProps {
   /**
    * ボタンのテキストやアイコンなど、子要素として表示する内容
    */
-  children: JSXElement;
+  children: Element;
   /**
    * クリックハンドラ
    */

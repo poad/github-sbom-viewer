@@ -1,4 +1,4 @@
-import { type JSX, createContext, useContext, createSignal, onMount } from 'solid-js';
+import { type Element, createContext, useContext, createSignal, onSettled } from 'solid-js';
 import { getCookieConsentStatus } from '../utils/cookieConsent';
 
 type CookieConsentStatus = 'accepted' | 'rejected' | null;
@@ -17,13 +17,13 @@ const defaultContextValue: CookieConsentContextType = {
 const CookieConsentContext = createContext<CookieConsentContextType>(defaultContextValue);
 
 interface CookieConsentProviderProps {
-  children: JSX.Element;
+  children: Element;
 }
 
-export function CookieConsentProvider(props: CookieConsentProviderProps): JSX.Element {
+export function CookieConsentProvider(props: CookieConsentProviderProps): Element {
   const [consentStatus, setConsentStatusInternal] = createSignal<CookieConsentStatus>(null);
 
-  onMount(() => {
+  onSettled(() => {
     setConsentStatusInternal(getCookieConsentStatus());
   });
 
@@ -37,9 +37,9 @@ export function CookieConsentProvider(props: CookieConsentProviderProps): JSX.El
   };
 
   return (
-    <CookieConsentContext.Provider value={{ consentStatus, setConsentStatus }}>
+    <CookieConsentContext value={{ consentStatus, setConsentStatus }}>
       {props.children}
-    </CookieConsentContext.Provider>
+    </CookieConsentContext>
   );
 }
 

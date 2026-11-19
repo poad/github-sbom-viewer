@@ -1,11 +1,10 @@
-import { type JSX, createSignal } from 'solid-js';
-import { Show } from 'solid-js';
+import { type Element, createSignal, Show } from 'solid-js';
 import styles from './styles.module.css';
 import { useCookieConsent } from '../../../../contexts/CookieConsentContext';
 
-export function CookieConsent(): JSX.Element {
+export function CookieConsent(): Element {
   const { consentStatus, setConsentStatus } = useCookieConsent();
-  const [showBanner, setShowBanner] = createSignal<boolean>(!consentStatus());
+  const [showBanner, setShowBanner] = createSignal(() => !consentStatus());
 
   const handleAccept = () => {
     setConsentStatus('accepted');

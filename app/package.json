@@ -23,19 +23,18 @@
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-promise": "^7.3.0",
-    "eslint-plugin-solid": "^0.19.0",
+    "eslint-plugin-solid": "^0.20.0",
     "jiti": "2.7.0",
     "jsdom": "^31.0.0",
-    "solid-devtools": "^0.34.5",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.72.2",
     "vite": "^8.3.8",
-    "vite-plugin-pages": "^0.33.3",
-    "vite-plugin-solid": "^2.11.16",
+    "@solidjs/vite-plugin": "^3.0.1",
     "vitest": "^5.1.0"
   },
   "dependencies": {
-    "@solidjs/router": "^1.0.3",
-    "solid-js": "^1.9.19"
+    "@solidjs/router": "^2.0.0",
+    "@solidjs/web": "^2.0.3",
+    "solid-js": "^2.0.3"
   }
 }

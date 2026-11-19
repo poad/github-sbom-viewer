@@ -1,4 +1,4 @@
-import { createEffect, createSignal, onMount, onCleanup } from 'solid-js';
+import { createEffect, createSignal, onSettled, onCleanup } from 'solid-js';
 // パフォーマンス改善とメモリリーク防止のための実装
 
 interface Node {
@@ -88,8 +88,10 @@ export default function DependencyGraph(props: DependencyGraphProps) {
       }
     });
 
-    setNodes(Array.from(nodeMap.values()));
-    setLinks(linkList);
+    return { nodes: Array.from(nodeMap.values()), links: linkList };
+  }, ({ nodes: nextNodes, links: nextLinks }) => {
+    setNodes(nextNodes);
+    setLinks(nextLinks);
   });
 
 
@@ -326,7 +328,7 @@ export default function DependencyGraph(props: DependencyGraphProps) {
 
   let animationFrameId: number;
 
-  onMount(() => {
+  onSettled(() => {
     if (canvasRef) {
       canvasRef.addEventListener('mousemove', handleMouseMove);
       const ctxTemp = canvasRef.getContext('2d');

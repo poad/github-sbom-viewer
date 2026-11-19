@@ -1,28 +1,29 @@
-import { type JSX } from 'solid-js/jsx-runtime';
+import { type JSX } from '@solidjs/web';
 import styles from './index.module.css';
-import { createResource, For, Show } from 'solid-js';
-import { A } from '@solidjs/router';
+import { createMemo, Errored, For, Loading, Show } from 'solid-js';
 import { FadeLoader, CookieConsent } from '../features/ui/components';
 import { useCookieConsent } from '../contexts/CookieConsentContext';
 
-interface CreateResourceProps { owners: string[] }
+interface OwnersResponse { owners: string[] }
 
 export default function (): JSX.Element {
   const clientID = (import.meta.env.VITE_GITHUB_APPS_CLIENT_ID as string || undefined) ?? '';
   const { consentStatus } = useCookieConsent();
 
-  const [data] = createResource<CreateResourceProps | undefined>(() => {
+  const data = createMemo(() => {
     if (consentStatus() === 'accepted' && document.cookie.split('; ').some((item) => item.startsWith('user='))) {
-      return fetch('/api/github').then((resp) => resp.json());
+      return fetch('/api/github').then((resp) => resp.json() as Promise<OwnersResponse>);
     }
     return undefined;
   });
-  const user = consentStatus() === 'accepted' ? document.cookie.split('; ').find(item => item.startsWith('user='))?.split('=')[1] : undefined;
+  const user = createMemo(() => consentStatus() === 'accepted'
+    ? document.cookie.split('; ').find(item => item.startsWith('user='))?.split('=')[1]
+    : undefined);
 
   return (
     <div class={styles.App}>
       <header class={styles.header}>
-        <Show when={!user && consentStatus() === 'accepted'}>
+        <Show when={!user() && consentStatus() === 'accepted'}>
           <p>
             <a href={`https://github.com/login/oauth/authorize?client_id=${clientID}`}>Login with GitHub</a>
           </p>
@@ -31,21 +32,23 @@ export default function (): JSX.Element {
           <p>Cookieの使用が拒否されているため、ログイン機能は利用できません。</p>
         </Show>
       </header>
-      <Show when={!data.loading} fallback={(<FadeLoader />)}>
-        <Show when={!data.error && data()}>
-          <h1>owners</h1>
-          <ul>
-            <For each={data()?.owners}>
-              {(owner) => {
-                if (user?.trim() === owner.trim()) {
-                  return <li><A href={'./repos/'}>{owner}</A></li>;
-                }
-                return <li><A href={`./owners/${owner}`}>{owner}</A></li>;
-              }}
-            </For>
-          </ul>
-        </Show>
-      </Show>
+      <Errored fallback={<p role="alert">Failed to load owners.</p>}>
+        <Loading fallback={<FadeLoader />}>
+          <Show when={data()?.owners}>
+            <h1>owners</h1>
+            <ul>
+              <For each={data()?.owners}>
+                {(owner) => {
+                  if (user()?.trim() === owner.trim()) {
+                    return <li><a href="/repos">{owner}</a></li>;
+                  }
+                  return <li><a href={`/owners/${owner}`}>{owner}</a></li>;
+                }}
+              </For>
+            </ul>
+          </Show>
+        </Loading>
+      </Errored>
       <CookieConsent />
     </div>
   );
