@@ -1,7 +1,8 @@
-import { render } from 'solid-js/web';
-import { Router } from '@solidjs/router';
-import routes from '~solid-pages';
+import { render } from '@solidjs/web';
+import { Loading } from 'solid-js';
+import Router from './router';
 import { CookieConsentProvider } from './contexts/CookieConsentContext';
+import { FadeLoader } from './features/ui/components';
 
 const root = document.getElementById('root');
 
@@ -14,7 +15,9 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 if (root) {
   render(() => (
     <CookieConsentProvider>
-      <Router>{routes}</Router>
+      <Loading fallback={<FadeLoader />}>
+        <Router>{(props) => props.children}</Router>
+      </Loading>
     </CookieConsentProvider>
   ), root);
 }

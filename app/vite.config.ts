@@ -1,26 +1,21 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
 
-import { defineConfig } from 'vite';
-import solidPlugin from 'vite-plugin-solid';
-import pages from 'vite-plugin-pages';
+import solidPlugin from '@solidjs/vite-plugin';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  plugins: [pages({
-    extensions: ['tsx', 'jsx'],
-    importMode: 'async',
-  }), solidPlugin()],
+  plugins: [solidPlugin()],
   test: {
     environment: 'jsdom',
     globals: true,
-    testTransformMode: {
-      web: ['*.[jt]sx?'],
-    },
     setupFiles: './setupVitest.ts',
-    // solid needs to be inline to work around
-    // a resolution issue in vitest:
     deps: {
-      inline: [/solid-js/],
+      optimizer: {
+        client: {
+          include: ['/solid-js/', '/@solidjs/web/'],
+        },
+      },
     },
     // if you have few tests, try commenting one
     // or both out to improve performance:

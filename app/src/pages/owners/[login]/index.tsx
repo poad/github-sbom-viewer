@@ -1,5 +1,5 @@
-import { For, Show, createResource } from 'solid-js';
-import { A, useParams } from '@solidjs/router';
+import { createMemo, Errored, For, Loading } from 'solid-js';
+import { useParams } from '@solidjs/router';
 import { FadeLoader } from '../../../features/ui/components';
 
 interface OrganizationRepository {
@@ -13,25 +13,26 @@ interface OrganizationApiResponse {
 }
 
 export default function OrganizationRepos() {
-  const { login } = useParams();
-  const [data] = createResource<
-    OrganizationApiResponse>(() =>
-      fetch(`/api/github/owners/${login}`).then((resp) => resp.json()),
-    );
+  const params = useParams();
+  const data = createMemo(() =>
+    fetch(`/api/github/owners/${params.login}`).then((resp) => resp.json() as Promise<OrganizationApiResponse>),
+  );
   return (
     <>
       <h1>Repositories</h1>
       <p>
-        <Show when={!data.loading} fallback={(<FadeLoader />)}>
-          <ul>
-            <For each={data()?.repos}>
-              {(repo) => <li><A href={`./${repo.name}`}>{repo.nameWithOwner}</A></li>}
-            </For>
-          </ul>
-        </Show>
+        <Errored fallback={<p role="alert">Failed to load repositories.</p>}>
+          <Loading fallback={<FadeLoader />}>
+            <ul>
+              <For each={data()?.repos}>
+                {(repo) => <li><a href={`/owners/${params.login}/${repo.name}`}>{repo.nameWithOwner}</a></li>}
+              </For>
+            </ul>
+          </Loading>
+        </Errored>
       </p>
       <p>
-        <A href="/">HOME</A>
+        <a href="/">HOME</a>
       </p>
     </>
   );
