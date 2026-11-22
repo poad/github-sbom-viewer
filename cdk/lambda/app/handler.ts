@@ -1,18 +1,12 @@
 import { GitHub } from './github';
-import { Context } from 'hono';
+
 import { Logger } from '@aws-lambda-powertools/logger';
-import {
-  setCookie,
-  getCookie,
-} from 'hono/cookie';
+import { Context } from 'hono';
+import { setCookie, getCookie } from 'hono/cookie';
 
 const logger = new Logger();
 
-async function rootHandler(
-  c: Context,
-  apiRoot?: string,
-  domain?: string,
-) {
+async function rootHandler(c: Context, apiRoot?: string, domain?: string) {
   const token = c.get('token');
   if (!token?.token) {
     logger.debug('Not Found token');
@@ -48,7 +42,9 @@ async function rootHandler(
 
       const refreshToken = c.get('refresh-token');
       if (refreshToken) {
-        const refreshTokenExpires = new Date(new Date().getTime() + (refreshToken.expires_in ?? 0) * 1000);
+        const refreshTokenExpires = new Date(
+          new Date().getTime() + (refreshToken.expires_in ?? 0) * 1000,
+        );
         setCookie(c, 'refresh-token', refreshToken.token, {
           secure: true,
           domain,
@@ -105,7 +101,7 @@ async function githubSbomHandler(c: Context, owner: string, repo: string) {
   }
 
   const github = GitHub(token);
-  const sbom = await github.getSbom({owner, repo});
+  const sbom = await github.getSbom({ owner, repo });
   return c.json(sbom);
 }
 
@@ -124,10 +120,4 @@ async function githubUserHandler(c: Context) {
   });
 }
 
-export {
-  rootHandler,
-  githubHandler,
-  githubOwnerHandler,
-  githubUserHandler,
-  githubSbomHandler,
-};
+export { rootHandler, githubHandler, githubOwnerHandler, githubUserHandler, githubSbomHandler };

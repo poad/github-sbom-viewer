@@ -8,29 +8,8 @@
     "watch": "tsc -w",
     "test": "vitest --run --passWithNoTests",
     "cdk": "cdk",
-    "lint": "eslint",
-    "lint-fix": "eslint --fix"
-  },
-  "devDependencies": {
-    "@aws-lambda-powertools/logger": "^2.36.0",
-    "@eslint/compat": "^2.1.1",
-    "@eslint/eslintrc": "^3.3.7",
-    "@eslint/js": "^10.0.1",
-    "@octokit/types": "^18.0.0",
-    "@types/aws-lambda": "^8.10.164",
-    "@types/node": "^26.6.6",
-    "@typescript/native": "npm:typescript@^7.0.2",
-    "aws-cdk": "^2.1148.1",
-    "esbuild": "^0.28.2",
-    "eslint": "^10.15.0",
-    "eslint-import-resolver-typescript": "^4.4.5",
-    "globals": "^17.14.0",
-    "tsx": "^4.23.15",
-    "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "typescript-eslint": "^8.72.2",
-    "vite": "^8.3.8",
-    "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^5.1.0"
+    "lint": "oxfmt --check && oxlint",
+    "lint-fix": "oxfmt && oxlint --fix"
   },
   "dependencies": {
     "@hono/oauth-providers": "^0.9.1",
@@ -41,5 +20,23 @@
     "constructs": "^10.8.1",
     "hono": "^4.13.18",
     "loaders.css": "^0.1.2"
+  },
+  "devDependencies": {
+    "@aws-lambda-powertools/logger": "^2.36.0",
+    "@octokit/types": "^18.0.0",
+    "@types/aws-lambda": "^8.10.164",
+    "@types/node": "^26.6.6",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "aws-cdk": "^2.1148.1",
+    "esbuild": "^0.28.2",
+    "globals": "^17.14.0",
+    "oxfmt": "^0.78.0",
+    "oxlint": "^1.93.0",
+    "oxlint-plugin-awscdk": "^1.0.4",
+    "tsx": "^4.23.15",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "vite": "^8.3.8",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^5.1.0"
   }
 }

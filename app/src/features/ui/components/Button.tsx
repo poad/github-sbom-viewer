@@ -1,7 +1,5 @@
 import { type Element } from 'solid-js';
 
-
- 
 export interface ButtonProps {
   /**
    * ボタンのテキストやアイコンなど、子要素として表示する内容
@@ -57,4 +55,3 @@ export default function Button(props: ButtonProps) {
     </button>
   );
 }
-

@@ -1,12 +1,13 @@
 {
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [],
+  "singleQuote": true,
   "sortImports": {
     "groups": [
-      "builtin",
-      ["sibling", "parent"],
-      "index",
-      "object",
-      { "unknown": "type" }
-    ],
-    "newlinesBetween": ""
+      ["value-builtin", "type-builtin"],
+      ["value-sibling", "value-parent", "type-sibling", "type-parent"],
+      ["value-index", "type-index"],
+      "unknown"
+    ]
   }
 }

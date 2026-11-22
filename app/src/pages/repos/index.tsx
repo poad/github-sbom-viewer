@@ -1,6 +1,7 @@
-import { createMemo, Errored, For, Loading } from 'solid-js';
 import { FadeLoader } from '../../features/ui/components';
 import styles from './index.module.css';
+
+import { createMemo, Errored, For, Loading } from 'solid-js';
 
 interface Repository {
   name: string;
@@ -28,7 +29,11 @@ export default function UserRepos() {
             <Loading fallback={<FadeLoader />}>
               <ul>
                 <For each={data()?.repos}>
-                  {(repo) => <li><a href={`/repos/${repo.name}`}>{repo.nameWithOwner}</a></li>}
+                  {(repo) => (
+                    <li>
+                      <a href={`/repos/${repo.name}`}>{repo.nameWithOwner}</a>
+                    </li>
+                  )}
                 </For>
               </ul>
             </Loading>

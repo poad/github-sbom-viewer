@@ -9,26 +9,20 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest --run --passWithNoTests",
-    "lint": "eslint",
-    "lint-fix": "eslint --fix"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3.3.7",
-    "@eslint/js": "^10.0.1",
-    "@solidjs/testing-library": "^0.8.10",
-    "@solidjs/vite-plugin": "^3.0.1",
-    "@testing-library/jest-dom": "^7.0.1",
-    "@typescript/native": "npm:typescript@^7.0.2",
-    "eslint": "^10.15.0",
-    "eslint-import-resolver-typescript": "^4.4.5",
-    "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "typescript-eslint": "^8.72.2",
-    "vite": "^8.3.8",
-    "vitest": "^5.1.0"
+    "lint": "oxfmt --check && oxlint",
+    "lint-fix": "oxfmt && oxlint --fix"
   },
   "dependencies": {
     "@solidjs/router": "^2.0.0",
     "@solidjs/web": "^2.0.3",
     "solid-js": "^2.0.3"
+  },
+  "devDependencies": {
+    "@solidjs/vite-plugin": "^3.0.1",
+    "oxfmt": "^0.78.0",
+    "oxlint": "^1.93.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
   }
 }

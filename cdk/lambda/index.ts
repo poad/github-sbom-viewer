@@ -1,22 +1,28 @@
-import { rootHandler, githubHandler, githubUserHandler, githubOwnerHandler, githubSbomHandler } from './app';
+import {
+  rootHandler,
+  githubHandler,
+  githubUserHandler,
+  githubOwnerHandler,
+  githubSbomHandler,
+} from './app';
+
+import { Logger } from '@aws-lambda-powertools/logger';
+import { githubAuth } from '@hono/oauth-providers/github';
 import { Hono, Context } from 'hono';
 import { handle, LambdaContext, LambdaEvent } from 'hono/aws-lambda';
-import { logger } from 'hono/logger';
 import { csrf } from 'hono/csrf';
-import { githubAuth } from '@hono/oauth-providers/github';
-import { Logger } from '@aws-lambda-powertools/logger';
-
+import { logger } from 'hono/logger';
 
 const apiRoot = process.env.API_ROOT_PATH;
 
 const log = new Logger();
 
-
 const domain = process.env.DOMAIN;
 const callbackUrl = domain ? `https://${domain}${apiRoot}/` : undefined;
 
 const app = apiRoot ? new Hono().basePath(apiRoot) : new Hono();
-app.use(logger())
+app
+  .use(logger())
   .use(csrf())
   .use(
     '/',
@@ -32,7 +38,9 @@ app.get('/', async (c: Context) => rootHandler(c, apiRoot, domain));
 app.get('/github', githubHandler);
 app.get('/github/repos', githubUserHandler);
 app.get('/github/owners/:owner', async (c: Context) => githubOwnerHandler(c, c.req.param('owner')));
-app.get('/github/sbom/:owner/:repo', async (c: Context) => githubSbomHandler(c, c.req.param('owner'), c.req.param('repo')));
+app.get('/github/sbom/:owner/:repo', async (c: Context) =>
+  githubSbomHandler(c, c.req.param('owner'), c.req.param('repo')),
+);
 export const handler = async (event: LambdaEvent, context: LambdaContext) => {
   log.info(JSON.parse(JSON.stringify(event)));
   return handle(app)(event, context);

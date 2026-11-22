@@ -1,17 +1,8 @@
 {
-  "extends": [
-    "./tsconfig.json"
-  ],
+  "extends": ["./tsconfig.json"],
   "compilerOptions": {
     "noEmit": true
   },
-  "include": [
-    "src",
-    "*.config.ts",
-    "*.config.js",
-    "setupVitest.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src", "*.config.ts", "*.config.js", "setupVitest.ts"],
+  "exclude": ["node_modules"]
 }

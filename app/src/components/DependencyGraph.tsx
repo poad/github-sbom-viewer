@@ -17,7 +17,10 @@ interface Link {
   target: string;
 }
 
-interface Package { name?: string; versionInfo?: string }
+interface Package {
+  name?: string;
+  versionInfo?: string;
+}
 
 interface DependencyGraphProps {
   packages: Package[];
@@ -26,9 +29,16 @@ interface DependencyGraphProps {
   height?: number;
 }
 
-interface RectangleProps { x: number; y: number }
+interface RectangleProps {
+  x: number;
+  y: number;
+}
 
-interface Points { node: Node; x: number; y: number }
+interface Points {
+  node: Node;
+  x: number;
+  y: number;
+}
 
 export default function DependencyGraph(props: DependencyGraphProps) {
   // eslint-disable-next-line no-unassigned-vars
@@ -42,77 +52,84 @@ export default function DependencyGraph(props: DependencyGraphProps) {
   const height = () => props.height || 600;
 
   // Initialize graph data
-  createEffect(() => {
-    const packages = props.packages.filter(pkg => pkg.name);
-    const mainName = props.mainPackageName;
+  createEffect(
+    () => {
+      const packages = props.packages.filter((pkg) => pkg.name);
+      const mainName = props.mainPackageName;
 
-    const nodeMap = new Map<string, Node>();
+      const nodeMap = new Map<string, Node>();
 
-    // Create main package node
-    const mainNode: Node = {
-      id: mainName,
-      name: mainName,
-      x: width() / 2,
-      y: height() / 2,
-      vx: 0,
-      vy: 0,
-      radius: 25,
-      isMain: true,
-    };
-    nodeMap.set(mainName, mainNode);
+      // Create main package node
+      const mainNode: Node = {
+        id: mainName,
+        name: mainName,
+        x: width() / 2,
+        y: height() / 2,
+        vx: 0,
+        vy: 0,
+        radius: 25,
+        isMain: true,
+      };
+      nodeMap.set(mainName, mainNode);
 
-    // Create dependency nodes
-    packages.forEach((pkg, index) => {
-      if (pkg.name && pkg.name !== mainName) {
-        const angle = (index / packages.length) * 2 * Math.PI;
-        const distance = 150;
-        const node: Node = {
-          id: pkg.name,
-          name: pkg.name,
-          x: width() / 2 + Math.cos(angle) * distance,
-          y: height() / 2 + Math.sin(angle) * distance,
-          vx: 0,
-          vy: 0,
-          radius: 15,
-          isMain: false,
-        };
-        nodeMap.set(pkg.name, node);
-      }
-    });
+      // Create dependency nodes
+      packages.forEach((pkg, index) => {
+        if (pkg.name && pkg.name !== mainName) {
+          const angle = (index / packages.length) * 2 * Math.PI;
+          const distance = 150;
+          const node: Node = {
+            id: pkg.name,
+            name: pkg.name,
+            x: width() / 2 + Math.cos(angle) * distance,
+            y: height() / 2 + Math.sin(angle) * distance,
+            vx: 0,
+            vy: 0,
+            radius: 15,
+            isMain: false,
+          };
+          nodeMap.set(pkg.name, node);
+        }
+      });
 
-    // Create links from main package to dependencies
-    const linkList: Link[] = [];
-    packages.forEach(pkg => {
-      if (pkg.name && pkg.name !== mainName) {
-        linkList.push({ source: mainName, target: pkg.name });
-      }
-    });
+      // Create links from main package to dependencies
+      const linkList: Link[] = [];
+      packages.forEach((pkg) => {
+        if (pkg.name && pkg.name !== mainName) {
+          linkList.push({ source: mainName, target: pkg.name });
+        }
+      });
 
-    return { nodes: Array.from(nodeMap.values()), links: linkList };
-  }, ({ nodes: nextNodes, links: nextLinks }) => {
-    setNodes(nextNodes);
-    setLinks(nextLinks);
-  });
-
+      return { nodes: Array.from(nodeMap.values()), links: linkList };
+    },
+    ({ nodes: nextNodes, links: nextLinks }) => {
+      setNodes(nextNodes);
+      setLinks(nextLinks);
+    },
+  );
 
   // Physics simulation
   // 使用する四分木（Quadtree）クラスの定義
   class Rectangle {
-    constructor(public x: number, public y: number, public w: number, public h: number) {}
+    constructor(
+      public x: number,
+      public y: number,
+      public w: number,
+      public h: number,
+    ) {}
     contains(point: RectangleProps): boolean {
       return (
         point.x >= this.x - this.w &&
-      point.x < this.x + this.w &&
-      point.y >= this.y - this.h &&
-      point.y < this.y + this.h
+        point.x < this.x + this.w &&
+        point.y >= this.y - this.h &&
+        point.y < this.y + this.h
       );
     }
     intersects(range: Rectangle): boolean {
       return !(
         range.x - range.w > this.x + this.w ||
-      range.x + range.w < this.x - this.w ||
-      range.y - range.h > this.y + this.h ||
-      range.y + range.h < this.y - this.h
+        range.x + range.w < this.x - this.w ||
+        range.y - range.h > this.y + this.h ||
+        range.y + range.h < this.y - this.h
       );
     }
   }
@@ -159,7 +176,6 @@ export default function DependencyGraph(props: DependencyGraphProps) {
       return false;
     }
 
-
     query(range: Rectangle, found: Points[] = []): Points[] {
       if (!this.boundary.intersects(range)) {
         return found;
@@ -187,9 +203,9 @@ export default function DependencyGraph(props: DependencyGraphProps) {
     // Build quadtree for repulsion calculations
     const boundary = new Rectangle(width() / 2, height() / 2, width() / 2, height() / 2);
     const qt = new Quadtree(boundary, 4);
-    nodeArray.forEach(n => qt.insert({ node: n, x: n.x, y: n.y }));
+    nodeArray.forEach((n) => qt.insert({ node: n, x: n.x, y: n.y }));
 
-    nodeArray.forEach(node => {
+    nodeArray.forEach((node) => {
       // Center force for main package
       if (node.isMain) {
         const centerX = width() / 2;
@@ -201,7 +217,7 @@ export default function DependencyGraph(props: DependencyGraphProps) {
       // Repulsion using quadtree (query nearby nodes within a reasonable range)
       const range = new Rectangle(node.x, node.y, 100, 100); // 100px radius approximation
       const neighbors = qt.query(range);
-      neighbors.forEach(p => {
+      neighbors.forEach((p) => {
         const other = p.node;
         if (node !== other) {
           const dx = node.x - other.x;
@@ -227,9 +243,9 @@ export default function DependencyGraph(props: DependencyGraphProps) {
     });
 
     // Link forces
-    linkArray.forEach(link => {
-      const source = nodeArray.find(n => n.id === link.source);
-      const target = nodeArray.find(n => n.id === link.target);
+    linkArray.forEach((link) => {
+      const source = nodeArray.find((n) => n.id === link.source);
+      const target = nodeArray.find((n) => n.id === link.target);
       if (source && target) {
         const dx = target.x - source.x;
         const dy = target.y - source.y;
@@ -259,9 +275,9 @@ export default function DependencyGraph(props: DependencyGraphProps) {
     // Draw links
     ctx.strokeStyle = '#999';
     ctx.lineWidth = 2;
-    links().forEach(link => {
-      const source = nodes().find(n => n.id === link.source);
-      const target = nodes().find(n => n.id === link.target);
+    links().forEach((link) => {
+      const source = nodes().find((n) => n.id === link.source);
+      const target = nodes().find((n) => n.id === link.target);
       if (source && target) {
         ctx.beginPath();
         ctx.moveTo(source.x, source.y);
@@ -271,7 +287,7 @@ export default function DependencyGraph(props: DependencyGraphProps) {
     });
 
     // Draw nodes
-    nodes().forEach(node => {
+    nodes().forEach((node) => {
       ctx.fillStyle = node.isMain ? '#2563eb' : '#64748b';
       if (hoveredNode() === node.id) {
         ctx.fillStyle = node.isMain ? '#1d4ed8' : '#475569';
@@ -303,7 +319,7 @@ export default function DependencyGraph(props: DependencyGraphProps) {
     const mouseY = e.clientY - rect.top;
 
     let foundNode: string | null = null;
-    nodes().forEach(node => {
+    nodes().forEach((node) => {
       const distance = Math.sqrt((mouseX - node.x) ** 2 + (mouseY - node.y) ** 2);
       if (distance <= node.radius) {
         foundNode = node.id;
@@ -357,16 +373,18 @@ export default function DependencyGraph(props: DependencyGraphProps) {
         style={{ border: '1px solid #ccc', background: '#f8fafc' }}
       />
       {hoveredNode() && (
-        <div style={{
-          position: 'absolute',
-          background: 'rgba(0, 0, 0, 0.8)',
-          color: 'white',
-          padding: '8px 12px',
-          'border-radius': '4px',
-          'font-size': '14px',
-          'pointer-events': 'none',
-          'z-index': 1000,
-        }}>
+        <div
+          style={{
+            position: 'absolute',
+            background: 'rgba(0, 0, 0, 0.8)',
+            color: 'white',
+            padding: '8px 12px',
+            'border-radius': '4px',
+            'font-size': '14px',
+            'pointer-events': 'none',
+            'z-index': 1000,
+          }}
+        >
           {hoveredNode()}
         </div>
       )}

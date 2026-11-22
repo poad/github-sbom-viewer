@@ -2,15 +2,13 @@ import * as childProcess from 'child_process';
 import * as fs from 'fs';
 
 export function buildFrontend(clintId: string) {
-  [`${process.cwd()}/../app/dist`].forEach(
-    (dir) => {
-      if (fs.existsSync(dir)) {
-        fs.rmSync(dir, {
-          recursive: true,
-        });
-      }
-    },
-  );
+  [`${process.cwd()}/../app/dist`].forEach((dir) => {
+    if (fs.existsSync(dir)) {
+      fs.rmSync(dir, {
+        recursive: true,
+      });
+    }
+  });
 
   ['pnpm build'].forEach((cmd) => {
     childProcess.execSync(cmd, {
@@ -20,4 +18,4 @@ export function buildFrontend(clintId: string) {
       shell: 'bash',
     });
   });
-};
+}

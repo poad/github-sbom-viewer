@@ -1,5 +1,6 @@
-import { type Element, createContext, useContext, createSignal, onSettled } from 'solid-js';
 import { getCookieConsentStatus } from '../utils/cookieConsent';
+
+import { type Element, createContext, useContext, createSignal, onSettled } from 'solid-js';
 
 type CookieConsentStatus = 'accepted' | 'rejected' | null;
 

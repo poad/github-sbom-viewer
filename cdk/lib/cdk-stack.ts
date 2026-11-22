@@ -1,14 +1,15 @@
 import { buildFrontend } from './process/setup';
+
 import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as nodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as awslogs from 'aws-cdk-lib/aws-logs';
-import * as iam from 'aws-cdk-lib/aws-iam';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as deployment from 'aws-cdk-lib/aws-s3-deployment';
+import { Construct } from 'constructs';
 
 interface CloudFrontProps {
   readonly comment: string;
@@ -30,11 +31,7 @@ interface CloudfrontCdnTemplateStackProps extends cdk.StackProps {
 }
 
 export class CloudfrontCdnTemplateStack extends cdk.Stack {
-  constructor(
-    scope: Construct,
-    id: string,
-    props: CloudfrontCdnTemplateStackProps,
-  ) {
+  constructor(scope: Construct, id: string, props: CloudfrontCdnTemplateStackProps) {
     super(scope, id, props);
 
     const {
@@ -58,17 +55,18 @@ export class CloudfrontCdnTemplateStack extends cdk.Stack {
       retention: awslogs.RetentionDays.ONE_DAY,
     });
 
-    const devOptions = debug ? {
-      bundling: {
-        sourceMap: true,
-        sourceMapMode: nodejs.SourceMapMode.BOTH,
-        sourcesContent: true,
-        keepNames: true,
-      },
-    } : {
-      bundling: {
-      },
-    };
+    const devOptions = debug
+      ? {
+          bundling: {
+            sourceMap: true,
+            sourceMapMode: nodejs.SourceMapMode.BOTH,
+            sourcesContent: true,
+            keepNames: true,
+          },
+        }
+      : {
+          bundling: {},
+        };
 
     const apiRootPath = '/api/';
 
@@ -79,7 +77,7 @@ export class CloudfrontCdnTemplateStack extends cdk.Stack {
       functionName,
       retryAttempts: 0,
       environment: {
-        ...( debug? { NODE_OPTIONS: '--enable-source-maps', POWERTOOLS_LOG_LEVEL: 'DEBUG' } : {}),
+        ...(debug ? { NODE_OPTIONS: '--enable-source-maps', POWERTOOLS_LOG_LEVEL: 'DEBUG' } : {}),
         API_ROOT_PATH: apiRootPath,
         GITHUB_APP_CLIENT_ID: clientId,
         GITHUB_APP_CLIENT_SECRET: clientSecret,
@@ -128,12 +126,15 @@ export class CloudfrontCdnTemplateStack extends cdk.Stack {
       },
       additionalBehaviors: {
         [`${apiRootPath}*`]: {
-          origin: new origins.FunctionUrlOrigin(fn.addFunctionUrl({
-            authType: cdk.aws_lambda.FunctionUrlAuthType.AWS_IAM,
-          }), {
-            originId: 'api',
-            connectionAttempts: 1,
-          }),
+          origin: new origins.FunctionUrlOrigin(
+            fn.addFunctionUrl({
+              authType: cdk.aws_lambda.FunctionUrlAuthType.AWS_IAM,
+            }),
+            {
+              originId: 'api',
+              connectionAttempts: 1,
+            },
+          ),
           viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
           cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
           originRequestPolicy: apiRequestPolicy,
@@ -169,19 +170,18 @@ export class CloudfrontCdnTemplateStack extends cdk.Stack {
     });
 
     // OAC
-    const cfnOriginAccessControl =
-      new cdk.aws_cloudfront.CfnOriginAccessControl(
-        this,
-        'OriginAccessControl',
-        {
-          originAccessControlConfig: {
-            name: `OAC for Lambda Functions URL (${appName})`,
-            originAccessControlOriginType: 'lambda',
-            signingBehavior: 'always',
-            signingProtocol: 'sigv4',
-          },
+    const cfnOriginAccessControl = new cdk.aws_cloudfront.CfnOriginAccessControl(
+      this,
+      'OriginAccessControl',
+      {
+        originAccessControlConfig: {
+          name: `OAC for Lambda Functions URL (${appName})`,
+          originAccessControlOriginType: 'lambda',
+          signingBehavior: 'always',
+          signingProtocol: 'sigv4',
         },
-      );
+      },
+    );
 
     const cfnDistribution = cf.node.defaultChild as cdk.aws_cloudfront.CfnDistribution;
 

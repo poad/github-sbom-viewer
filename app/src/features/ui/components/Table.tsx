@@ -1,5 +1,6 @@
-import { type Element } from 'solid-js';
 import styles from './Table.module.css';
+
+import { type Element } from 'solid-js';
 
 interface TableProps {
   children: Element;

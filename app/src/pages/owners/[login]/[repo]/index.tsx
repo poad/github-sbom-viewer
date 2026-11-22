@@ -1,30 +1,27 @@
-import { createMemo, Errored, For, Loading, Show, createSignal } from 'solid-js';
+import DependencyGraph from '../../../../components/DependencyGraph';
+import { FadeLoader } from '../../../../features/ui/components';
 import Button from '../../../../features/ui/components/Button';
 import Table, { Th } from '../../../../features/ui/components/Table';
+
 import { useParams } from '@solidjs/router';
-import { FadeLoader } from '../../../../features/ui/components';
-import DependencyGraph from '../../../../components/DependencyGraph';
+import { createMemo, Errored, For, Loading, Show, createSignal } from 'solid-js';
 
 export default function OrganizationRepos() {
   const params = useParams();
   const data = createMemo(() =>
-    fetch(`/api/github/sbom/${params.login}/${params.repo}`).then((resp) => resp.json() as Promise<Sbom[]>),
+    fetch(`/api/github/sbom/${params.login}/${params.repo}`).then(
+      (resp) => resp.json() as Promise<Sbom[]>,
+    ),
   );
   const [viewMode, setViewMode] = createSignal<'table' | 'graph'>('table');
   return (
     <>
       <h1>SBOM</h1>
       <div style={{ margin: '20px 0' }}>
-        <Button
-          onClick={() => setViewMode('table')}
-          active={viewMode() === 'table'}
-        >
+        <Button onClick={() => setViewMode('table')} active={viewMode() === 'table'}>
           テーブル表示
         </Button>
-        <Button
-          onClick={() => setViewMode('graph')}
-          active={viewMode() === 'graph'}
-        >
+        <Button onClick={() => setViewMode('graph')} active={viewMode() === 'graph'}>
           グラフ表示
         </Button>
       </div>
@@ -47,14 +44,22 @@ export default function OrganizationRepos() {
                         <For each={sbom.sbom.packages}>
                           {(pkg) => (
                             <tr style={{ background: '#cbd5e1' }}>
-                              <td style={{
-                                padding: '12px',
-                                border: '1px solid #d1d5db',
-                              }}>{pkg.name}</td>
-                              <td style={{
-                                padding: '12px',
-                                border: '1px solid #d1d5db',
-                              }}>{pkg.versionInfo}</td>
+                              <td
+                                style={{
+                                  padding: '12px',
+                                  border: '1px solid #d1d5db',
+                                }}
+                              >
+                                {pkg.name}
+                              </td>
+                              <td
+                                style={{
+                                  padding: '12px',
+                                  border: '1px solid #d1d5db',
+                                }}
+                              >
+                                {pkg.versionInfo}
+                              </td>
                             </tr>
                           )}
                         </For>

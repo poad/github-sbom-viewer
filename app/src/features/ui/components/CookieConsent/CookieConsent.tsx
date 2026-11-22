@@ -1,6 +1,7 @@
-import { type Element, createSignal, Show } from 'solid-js';
-import styles from './styles.module.css';
 import { useCookieConsent } from '../../../../contexts/CookieConsentContext';
+import styles from './styles.module.css';
+
+import { type Element, createSignal, Show } from 'solid-js';
 
 export function CookieConsent(): Element {
   const { consentStatus, setConsentStatus } = useCookieConsent();
@@ -31,30 +32,23 @@ export function CookieConsent(): Element {
               GitHubログイン機能を使用するにはCookieの使用に同意する必要があります。
             </p>
             <div class={styles.buttons}>
-              <button 
-                class={`${styles.button} ${styles.accept}`}
-                onClick={handleAccept}
-              >
+              <button class={`${styles.button} ${styles.accept}`} onClick={handleAccept}>
                 同意する
               </button>
-              <button 
-                class={`${styles.button} ${styles.reject}`}
-                onClick={handleReject}
-              >
+              <button class={`${styles.button} ${styles.reject}`} onClick={handleReject}>
                 拒否する
               </button>
             </div>
           </div>
         </div>
       </Show>
-      
+
       <Show when={consentStatus() === 'rejected'}>
         <div class={styles.rejectedNotice}>
-          <p>Cookieの使用が拒否されています。ログイン機能を使用するにはCookieを有効にしてください。</p>
-          <button 
-            class={`${styles.button} ${styles.enable}`}
-            onClick={handleEnableCookies}
-          >
+          <p>
+            Cookieの使用が拒否されています。ログイン機能を使用するにはCookieを有効にしてください。
+          </p>
+          <button class={`${styles.button} ${styles.enable}`} onClick={handleEnableCookies}>
             Cookieを有効にする
           </button>
         </div>

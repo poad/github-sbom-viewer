@@ -1,6 +1,7 @@
-import { createMemo, Errored, For, Loading } from 'solid-js';
-import { useParams } from '@solidjs/router';
 import { FadeLoader } from '../../../features/ui/components';
+
+import { useParams } from '@solidjs/router';
+import { createMemo, Errored, For, Loading } from 'solid-js';
 
 interface OrganizationRepository {
   name: string;
@@ -15,7 +16,9 @@ interface OrganizationApiResponse {
 export default function OrganizationRepos() {
   const params = useParams();
   const data = createMemo(() =>
-    fetch(`/api/github/owners/${params.login}`).then((resp) => resp.json() as Promise<OrganizationApiResponse>),
+    fetch(`/api/github/owners/${params.login}`).then(
+      (resp) => resp.json() as Promise<OrganizationApiResponse>,
+    ),
   );
   return (
     <>
@@ -25,7 +28,11 @@ export default function OrganizationRepos() {
           <Loading fallback={<FadeLoader />}>
             <ul>
               <For each={data()?.repos}>
-                {(repo) => <li><a href={`/owners/${params.login}/${repo.name}`}>{repo.nameWithOwner}</a></li>}
+                {(repo) => (
+                  <li>
+                    <a href={`/owners/${params.login}/${repo.name}`}>{repo.nameWithOwner}</a>
+                  </li>
+                )}
               </For>
             </ul>
           </Loading>
