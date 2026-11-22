@@ -1,16 +1,9 @@
 import { defineConfig } from 'eslint/config';
 import eslint from '@eslint/js';
-import { configs, parser } from 'typescript-eslint';
-import stylistic from '@stylistic/eslint-plugin';
-import importPlugin from 'eslint-plugin-import';
-// @ts-expect-error ignore type errors
-import pluginPromise from 'eslint-plugin-promise';
-
-import solid from 'eslint-plugin-solid';
-
+import { configs } from 'typescript-eslint';
+import { fileURLToPath } from 'node:url';
 import { includeIgnoreFile } from '@eslint/compat';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,42 +25,23 @@ export default defineConfig(
     ],
   },
   eslint.configs.recommended,
-  configs.strict,
-  configs.stylistic,
-  pluginPromise.configs['flat/recommended'],
+  ...configs.strict,
   {
     files: ['**/*.ts', '*.js'],
-    plugins: {
-      '@stylistic': stylistic,
-      solid,
-    },
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
-      parser,
       parserOptions: {
         tsconfigRootDir: __dirname,
         project: ['tsconfig-eslint.json'],
       },
     },
-    extends: [
-      importPlugin.flatConfigs.recommended,
-      importPlugin.flatConfigs.typescript,
-    ],
-    settings: {
-      'import/resolver': {
-        // You will also need to install and configure the TypeScript resolver
-        // See also https://github.com/import-js/eslint-import-resolver-typescript#configuration
-        'typescript': true,
-        'node': true,
-      },
-    },
     rules: {
-      '@stylistic/semi': ['error', 'always'],
-      '@stylistic/indent': ['error', 2],
-      '@stylistic/comma-dangle': ['error', 'always-multiline'],
-      '@stylistic/arrow-parens': ['error', 'always'],
-      '@stylistic/quotes': ['error', 'single'],
+      '@typescript-eslint/semi': ['error', 'always'],
+      '@typescript-eslint/indent': ['error', 2],
+      '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
+      '@typescript-eslint/arrow-parens': ['error', 'always'],
+      '@typescript-eslint/quotes': ['error', 'single'],
     },
   },
 );
