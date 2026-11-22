@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@solidjs/vite-plugin": "^3.0.1",
+    "jsdom": "^31.0.1",
     "oxfmt": "^0.78.0",
     "oxlint": "^1.93.0",
     "typescript": "^7.0.2",
