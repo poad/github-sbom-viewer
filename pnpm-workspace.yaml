@@ -9,7 +9,24 @@ allowBuilds:
 minimumReleaseAge: 10080 # 7 days in minutes
 
 minimumReleaseAgeExclude:
-  - pnpm@12.23.0
+  - pnpm@12.24.0
+  - '@pnpm/exe.android-arm64@12.24.0'
+  - '@pnpm/exe.android-x64@12.24.0'
+  - '@pnpm/exe.darwin-arm64@12.24.0'
+  - '@pnpm/exe.darwin-x64@12.24.0'
+  - '@pnpm/exe.freebsd-x64@12.24.0'
+  - '@pnpm/exe.linux-arm64-musl@12.24.0'
+  - '@pnpm/exe.linux-arm64@12.24.0'
+  - '@pnpm/exe.linux-loong64@12.24.0'
+  - '@pnpm/exe.linux-ppc64@12.24.0'
+  - '@pnpm/exe.linux-riscv64@12.24.0'
+  - '@pnpm/exe.linux-s390x@12.24.0'
+  - '@pnpm/exe.linux-x64-musl@12.24.0'
+  - '@pnpm/exe.linux-x64@12.24.0'
+  - '@pnpm/exe.netbsd-x64@12.24.0'
+  - '@pnpm/exe.win32-arm64@12.24.0'
+  - '@pnpm/exe.win32-x64@12.24.0'
+
   - '@solidjs/compiler-darwin-arm64@2.0.0'
   - '@solidjs/compiler-darwin-x64@2.0.0'
   - '@solidjs/compiler-linux-arm64-gnu@2.0.0'
@@ -18,10 +35,10 @@ minimumReleaseAgeExclude:
   - '@solidjs/compiler-win32-x64-msvc@2.0.0'
   - '@solidjs/compiler@2.0.0'
   - '@solidjs/router@2.0.0'
-  - '@solidjs/signals@2.0.3'
+  - '@solidjs/signals@2.0.4'
   - '@solidjs/vite-plugin@3.0.1'
-  - '@solidjs/web@2.0.3'
-  - solid-js@2.0.3
+  - '@solidjs/web@2.0.4'
+  - solid-js@2.0.4
 
 overrides:
   chokidar: '>=5'
